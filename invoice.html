@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kyaw Family Scaffolding - Invoice</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap');
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .invoice-container {
+            width: 794px;
+            /* A4 width in pixels at 96dpi */
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 p-5">
+    <div class="invoice-container bg-white shadow-lg p-10">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8 pb-6 border-b-2 border-blue-900">
+            <div class="company-info">
+                <div class="w-20 h-20 bg-blue-900 rounded-full flex items-center justify-center mb-2 overflow-hidden">
+                    <img src="https://via.placeholder.com/80x80/blue/FFFFFF?text=KFS" alt="Kyaw Family Scaffolding Logo"
+                        class="w-full h-full object-cover">
+                </div>
+                <h1 class="text-blue-900 text-2xl font-bold mb-1">Kyaw Family Scaffolding</h1>
+                <p class="text-gray-600 text-sm">123 Construction Street, Yangon, Myanmar</p>
+                <p class="text-gray-600 text-sm">Phone: +95 1 234 5678 | Email: info@kyawscaffolding.com</p>
+            </div>
+            <div class="invoice-details text-right">
+                <h2 class="text-blue-900 text-4xl font-bold mb-1">INVOICE</h2>
+                <p class="text-gray-600 text-sm mb-1"><span class="font-semibold text-gray-800">Invoice Number:</span>
+                    RENT - 253</p>
+                <p class="text-gray-600 text-sm mb-1"><span class="font-semibold text-gray-800">Date:</span> 07 - Jan -
+                    2026</p>
+                <p class="text-gray-600 text-sm mb-1"><span class="font-semibold text-gray-800">Rental Period:</span> 07
+                    - Jan - 2026 to Present</p>
+                <p class="text-gray-600 text-sm"><span class="font-semibold text-gray-800">Payment Method:</span> K-pay
+                </p>
+            </div>
+        </div>
+
+        <!-- Client Section -->
+        <div class="flex justify-between mb-8">
+            <div class="bill-to w-[48%]">
+                <div class="text-blue-900 font-bold text-sm uppercase mb-2">Bill To:</div>
+                <div class="text-gray-600 text-sm">
+                    <p class="font-semibold text-gray-800">Client Name</p>
+                    <p>Company Name</p>
+                    <p>Phone: +95 9 123 456 789</p>
+                    <p>Email: client@email.com</p>
+                </div>
+            </div>
+            <div class="ship-to w-[48%]">
+                <div class="text-blue-900 font-bold text-sm uppercase mb-2">Ship To:</div>
+                <div class="text-gray-600 text-sm">
+                    <p class="font-semibold text-gray-800">Project Site</p>
+                    <p>Site Address Line 1</p>
+                    <p>Contact Person: Site Manager</p>
+                    <p>Phone: +95 9 987 654 321</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Invoice Table -->
+        <table class="w-full border-collapse mb-6">
+            <thead>
+                <tr>
+                    <th class="bg-blue-900 text-white rounded-l-lg text-left p-3 font-semibold text-sm w-[50%]">Description</th>
+                    <th class="bg-blue-900 text-white text-center p-3 font-semibold text-sm w-[15%]">Quantity</th>
+                    <th class="bg-blue-900 text-white text-right p-3 font-semibold text-sm w-[20%]">Unit Price (Ks)</th>
+                    <th class="bg-blue-900 text-white rounded-r-lg text-right p-3 font-semibold text-sm w-[15%]">Total (Ks)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="p-3 border-b border-gray-200 text-sm">
+                        <p class="font-semibold text-gray-800">T tie 16ft</p>
+                        <p class="text-gray-600">Scaffolding component for frame connection</p>
+                    </td>
+                    <td class="p-3 border-b border-gray-200 text-sm text-center">20</td>
+                    <td class="p-3 border-b border-gray-200 text-sm text-right">200</td>
+                    <td class="p-3 border-b border-gray-200 text-sm text-right">4,000</td>
+                </tr>
+                <tr>
+                    <td class="p-3 border-b border-gray-200 text-sm">
+                        <p class="font-semibold text-gray-800">Galvanized Pipe 19ft</p>
+                        <p class="text-gray-600">Standard scaffolding pipe</p>
+                    </td>
+                    <td class="p-3 border-b border-gray-200 text-sm text-center">50</td>
+                    <td class="p-3 border-b border-gray-200 text-sm text-right">300</td>
+                    <td class="p-3 border-b border-gray-200 text-sm text-right">15,000</td>
+                </tr>
+                <tr>
+                    <td class="p-3 border-b border-gray-200 text-sm">
+                        <p class="font-semibold text-gray-800">Steel Plank 10ft</p>
+                        <p class="text-gray-600">Anti-slip scaffolding plank</p>
+                    </td>
+                    <td class="p-3 border-b border-gray-200 text-sm text-center">30</td>
+                    <td class="p-3 border-b border-gray-200 text-sm text-right">400</td>
+                    <td class="p-3 border-b border-gray-200 text-sm text-right">12,000</td>
+                </tr>
+                <tr>
+                    <td class="p-3 border-b border-gray-200 text-sm">
+                        <p class="font-semibold text-gray-800">Adjustable Base Jack</p>
+                        <p class="text-gray-600">Leveling component for scaffolding base</p>
+                    </td>
+                    <td class="p-3 border-b border-gray-200 text-sm text-center">40</td>
+                    <td class="p-3 border-b border-gray-200 text-sm text-right">350</td>
+                    <td class="p-3 border-b border-gray-200 text-sm text-right">14,000</td>
+                </tr>
+                <tr>
+                    <td class="p-3 border-b-2 border-blue-900 text-sm">
+                        <p class="font-semibold text-gray-800">Daily Rental Rate</p>
+                    </td>
+                    <td class="p-3 border-b-2 border-blue-900 text-sm text-center">52 days</td>
+                    <td class="p-3 border-b-2 border-blue-900 text-sm text-right">16,800</td>
+                    <td class="p-3 border-b-2 border-blue-900 text-sm text-right">870,000</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="grid grid-cols-2 gap-8 mb-8">
+            <!-- Left Column: Signature Section -->
+            <div class="flex justify-between mt-[5rem]">
+                <div class="w-[45%]">
+                    <p class="text-gray-800 font-semibold text-sm">Customer's Signature</p>
+                    <p class="text-gray-600 text-xs mt-8">_________________</p>
+                </div>
+                <div class="w-[45%]">
+                    <p class="text-gray-800 font-semibold text-sm">Owner's Signature</p>
+                    <p class="text-gray-600 text-xs mt-8">_________________</p>
+                </div>
+            </div>
+
+            <!-- Right Column: Summary Section -->
+            <div class="flex justify-end">
+                <table class="w-full max-w-sm border-collapse">
+                    <tr>
+                        <td class="p-2 border-b border-gray-200 text-sm">Subtotal</td>
+                        <td class="p-2 border-b border-gray-200 text-sm text-right">870,000 Ks</td>
+                    </tr>
+                    <tr>
+                        <td class="p-2 border-b border-gray-200 text-sm">Tax (5%)</td>
+                        <td class="p-2 border-b border-gray-200 text-sm text-right">43,500 Ks</td>
+                    </tr>
+                    <tr class="font-semibold text-base">
+                        <td class="p-2 border-t-2 border-b-2 border-blue-900 bg-gray-100">
+                            Total Due
+                        </td>
+                        <td class="p-2 border-t-2 border-b-2 border-blue-900 bg-gray-100 text-right">
+                            913,500 Ks
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+
+        <!-- Payment Info -->
+        <div class="bg-gray-100 p-4 rounded mb-8">
+            <h3 class="text-blue-900 font-bold mb-3">Payment Information</h3>
+            <p class="text-gray-600 text-sm mb-1"><span class="font-semibold text-gray-800">Payment Method:</span> K-pay
+            </p>
+            <p class="text-gray-600 text-sm mb-1"><span class="font-semibold text-gray-800">Daily Rental Rate:</span>
+                16,800 Ks</p>
+            <p class="text-gray-600 text-sm mb-1"><span class="font-semibold text-gray-800">Payment Terms:</span> Due
+                within 30 days of invoice date</p>
+            <p class="text-gray-600 text-sm"><span class="font-semibold text-gray-800">K-pay Number:</span> 09123456789
+            </p>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center pt-6 border-t border-gray-200">
+            <h3 class="text-blue-900 font-bold mb-1">Thank you for your business!</h3>
+            <p class="text-gray-600 text-sm mb-4">Please contact us if you have any questions regarding this invoice.
+            </p>
+            <div class="text-gray-500 text-xs">
+                <p>Kyaw Family Scaffolding | 123 Construction Street, Yangon, Myanmar</p>
+                <p>Phone: +95 1 234 5678 | Email: info@kyawscaffolding.com</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
