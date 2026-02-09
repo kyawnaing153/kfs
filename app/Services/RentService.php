@@ -7,22 +7,29 @@ use App\Repositories\Interfaces\{
     RentItemRepositoryInterface,
     ProductVariantRepositoryInterface
 };
+use App\Repositories\RentRepository;
+use App\Services\RentPdfService;
+use App\Mail\RentInvoiceMail;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class RentService
 {
     protected $rentRepository;
     protected $rentItemRepository;
     protected $productVariantRepository;
+    protected $rentPdfService;
 
     public function __construct(
-        RentRepositoryInterface $rentRepository,
+        RentRepository $rentRepository,
         RentItemRepositoryInterface $rentItemRepository,
-        ProductVariantRepositoryInterface $productVariantRepository
+        ProductVariantRepositoryInterface $productVariantRepository,
+        RentPdfService $rentPdfService
     ) {
         $this->rentRepository = $rentRepository;
         $this->rentItemRepository = $rentItemRepository;
         $this->productVariantRepository = $productVariantRepository;
+        $this->rentPdfService = $rentPdfService;
     }
 
     /**
@@ -57,6 +64,9 @@ class RentService
                     $item['rent_qty']
                 );
             }
+
+            //send invoice email if requested
+            $this->sendRentInvoiceEmail($rent);
 
             return $rent;
         });
@@ -184,9 +194,9 @@ class RentService
     /**
      * Get rents by status
      */
-    public function getRents(string $status = 'all')
+    public function getRents(array $filters=[], string $status = 'all')
     {
-        return $this->rentRepository->getByStatus($status);
+        return $this->rentRepository->getByStatus($filters, $status);
     }
 
     /**
@@ -195,5 +205,34 @@ class RentService
     public function getRentItems(array $filters = [])
     {
         return $this->rentItemRepository->getAllRentItems($filters);
+    }
+
+    /**
+     * Send invoice email with PDF attachment
+     */
+    public function sendRentInvoiceEmail($rent)
+    {
+        try {
+            // Get customer email
+            $customerEmail = $rent->customer->email;
+            
+            if (!$customerEmail) {
+                //\Log::warning('No email found for customer ID: ' . $rent->customer_id);
+                return;
+            }
+
+            // Generate PDF content
+            $pdf = $this->rentPdfService->getRentInvoicePdf($rent);
+            $pdfContent = $pdf;
+
+            // Send email
+            Mail::to($customerEmail)
+                ->cc(config('mail.from.address')) // CC to admin
+                ->send(new RentInvoiceMail($rent, $pdfContent));
+            
+        } catch (\Exception $e) {
+            \Log::error('Failed to send invoice email for rent #' . $rent->rent_code . ': ' . $e->getMessage());
+            // Don't throw error - email failure shouldn't break rent creation
+        }
     }
 }

@@ -10,7 +10,7 @@ interface RentRepositoryInterface extends BaseRepositoryInterface
     /**
      * Get rents by status
      */
-    public function getByStatus(string $status = 'all', int $perPage = 20): Collection;
+    public function getByStatus(array $filters = [], string $status = 'all', int $perPage = 20): Collection;
 
     /**
      * Create rent with items

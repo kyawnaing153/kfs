@@ -33,7 +33,7 @@ class RentController extends Controller
         $returnStatus = $request->get('return_status', 'all');
 
         // Always load both data sets
-        $rents = $this->rentService->getRents($status);
+        $rents = $this->rentService->getRents(['search' => $search], $status);
         $returns = $this->rentReturnService->getAllReturns(['search' => $search], $returnStatus);
 
         return view('pages.admin.rents.index', compact('rents', 'returns', 'status', 'returnStatus', 'activeTab', 'search'));

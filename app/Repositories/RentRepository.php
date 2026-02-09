@@ -17,10 +17,21 @@ class RentRepository extends BaseRepository implements RentRepositoryInterface
     /**
      * Get rents by status
      */
-    public function getByStatus(string $status = 'all', int $perPage = 20): Collection
+    public function getByStatus(array $filters = [], string $status = 'all', int $perPage = 20): Collection
     {
         $query = $this->model->with(['customer', 'items.productVariant']);
-        
+
+        if (isset($filters['search'])) {
+            $search = $filters['search'];
+            $query->where(function ($q) use ($search) {
+                $q->where('rent_code', 'like', "%{$search}%")
+                    ->orWhereHas('customer', function ($q2) use ($search) {
+                        $q2->where('name', 'like', "%{$search}%")
+                            ->orWhere('phone_number', 'like', "%{$search}%");
+                    });
+            });
+        }
+
         if ($status === 'all') {
             //$query->where('status', $status);
             $query->where('status', '!=', 'completed');
@@ -37,11 +48,11 @@ class RentRepository extends BaseRepository implements RentRepositoryInterface
     public function createWithItems(array $rentData, array $items): Rent
     {
         $rent = $this->model->create($rentData);
-        
+
         foreach ($items as $item) {
             $rent->items()->create($item);
         }
-        
+
         return $rent->load('items');
     }
 
@@ -51,15 +62,15 @@ class RentRepository extends BaseRepository implements RentRepositoryInterface
     public function updateWithItems(Rent $rent, array $rentData, array $items): Rent
     {
         $rent->update($rentData);
-        
+
         // Delete existing items
         $rent->items()->delete();
-        
+
         // Create new items
         foreach ($items as $item) {
             $rent->items()->create($item);
         }
-        
+
         return $rent->load('items');
     }
 
@@ -85,14 +96,14 @@ class RentRepository extends BaseRepository implements RentRepositoryInterface
         $lastRent = $this->model->where('rent_code', 'like', $prefix . '%')
             ->orderBy('id', 'desc')
             ->first();
-            
+
         if ($lastRent) {
             $lastNumber = (int) substr($lastRent->rent_code, -2);
             $newNumber = str_pad($lastNumber + 1, 2, '0', STR_PAD_LEFT);
         } else {
             $newNumber = '01';
         }
-        
+
         return $prefix . '-' . $newNumber;
     }
 
@@ -127,7 +138,7 @@ class RentRepository extends BaseRepository implements RentRepositoryInterface
         // Implement based on your business logic for overdue items
         return $this->model->with(['customer', 'items'])
             ->where('status', 'ongoing')
-            ->whereHas('items', function($query) {
+            ->whereHas('items', function ($query) {
                 // Example: Items rented more than 30 days ago
                 $query->where('created_at', '<', now()->subDays(30));
             })

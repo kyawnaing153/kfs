@@ -15,7 +15,7 @@ class MenuHelper
             [
                 'icon' => 'ai-assistant',
                 'name' => 'Staff',
-                'path' => '/admin/users',
+                'path' => '/admin/staffs',
             ],
             [
                 'icon' => 'user-profile',
@@ -51,6 +51,11 @@ class MenuHelper
                 'name' => 'Rental Report',
                 'path' => '/admin/rents/items-list',
             ],
+            [
+                'icon' => 'user-profile',
+                'name' => 'Quotation',
+                'path' => '/admin/quotation'
+            ]
         ];
     }
 

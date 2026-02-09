@@ -550,7 +550,7 @@
                     clearTimeout(searchTimeout);
                     searchTimeout = setTimeout(() => {
                         searchForm.submit();
-                    }, 500);
+                    }, 5000);
                 });
             }
         });

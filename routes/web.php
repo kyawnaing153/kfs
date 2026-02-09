@@ -8,6 +8,8 @@ use App\Http\Controllers\Backend\customers\CustomerController;
 use App\Http\Controllers\Backend\products\ProductController;
 use App\Http\Controllers\Backend\products\ProductVariantController;
 use App\Http\Controllers\Backend\rents\{RentController, RentReturnController, RentPaymentController};
+use App\Http\Controllers\Backend\quotation\QuotationController;
+use App\Http\Controllers\Backend\staffs\StaffController;
 use App\Models\Backend\Rent;
 
 // dashboard pages
@@ -169,7 +171,7 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth']], function () {
         Route::put('/{rent}', [RentController::class, 'update'])->name('update');
         Route::delete('/{rent}', [RentController::class, 'destroy'])->name('destroy');
         Route::get('/{rent}/print', [RentController::class, 'print'])->name('print');
-        
+
         // Nested Return Routes
         Route::prefix('{rent}/returns')->name('returns.')->group(function () {
             Route::get('/create', [RentReturnController::class, 'create'])->name('create');
@@ -189,11 +191,28 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth']], function () {
     Route::prefix('rent-returns')->name('rent-returns.')->group(function () {
         Route::get('/', [RentReturnController::class, 'index'])->name('index');
     });
-    
+
     Route::prefix('rent-payments')->name('rent-payments.')->group(function () {
         Route::get('/', [RentPaymentController::class, 'index'])->name('index');
     });
 
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
+
+    // Quotation Routes
+    Route::prefix('quotation')->group(function () {
+        Route::get('/', [QuotationController::class, 'index'])->name('quotation.index');
+        Route::post('/preview', [QuotationController::class, 'preview'])->name('quotation.preview');
+        Route::post('/download', [QuotationController::class, 'download'])->name('quotation.download');
+        Route::post('/email', [QuotationController::class, 'sendEmail'])->name('quotation.email');
+        Route::get('/generate-number', [QuotationController::class, 'generateNumber'])->name('quotation.generate-number');
+    });
+
+    Route::resource('/staffs', StaffController::class);
 });
+
+Route::get('/test-email/{rent}', function($id) {
+    $rent = \App\Models\Backend\Rent::find($id);
+    \Mail::to('labroom108@gmail.com')->send(new \App\Mail\RentInvoiceMail($rent));
+    return 'Email sent!';
+})->middleware('auth');
