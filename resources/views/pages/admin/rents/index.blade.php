@@ -216,6 +216,12 @@
                                                     </div>
                                                 </div>
                                             </td>
+                                            @php
+                                                $phones = array_map(
+                                                    'trim',
+                                                    explode(',', $rent->customer->phone_number ?? ''),
+                                                );
+                                            @endphp
 
                                             <!-- Customer -->
                                             <td class="px-4 py-4">
@@ -223,7 +229,7 @@
                                                     {{ $rent->customer->name }}
                                                 </div>
                                                 <div class="text-sm text-gray-500 dark:text-gray-400">
-                                                    {{ $rent->customer->phone_number ?? 'No phone' }}
+                                                    {{ $phones[0] ?? ($phones[1] ?? 'No phone') }}
                                                 </div>
                                             </td>
 
@@ -281,6 +287,16 @@
                                                                 class="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">
                                                                 Invoice
                                                             </a>
+
+                                                            <form action="{{ route('rents.send-mail', $rent->id) }}"
+                                                                method="POST">
+                                                                @csrf
+                                                                <button type="submit"
+                                                                    class="flex w-full items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">
+                                                                    Send Mail
+                                                                </button>
+                                                            </form>
+
                                                             @if ($rent->status === 'pending')
                                                                 <a href="{{ route('rents.edit', $rent->id) }}"
                                                                     class="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -298,17 +314,13 @@
                                                                 </a>
                                                             @endif
                                                             @if ($rent->status === 'pending')
-                                                                <form method="POST"
-                                                                    action="{{ route('rents.destroy', $rent->id) }}"
-                                                                    onsubmit="return confirm('Are you sure you want to cancel this rent?')">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <button
-                                                                        class="flex w-full items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50
-                                                                        dark:text-red-400 dark:hover:bg-red-900/30">
-                                                                        Cancel Rent
-                                                                    </button>
-                                                                </form>
+                                                                <!-- Delete button using component -->
+                                                                <x-delete-confirm :action="route('rents.destroy', $rent->id)" :message="json_encode(
+                                                                    'Are you sure you want to delete rent ' .
+                                                                        $rent->rent_code .
+                                                                        '? This action cannot be undone.',
+                                                                )"
+                                                                    buttonText="Cancel Rent" />
                                                             @endif
                                                         </div>
                                                     </div>
@@ -408,7 +420,10 @@
                                                         {{ $return->rent->customer->name }}
                                                     </div>
                                                     <div class="text-xs text-gray-400">
-                                                        {{ $return->rent->customer->phone_number }}
+                                                        <a href="tel:{{ $phones[0] }}"
+                                                            class="hover:underline">
+                                                            {{ $phones[0] ?? $phones[1] ?? 'No phone' }}
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </td>

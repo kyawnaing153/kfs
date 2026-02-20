@@ -6,7 +6,7 @@
     'message' => 'Are you sure you want to delete this item?',
     'class' => '',
     'buttonText' => 'Delete',
-    'buttonClass' => 'flex w-full items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700',
+    'buttonClass' => 'flex w-full items-center gap-2 px-4 py-2 text-sm text-red-700 hover:bg-red-100 dark:text-red-300 dark:hover:bg-red-700',
     'iconClass' => 'fas fa-trash text-red-500',
 ])
 

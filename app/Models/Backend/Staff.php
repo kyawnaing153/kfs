@@ -19,7 +19,7 @@ class Staff extends Model
     public function getProfilePictureUrlAttribute()
     {
         if ($this->profile_picture) {
-            return asset('storage/Backend/staffs/' . $this->profile_picture);
+            return asset('Backend/img/staff/' . $this->profile_picture);
         }
 
         return asset('Backend/img/profile.png');

@@ -33,11 +33,6 @@ class MenuHelper
     public static function getRentSections(){
         return [
             [
-                'icon' => 'ecommerce',
-                'name' => 'Products',
-                'path' => '/admin/products',
-            ],
-            [
                 'icon' => 'calendar',
                 'name' => 'Rents',
                 'subItems' => [
@@ -47,57 +42,42 @@ class MenuHelper
                 ],
             ],
             [
+                'icon' => 'task',
+                'name' => 'Sales',
+                'path' => '/admin/sales',
+            ],
+        ];
+    }
+
+    public static function getListSection(){
+        return [
+            
+            [
                 'icon' => 'user-profile',
-                'name' => 'Rental Report',
+                'name' => 'Rental List',
                 'path' => '/admin/rents/items-list',
             ],
             [
                 'icon' => 'user-profile',
-                'name' => 'Quotation',
-                'path' => '/admin/quotation'
-            ]
+                'name' => 'Sales List',
+                'path' => '/admin/sales/items-list',
+            ],
         ];
     }
 
 
-    public static function getMainNavItems()
+    public static function getProductAndQuotationNav()
     {
         return [
-            [
-                'icon' => 'dashboard',
-                'name' => 'Dashboard',
-                'subItems' => [
-                    ['name' => 'Ecommerce', 'path' => '/admin/dashboard'],
-                ],
-            ],
-            [
-                'icon' => 'user-profile',
-                'name' => 'Users',
-                'path' => '/admin/users',
-            ],
-            [
-                'icon' => 'user-profile',
-                'name' => 'Customer',
-                'path' => '/admin/customers',
-            ],
             [
                 'icon' => 'ecommerce',
                 'name' => 'Products',
                 'path' => '/admin/products',
             ],
-            [
-                'icon' => 'calendar',
-                'name' => 'Rents',
-                'subItems' => [
-                    ['name' => 'Rent', 'path' => '/admin/rents'],
-                    ['name' => 'Rent Return', 'path' => '/admin/rent-returns'],
-                    ['name' => 'Rent Payment', 'path' => '/admin/rent-payments'],
-                ],
-            ],
-            [
+                        [
                 'icon' => 'user-profile',
-                'name' => 'Rental Report',
-                'path' => '/admin/rents/items-list',
+                'name' => 'Quotation',
+                'path' => '/admin/quotation'
             ],
             [
                 'icon' => 'calendar',
@@ -171,12 +151,16 @@ class MenuHelper
                 'items' => self::getMainActivity()
             ],
             [
-                'title' => 'Rents',
+                'title' => 'Rents & Sales',
                 'items' => self::getRentSections()
             ],
             [
-                'title' => 'Menu',
-                'items' => self::getMainNavItems()
+                'title' => 'Lists',
+                'items' => self::getListSection()
+            ],
+            [
+                'title' => 'Products & Quotation',
+                'items' => self::getProductAndQuotationNav()
             ],
             [
                 'title' => 'Others',

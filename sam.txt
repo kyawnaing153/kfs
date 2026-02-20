@@ -1,1 +1,1 @@
-Error recording payment: SQLSTATE[01000]: Warning: 1265 Data truncated for column 'payment_for' at row 1 (Connection: mysql, SQL: insert into `rent_payments` (`amount`, `payment_method`, `payment_date`, `payment_for`, `period_start`, `period_end`, `note`, `rent_id`, `updated_at`, `created_at`) values (2500.00, cash, 2026-02-05 00:00:00, Advance Payment, ?, 2026-03-05 00:00:00, ?, 3, 2026-02-05 15:50:24, 2026-02-05 15:50:24))
+Failed to update sale: Attempt to read property "items" on array

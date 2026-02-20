@@ -1,21 +1,21 @@
 @extends('layouts.app')
 
 @section('content')
-    <x-common.page-breadcrumb pageTitle="Rent Items List" />
+    <x-common.page-breadcrumb pageTitle="Sale Items List" />
 
     <div class="grid grid-cols-1 gap-6">
-        <x-common.component-card title="Rent Items Management">
+        <x-common.component-card title="Sale Items Management">
             <!-- Filter Section -->
             <div class="mb-6">
-                <form method="GET" action="{{ route('rents.items-list') }}" id="filterForm">
+                <form method="GET" action="{{ route('sales.items-list') }}" id="filterForm">
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-                        <!-- Rent Code Filter -->
+                        <!-- Sale Code Filter -->
                         <div>
                             <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                Rent Code
+                                Sale Code
                             </label>
-                            <input type="text" name="rent_code" value="{{ request('rent_code') }}"
-                                placeholder="Search by rent code"
+                            <input type="text" name="sale_code" value="{{ request('sale_code') }}"
+                                placeholder="Search by sale code"
                                 class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90">
                         </div>
 
@@ -56,12 +56,8 @@
                                 <option value="">All Status</option>
                                 <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending
                                 </option>
-                                <option value="ongoing" {{ request('status') == 'ongoing' ? 'selected' : '' }}>Ongoing
-                                </option>
                                 <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Completed
                                 </option>
-                                <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>
-                                    Cancelled</option>
                             </select>
                         </div>
                     </div>
@@ -96,7 +92,7 @@
                             Apply Filters
                         </button>
 
-                        <a href="{{ route('rents.items-list') }}"
+                        <a href="{{ route('sales.items-list') }}"
                             class="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -112,34 +108,34 @@
             <div class="mb-6 grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
                     <p class="text-sm text-gray-500 dark:text-gray-400">Total Items</p>
-                    <p class="text-2xl font-bold text-gray-800 dark:text-white">{{ $rents->count() }}</p>
+                    <p class="text-2xl font-bold text-gray-800 dark:text-white">{{ $sales->count() }}</p>
                 </div>
 
                 <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
                     <p class="text-sm text-gray-500 dark:text-gray-400">Total Quantity</p>
-                    <p class="text-2xl font-bold text-gray-800 dark:text-white">{{ $rents->sum('rent_qty') }}</p>
+                    <p class="text-2xl font-bold text-gray-800 dark:text-white">{{ $sales->sum('quantity') }}</p>
                 </div>
 
                 <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
                     <p class="text-sm text-gray-500 dark:text-gray-400">Total Value</p>
                     <p class="text-2xl font-bold text-green-600 dark:text-green-400">
-                        ${{ number_format($rents->sum('total'), 2) }}</p>
+                        ${{ number_format($sales->sum('total'), 2) }}</p>
                 </div>
 
                 <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Active Rents</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Active Sales</p>
                     <p class="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                        {{ $rents->where('rent.status', '!=', 'cancelled')->where('rent.status', '!=', 'completed')->count() }}
+                        {{ $sales->where('sale.status', '!=', 'pending')->where('sale.status', '!=', 'completed')->count() }}
                     </p>
                 </div>
             </div>
 
-            <!-- Rent Items Table -->
+            <!-- Sale Items Table -->
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                     <thead class="bg-gray-50 dark:bg-gray-800/50">
                         <tr>
-                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rent
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sale
                                 Code</th>
                             <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Customer</th>
@@ -160,13 +156,13 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
-                        @forelse($rents as $item)
+                        @forelse($sales as $item)
                             <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50">
                                 <td class="px-4 py-3 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <span class="text-sm font-medium text-gray-900 dark:text-white">
-                                            <a href="{{ route('rents.show', $item->rent->id) }}" class="text-blue-600">
-                                                {{ $item->rent->rent_code ?? 'N/A' }}
+                                            <a href="{{ route('sales.show', $item->sale->id) }}" class="text-blue-600">
+                                                {{ $item->sale->sale_code ?? 'N/A' }}
                                             </a>
                                         </span>
                                     </div>
@@ -174,11 +170,11 @@
 
                                 <td class="px-4 py-3 whitespace-nowrap">
                                     <div class="text-sm text-gray-900 dark:text-white">
-                                        {{ $item->rent->customer->name ?? 'N/A' }}
+                                        {{ $item->sale->customer->name ?? 'N/A' }}
                                     </div>
                                     <div class="text-xs text-gray-500">
-                                        <a href="tel:+{{ $item->rent->customer->phone_number ?? 'No phone' }}" class="hover:underline">
-                                            {{ $item->rent->customer->phone_number ?? 'No phone' }}
+                                        <a href="tel:+{{ $item->sale->customer->phone_number ?? 'No phone' }}" class="hover:underline">
+                                            {{ $item->sale->customer->phone_number ?? 'No phone' }}
                                         </a>
                                     </div>
                                 </td>
@@ -194,10 +190,7 @@
 
                                 <td class="px-4 py-3 whitespace-nowrap">
                                     <div class="text-sm text-gray-900 dark:text-white">
-                                        {{ $item->rent_qty }} {{ $item->unit ?? 'pcs' }}
-                                    </div>
-                                    <div class="text-xs text-gray-500">
-                                        Returned: {{ $item->returned_qty ?? 0 }} {{ $item->unit ?? 'pcs' }}
+                                        {{ $item->sale_qty }} {{ $item->unit ?? 'pcs' }}
                                     </div>
                                 </td>
 
@@ -210,25 +203,23 @@
                                 </td>
 
                                 <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                                    {{ \Carbon\Carbon::parse($item->rent->rent_date)->format('M d, Y') }}
+                                    {{ \Carbon\Carbon::parse($item->sale->sale_date)->format('M d, Y') }}
                                 </td>
 
                                 <td class="px-4 py-3 whitespace-nowrap">
                                     <span
                                         class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
-                                        @if ($item->rent->status == 'completed') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200
-                                        @elseif($item->rent->status == 'cancelled') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200
-                                        @elseif($item->rent->status == 'ongoing') bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200
+                                        @if ($item->sale->status == 'completed') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200
                                         @else bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200 @endif">
-                                        {{ ucfirst($item->rent->status ?? 'N/A') }}
+                                        {{ ucfirst($item->sale->status ?? 'N/A') }}
                                     </span>
                                 </td>
 
                                 <td class="px-4 py-3 whitespace-nowrap text-sm font-medium">
                                     <div class="flex items-center space-x-2">
-                                        <a href="{{ route('rents.show', $item->rent_id) }}"
+                                        <a href="{{ route('sales.show', $item->sale_id) }}"
                                             class="text-brand-600 hover:text-brand-900 dark:text-brand-400 dark:hover:text-brand-300"
-                                            title="View Rent">
+                                            title="View Sale">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -238,10 +229,10 @@
                                             </svg>
                                         </a>
 
-                                        @if ($item->rent->status == 'pending')
-                                            <a href="{{ route('rents.edit', $item->rent_id) }}"
+                                        @if ($item->sale->status == 'pending')
+                                            <a href="{{ route('sales.edit', $item->sale_id) }}"
                                                 class="text-yellow-600 hover:text-yellow-900 dark:text-yellow-400 dark:hover:text-yellow-300"
-                                                title="Edit Rent">
+                                                title="Edit Sale">
                                                 <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                     viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -261,7 +252,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                         </svg>
-                                        <p class="text-lg font-medium">No rent items found</p>
+                                        <p class="text-lg font-medium">No sale items found</p>
                                         <p class="mt-1">Try adjusting your filters</p>
                                     </div>
                                 </td>

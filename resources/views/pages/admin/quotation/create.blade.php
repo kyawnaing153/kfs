@@ -1,14 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="py-6">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <!-- Header -->
-            <div class="mb-6">
-                <h1 class="text-2xl font-bold text-gray-900">Create New Quotation</h1>
-                <p class="text-gray-600">Fill in the details below to generate a quotation</p>
-            </div>
-
+ <x-common.page-breadcrumb pageTitle="Create New Quotation" />
+    <div class="space-y-6">
+        <div class="rounded-2xl border border-gray-200 bg-white pt-4 dark:border-gray-800 dark:bg-white/[0.03]">
+            
             @if ($errors->any())
                 <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
                     <div class="flex items-center">
@@ -38,7 +34,8 @@
                                 <!-- Company Email -->
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        Your Company Email *
+                                        Your Company Email
+                                        <span class="text-red-500">*</span>
                                     </label>
                                     <input type="email" name="company_email"
                                         value="{{ old('company_email', $formData['company_email']) }}" required
@@ -66,7 +63,8 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        Client Name *
+                                        Client Name
+                                        <span class="text-red-500">*</span>
                                     </label>
                                     <input type="text" name="client_name"
                                         value="{{ old('client_name', $formData['client_name']) }}" required
@@ -104,7 +102,8 @@
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        Quotation Title *
+                                        Quotation Title
+                                        <span class="text-red-500">*</span>
                                     </label>
                                     <input type="text" name="quotation_title"
                                         value="{{ old('quotation_title', $formData['quotation_title']) }}" required
@@ -116,7 +115,8 @@
 
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        Quotation No *
+                                        Quotation No 
+                                        <span class="text-red-500">*</span>
                                     </label>
                                     <div class="flex gap-2">
                                         <input type="text" name="quotation_no"
@@ -165,7 +165,9 @@
                                             class="item-row p-4 border {{ $errors->has('items.' . $index . '.name') || $errors->has('items.' . $index . '.quantity') || $errors->has('items.' . $index . '.unit_price') ? 'border-red-300 bg-red-50' : 'border-gray-200' }} rounded-lg">
                                             <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
                                                 <div class="md:col-span-2">
-                                                    <label class="block text-sm text-gray-600 mb-1">Item Name *</label>
+                                                    <label class="block text-sm text-gray-600 mb-1">Item Name
+                                                        <span class="text-red-500">*</span>
+                                                    </label>
                                                     <input type="text" name="items[{{ $index }}][name]"
                                                         value="{{ $item['name'] }}" required
                                                         class="w-full px-3 py-2 border {{ $errors->has('items.' . $index . '.name') ? 'border-red-300' : 'border-gray-300' }} rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 item-name">
@@ -174,7 +176,9 @@
                                                     @enderror
                                                 </div>
                                                 <div>
-                                                    <label class="block text-sm text-gray-600 mb-1">Quantity *</label>
+                                                    <label class="block text-sm text-gray-600 mb-1">Quantity
+                                                        <span class="text-red-500">*</span>
+                                                    </label>
                                                     <input type="number" name="items[{{ $index }}][quantity]"
                                                         value="{{ $item['quantity'] }}" min="0.01" step="0.01"
                                                         required
@@ -187,7 +191,7 @@
                                                     <label class="block text-sm text-gray-600 mb-1">Unit</label>
                                                     <select name="items[{{ $index }}][unit]"
                                                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                                        @foreach (['pcs' => 'Pieces', 'set' => 'Set', 'kg' => 'Kilogram', 'm' => 'Meter', 'day' => 'Day'] as $value => $label)
+                                                        @foreach (['pcs' => 'Pcs', 'set' => 'Set', 'kg' => 'Kg', 'm' => 'M', 'day' => 'Day'] as $value => $label)
                                                             <option value="{{ $value }}"
                                                                 {{ $item['unit'] == $value ? 'selected' : '' }}>
                                                                 {{ $label }}</option>
@@ -195,7 +199,9 @@
                                                     </select>
                                                 </div>
                                                 <div>
-                                                    <label class="block text-sm text-gray-600 mb-1">Unit Price *</label>
+                                                    <label class="block text-sm text-gray-600 mb-1">Unit Price
+                                                        <span class="text-red-500">*</span>
+                                                    </label>
                                                     <input type="number" name="items[{{ $index }}][unit_price]"
                                                         value="{{ $item['unit_price'] }}" min="0" step="0.01"
                                                         required
@@ -332,12 +338,16 @@
 
                                 <div class="space-y-3">
                                     <div>
-                                        <label class="block text-sm text-gray-700 mb-1">Recipient Email *</label>
+                                        <label class="block text-sm text-gray-700 mb-1">Recipient Email
+                                            <span class="text-red-500">*</span>
+                                        </label>
                                         <input type="email" name="recipient_email" required
                                             class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm">
                                     </div>
                                     <div>
-                                        <label class="block text-sm text-gray-700 mb-1">Subject *</label>
+                                        <label class="block text-sm text-gray-700 mb-1">Subject
+                                            <span class="text-red-500">*</span>
+                                        </label>
                                         <input type="text" name="subject"
                                             value="Quotation {{ $formData['quotation_no'] }}" required
                                             class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm">

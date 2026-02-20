@@ -66,7 +66,7 @@ class RentService
             }
 
             //send invoice email if requested
-            $this->sendRentInvoiceEmail($rent);
+            //$this->sendRentInvoiceEmail($rent);
 
             return $rent;
         });
@@ -231,7 +231,6 @@ class RentService
                 ->send(new RentInvoiceMail($rent, $pdfContent));
             
         } catch (\Exception $e) {
-            \Log::error('Failed to send invoice email for rent #' . $rent->rent_code . ': ' . $e->getMessage());
             // Don't throw error - email failure shouldn't break rent creation
         }
     }

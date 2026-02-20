@@ -2,22 +2,22 @@
 
 namespace App\Services;
 
-use App\Models\Backend\Rent;
+use App\Models\Backend\Sale;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
 
-class RentPdfService
+class SalePdfService
 {
     /**
      * Generate invoice PDF for rent and save to storage
      */
-    public function generateRentInvoice(Rent $rent): string
+    public function generateRentInvoice(Sale $sale): string
     {
-        $data = $this->getInvoiceData($rent);
-        $pdf = Pdf::loadView('pdf.rent-pdf', $data);
+        $data = $this->getInvoiceData($sale);
+        $pdf = Pdf::loadView('pdf.sale-invoice', $data);
         
         // Save to storage
-        $filename = 'invoices/rent_' . $rent->rent_code . '_' . time() . '.pdf';
+        $filename = 'Backend/invoices/sale_' . $sale->sale_code . '_' . time() . '.pdf';
         Storage::disk('public')->put($filename, $pdf->output());
         
         return $filename;
@@ -26,28 +26,28 @@ class RentPdfService
     /**
      * Get PDF content for email attachment
      */
-    public function getRentInvoicePdf(Rent $rent): string
+    public function getSaleInvoicePdf(Sale $sale): string
     {
-        $data = $this->getInvoiceData($rent);
-        $pdf = Pdf::loadView('pages.admin.pdf.rent-pdf', $data);
+        $data = $this->getInvoiceData($sale);
+        $pdf = Pdf::loadView('pages.admin.pdf.sale-invoice', $data);
         return $pdf->output();
     }
 
     /**
      * Get invoice data for PDF/Email
      */
-    private function getInvoiceData(Rent $rent): array
+    private function getInvoiceData(Sale $sale): array
     {
         return [
-            'rent' => $rent->load(['customer', 'items.productVariant.product']),
+            'sale' => $sale->load(['customer', 'items.productVariant.product']),
             'company' => [
                 'name' => config('app.name', 'Rental System'),
                 'address' => '123 Business St, City, Country',
                 'phone' => '+1234567890',
                 'email' => config('mail.from.address', 'info@example.com'),
             ],
-            'invoice_number' => $rent->rent_code,
-            'date' => $rent->rent_date,
+            'invoice_number' => $sale->sale_code,
+            'date' => $sale->sale_date,
         ];
     }
 }

@@ -142,7 +142,7 @@ $(document).ready(function() {
                     <h2 class="text-xl font-bold text-blue-900 mb-2">${data.quotation_title || 'QUOTATION'}</h2>
                     <div class="flex justify-between text-gray-600">
                         <div>
-                            <p><strong>Quotation No:</strong> ${data.quotation_no || 'N/A'}</p>
+                            <p><strong>Q No:</strong> ${data.quotation_no || 'N/A'}</p>
                             <p><strong>Date:</strong> ${data.formattedDate || 'Not set'}</p>
                         </div>
                         <div class="text-right">
@@ -230,10 +230,10 @@ $(document).ready(function() {
                         <label class="block text-sm text-gray-600 mb-1">Unit</label>
                         <select name="items[${itemCount}][unit]" 
                             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            <option value="pcs">Pieces</option>
+                            <option value="pcs">Pcs</option>
                             <option value="set">Set</option>
-                            <option value="kg">Kilogram</option>
-                            <option value="m">Meter</option>
+                            <option value="kg">Kg</option>
+                            <option value="m">M</option>
                             <option value="day">Day</option>
                         </select>
                     </div>

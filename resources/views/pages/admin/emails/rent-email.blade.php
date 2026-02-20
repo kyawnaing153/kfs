@@ -19,7 +19,7 @@ Your rent invoice **#{{ $rent->rent_code }}** has been created successfully.
 | Product | Quantity | Unit Price | Total |
 |---------|----------|------------|-------|
 @foreach ($rent->items as $item)
-| {{ $item->productVariant->product->name }} ({{ $item->productVariant->size }}) | {{ $item->rent_qty }} | ${{ number_format($item->unit_price, 2) }} | ${{ number_format($item->total, 2) }} |
+| {{ $item->productVariant->product->product_name }} ({{ $item->productVariant->size }}) | {{ $item->rent_qty }} | ${{ number_format($item->unit_price, 2) }} | ${{ number_format($item->total, 2) }} |
 @endforeach
 </x-mail::table>
 

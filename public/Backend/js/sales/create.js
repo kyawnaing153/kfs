@@ -1,19 +1,19 @@
-// Rent Creation Manager - jQuery AJAX Version
+// Sale Creation Manager - jQuery AJAX Version
 (function($) {
     'use strict';
     
-    // RentCreator class to manage all rent creation functionality
-    function RentCreator() {
+    // saleCreator class to manage all sale creation functionality
+    function saleCreator() {
         this.itemCount = 0;
         this.selectedProducts = new Set();
         this.productVariants = [];
         this.csrfToken = $('meta[name="csrf-token"]').attr('content');
-        this.storeUrl = $('#rentForm').attr('action') || '/rents';
+        this.storeUrl = $('#saleForm').attr('action') || '/sales';
         this.init();
     }
     
-    RentCreator.prototype = {
-        // Initialize the rent creator
+    saleCreator.prototype = {
+        // Initialize the sale creator
         init: function() {
             var self = this;
             
@@ -39,7 +39,7 @@
             this.showLoading(true);
             
             $.ajax({
-                url: '/admin/rents/available-variants',
+                url: '/admin/sales/available-variants',
                 type: 'GET',
                 dataType: 'json',
                 headers: {
@@ -100,7 +100,7 @@
                                 <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400">
                                     Quantity<span class="text-red-500">*</span>
                                 </label>
-                                <input type="number" name="items[${index}][rent_qty]" min="1" value="1"
+                                <input type="number" name="items[${index}][sale_qty]" min="1" value="1"
                                        class="quantity-input h-10 w-full rounded-lg border border-gray-300 bg-transparent px-3 py-2 text-sm focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900"
                                        data-index="${index}">
                             </div>
@@ -140,7 +140,7 @@
                         <div class="mt-1 text-xs text-gray-500 product-info" data-index="${index}"></div>
                     </td>
                     <td class="px-4 py-3">
-                        <input type="number" name="items[${index}][rent_qty]" min="1" value="1"
+                        <input type="number" name="items[${index}][sale_qty]" min="1" value="1"
                                class="quantity-input h-10 w-full rounded-lg border border-gray-300 bg-transparent px-3 py-2 text-sm focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900"
                                data-index="${index}">
                     </td>
@@ -177,10 +177,10 @@
             $.each(this.productVariants, function(i, variant) {
 
                 if (variant && variant.prices) {
-                    var rentPrice = variant.prices.find(function(p) {
-                        return p.price_type === 'rent';
+                    var salePrice = variant.prices.find(function(p) {
+                        return p.price_type === 'sale';
                     });
-                    var price = rentPrice ? rentPrice.price : 0;
+                    var price = salePrice ? salePrice.price : 0;
                     var productName = variant.product ? variant.product.product_name : 'Unknown';
                     var size = variant.size || 'Standard';
                     var qty = variant.qty || 0;
@@ -275,12 +275,11 @@
             // Get other values
             var discount = parseFloat($('#discount').val()) || 0;
             var transport = parseFloat($('#transport').val()) || 0;
-            var deposit = parseFloat($('#deposit').val()) || 0;
             var totalPaid = parseFloat($('#totalPaid').val()) || 0;
 
-            console.log('Calculating totals with values:', totalPaid);
+            console.log('Calculating totals with values:', subTotal);
             // Calculate totals
-            var grandTotal = transport + deposit;
+            var grandTotal = transport + subTotal - discount;
             var dueAmount = grandTotal - totalPaid;
             
             // Update displays
@@ -381,11 +380,12 @@
             });
             
             // Discount, transport, deposit changes
-            $(document).on('input', '#discount, #transport, #deposit', function() {
+            $(document).on('input', '#discount, #transport', function() {
                 // If transport or deposit changed, update totalPaid
                 var transport = parseFloat($('#transport').val()) || 0;
-                var deposit = parseFloat($('#deposit').val()) || 0;
-                $('#totalPaid').val(transport + deposit);
+                var discount = parseFloat($('#discount').val()) || 0;
+                var subTotal = parseFloat($('#hiddenSubTotal').val()) || 0;
+                $('#totalPaid').val(transport + subTotal - discount);
                 self.calculateTotals();
             });
 
@@ -395,7 +395,7 @@
             });
             
             // Form submission validation
-            $('#rentForm').on('submit', function(e) {
+            $('#saleForm').on('submit', function(e) {
                 if (!self.validateForm()) {
                     e.preventDefault();
                     return false;
@@ -409,7 +409,7 @@
             
             // Prevent multiple submissions
             var formSubmitted = false;
-            $('#rentForm').on('submit', function() {
+            $('#saleForm').on('submit', function() {
                 if (formSubmitted) {
                     return false;
                 }
@@ -447,7 +447,7 @@
             // Check if at least one item is added
             var hasItems = $('.product-select').length > 0;
             if (!hasItems) {
-                this.showError('Please add at least one item to the rent.');
+                this.showError('Please add at least one item to the sale.');
                 return false;
             }
             
@@ -470,11 +470,11 @@
                 return false;
             }
             
-            // Validate rent date
-            var rentDate = $('#rent_date').val();
-            if (!rentDate) {
-                this.showError('Please select a rent date.');
-                $('#rent_date').focus();
+            // Validate sale date
+            var saleDate = $('#sale_date').val();
+            if (!saleDate) {
+                this.showError('Please select a sale date.');
+                $('#sale_date').focus();
                 return false;
             }
             
@@ -508,11 +508,11 @@
         // Show processing indicator
         showProcessing: function(show) {
             if (show) {
-                $('#rentForm').append(`
+                $('#saleForm').append(`
                     <div id="formProcessing" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
                         <div class="bg-white dark:bg-gray-800 rounded-lg p-6 text-center">
                             <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand-600 mb-4"></div>
-                            <p class="text-gray-700 dark:text-gray-300">Creating rent...</p>
+                            <p class="text-gray-700 dark:text-gray-300">Creating sale...</p>
                             <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Please wait</p>
                         </div>
                     </div>
@@ -552,12 +552,12 @@
     
     // Initialize when document is ready
     $(document).ready(function() {
-        // Check if we're on the rent creation page
-        if ($('#rentForm').length) {
-            window.rentCreator = new RentCreator();
+        // Check if we're on the sale creation page
+        if ($('#saleForm').length) {
+            window.saleCreator = new saleCreator();
             
             // Optional: Initialize product search
-            // window.rentCreator.initProductSearch();
+            // window.saleCreator.initProductSearch();
         }
     });
     

@@ -10,6 +10,7 @@ use App\Http\Controllers\Backend\products\ProductVariantController;
 use App\Http\Controllers\Backend\rents\{RentController, RentReturnController, RentPaymentController};
 use App\Http\Controllers\Backend\quotation\QuotationController;
 use App\Http\Controllers\Backend\staffs\StaffController;
+use App\Http\Controllers\Backend\sales\SaleController;
 use App\Models\Backend\Rent;
 
 // dashboard pages
@@ -171,6 +172,7 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth']], function () {
         Route::put('/{rent}', [RentController::class, 'update'])->name('update');
         Route::delete('/{rent}', [RentController::class, 'destroy'])->name('destroy');
         Route::get('/{rent}/print', [RentController::class, 'print'])->name('print');
+        Route::post('/{rent}/send-mail', [RentController::class, 'sendInvoiceEmail'])->name('send-mail');
 
         // Nested Return Routes
         Route::prefix('{rent}/returns')->name('returns.')->group(function () {
@@ -209,9 +211,23 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth']], function () {
     });
 
     Route::resource('/staffs', StaffController::class);
+    Route::post('/staffs/toggle-status/{staff}', [StaffController::class, 'toggleStatus'])->name('staffs.toggle-status');
+
+    Route::prefix('sales')->name('sales.')->group(function () {
+
+        Route::get('/available-variants', [SaleController::class, 'getAvailableVariants'])->name('available-variants');
+
+        Route::get('/items-list', [SaleController::class, 'itemList'])->name('items-list');
+        Route::get('/{sale}/print', [SaleController::class, 'print'])->whereNumber('sale')->name('print');
+        Route::post('/{sale}/complete', [SaleController::class, 'markAsCompleted'])->whereNumber('sale')->name('complete');
+        Route::post('/{sale}/send-mail', [SaleController::class, 'sendInvoiceEmail'])->name('send-mail');
+    });
+    
+    Route::resource('/sales', SaleController::class);
+        
 });
 
-Route::get('/test-email/{rent}', function($id) {
+Route::get('/test-email/{rent}', function ($id) {
     $rent = \App\Models\Backend\Rent::find($id);
     \Mail::to('labroom108@gmail.com')->send(new \App\Mail\RentInvoiceMail($rent));
     return 'Email sent!';

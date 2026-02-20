@@ -101,7 +101,6 @@ class QuotationController extends Controller
      */
     public function sendEmail(QuotationEmailRequest $request)
     {
-        // dd($request->all());
         $validated = $request->validated();
 
         $quotationData = $this->quotationService->calculateTotals($validated);

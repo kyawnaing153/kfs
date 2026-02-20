@@ -101,7 +101,6 @@ class RentController extends Controller
      */
     public function update(RentRequest $request, Rent $rent)
     {
-        #dd($request->all());
         try {
             $this->rentService->updateRent($rent, $request->validated());
 
@@ -157,7 +156,6 @@ class RentController extends Controller
         $rent->daily_subtotal = $dailyRentalSubtotal;
         $rent->tax_amount = $taxAmount;
 
-        #dd($rent);
         return view('pages.admin.rents.invoice', compact('rent'));
     }
 
@@ -208,6 +206,21 @@ class RentController extends Controller
             }
 
             return back()->with('error', 'Failed to load rent items: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Send rent invoice email to customer
+     */
+    public function sendInvoiceEmail(Rent $rent)
+    {
+        try {
+            $this->rentService->sendRentInvoiceEmail($rent);
+
+            return redirect()->route('rents.show', $rent->id)
+                ->with('success', 'Invoice email sent successfully.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to send invoice email: ' . $e->getMessage());
         }
     }
 }

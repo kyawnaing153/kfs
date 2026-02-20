@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rental Invoice - Kyaw Family Scaffolding</title>
+    <style>
+        /* PDF Page Setup */
+        @page {
+            size: A4;
+            margin: 1cm;
+        }
+
+        body {
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            font-size: 12px;
+            color: #333;
+            line-height: 1.4;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+        }
+
+        /* Helpers */
+        .w-full { width: 100%; }
+        .text-right { text-align: right; }
+        .text-center { text-align: center; }
+        .font-bold { font-weight: bold; }
+        .text-blue { color: #1e3a8a; } /* Tailwind blue-900 */
+        .text-gray { color: #4b5563; } /* Tailwind gray-600 */
+        
+        /* Layout Tables (Flexbox replacement) */
+        .layout-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .layout-table td {
+            vertical-align: top;
+        }
+
+        /* Invoice Data Table */
+        .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .invoice-table th {
+            background-color: #1e3a8a;
+            color: #ffffff;
+            padding: 10px;
+            font-size: 11px;
+            text-align: left;
+            text-transform: uppercase;
+        }
+
+        .invoice-table td {
+            padding: 10px;
+            border-bottom: 1px solid #e5e7eb;
+            vertical-align: middle;
+        }
+
+        .bg-gray-light {
+            background-color: #f9fafb;
+        }
+
+        /* Boxes & Decorations */
+        .header-border {
+            border-bottom: 2px solid #1e3a8a;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .terms-box {
+            background-color: #f3f4f6;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .signature-line {
+            margin-top: 40px;
+            border-top: 1px solid #9ca3af;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-border">
+        <table class="layout-table">
+            <tr>
+                <td width="55%">
+                    <h1 class="text-blue" style="font-size: 26px; margin: 0 0 5px 0;">Kyaw Family Scaffolding</h1>
+                    <p class="text-gray" style="margin: 0;">123 Construction Street, Yangon, Myanmar</p>
+                    <p class="text-gray" style="margin: 0;">Phone: +95 1 234 5678 | Email: info@kyawscaffolding.com</p>
+                </td>
+                <td width="45%" class="text-right">
+                    <h2 class="text-blue" style="font-size: 22px; margin: 0 0 10px 0;">RENTAL INVOICE</h2>
+                    <table class="w-full" style="border-collapse: collapse;">
+                        <tr>
+                            <td class="text-right text-gray"><span class="font-bold" style="color:#111">Invoice No:</span></td>
+                            <td class="text-right" style="padding-left: 10px;">INV-2026-001</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right text-gray"><span class="font-bold" style="color:#111">Print Date:</span></td>
+                            <td class="text-right" style="padding-left: 10px;">2026-02-18</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right text-gray"><span class="font-bold" style="color:#111">Rent Date:</span></td>
+                            <td class="text-right" style="padding-left: 10px;">2026-02-15</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right text-gray"><span class="font-bold" style="color:#111">Payment:</span></td>
+                            <td class="text-right" style="padding-left: 10px;">K-Pay</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <table class="layout-table">
+        <tr>
+            <td width="48%">
+                <div class="text-blue font-bold" style="font-size: 11px; text-transform: uppercase; margin-bottom: 5px;">Rented To:</div>
+                <div class="text-gray">
+                    <p class="font-bold" style="color: #111; margin: 0; font-size: 14px;">John Doe</p>
+                    <p style="margin: 0;">ABC Construction Co., Ltd.</p>
+                    <p style="margin: 0;">Phone: 09-123456789</p>
+                    <p style="margin: 0;">Email: john.doe@example.com</p>
+                </div>
+            </td>
+            <td width="4%"></td> <td width="48%">
+                <div class="text-blue font-bold" style="font-size: 11px; text-transform: uppercase; margin-bottom: 5px;">Delivery To:</div>
+                <div class="text-gray">
+                    <p class="font-bold" style="color: #111; margin: 0; font-size: 14px;">Project Site Alpha</p>
+                    <p style="margin: 0;">No. 45, Golden Valley Road, Yangon</p>
+                    <p style="margin: 0;">Phone: 09-987654321</p>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <table class="invoice-table">
+        <thead>
+            <tr>
+                <th width="40%" style="border-radius: 5px 0 0 5px;">Item Description</th>
+                <th width="15%" class="text-center">Quantity</th>
+                <th width="10%" class="text-center">Unit</th>
+                <th width="15%" class="text-center">Daily Rate (Ks)</th>
+                <th width="20%" class="text-right" style="border-radius: 0 5px 5px 0;">Daily Total (Ks)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <span class="font-bold" style="color: #111;">Main Frame (Set)</span><br>
+                    <span style="font-size: 10px; color: #666;">Standard 1.7m x 1.2m</span>
+                </td>
+                <td class="text-center">50</td>
+                <td class="text-center">Sets</td>
+                <td class="text-center">500</td>
+                <td class="text-right">25,000</td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="font-bold" style="color: #111;">Cross Brace</span><br>
+                    <span style="font-size: 10px; color: #666;">2.2m Galvanized</span>
+                </td>
+                <td class="text-center">100</td>
+                <td class="text-center">Pcs</td>
+                <td class="text-center">100</td>
+                <td class="text-right">10,000</td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="font-bold" style="color: #111;">Joint Pin</span><br>
+                    <span style="font-size: 10px; color: #666;">Standard 200mm</span>
+                </td>
+                <td class="text-center">200</td>
+                <td class="text-center">Pcs</td>
+                <td class="text-center">50</td>
+                <td class="text-right">10,000</td>
+            </tr>
+            <tr class="bg-gray-light">
+                <td colspan="4" class="font-bold" style="padding: 10px;">Daily Rental Subtotal</td>
+                <td class="text-right font-bold" style="padding: 10px;">45,000 Ks</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="layout-table">
+        <tr>
+            <td width="55%">
+                <table class="w-full" style="margin-top: 10px;">
+                    <tr>
+                        <td width="50%" class="text-center">
+                            <p class="font-bold" style="margin-bottom: 30px;">Customer's Signature</p>
+                            <div class="signature-line"></div>
+                        </td>
+                        <td width="50%" class="text-center">
+                            <p class="font-bold" style="margin-bottom: 30px;">Authorized Signature</p>
+                            <div class="signature-line"></div>
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="terms-box">
+                    <h3 class="text-blue" style="margin: 0 0 8px 0; font-size: 13px;">Rental Terms & Conditions</h3>
+                    <p style="margin: 0 0 4px 0;"><span class="font-bold">Damage/Loss:</span> Customer is responsible for any damage or loss.</p>
+                    <p style="margin: 0 0 10px 0;"><span class="font-bold">K-pay Number:</span> 09428111750</p>
+                    
+                    <div style="border-top: 1px solid #ddd; padding-top: 8px;">
+                        <p class="text-blue font-bold" style="margin: 0 0 5px 0;">Payment History:</p>
+                        <p style="margin: 0; font-size: 11px;">2026-02-15: 100,000 Ks via K-Pay</p>
+                        <p style="margin: 0; font-size: 11px;">2026-02-16: 50,000 Ks via Cash</p>
+                    </div>
+                </div>
+            </td>
+
+            <td width="45%" style="padding-left: 25px;">
+                <table class="w-full" style="border-collapse: collapse;">
+                    <tr>
+                        <td style="padding: 5px 0; border-bottom: 1px solid #eee;">Security Deposit</td>
+                        <td class="text-right" style="padding: 5px 0; border-bottom: 1px solid #eee;">+ 50,000 Ks</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px 0; border-bottom: 1px solid #eee;">Transport Fee</td>
+                        <td class="text-right" style="padding: 5px 0; border-bottom: 1px solid #eee;">+ 15,000 Ks</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px 0; border-bottom: 1px solid #eee;">Discount</td>
+                        <td class="text-right" style="padding: 5px 0; border-bottom: 1px solid #eee;">- 5,000 Ks</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px 0; border-bottom: 1px solid #eee;">Subtotal</td>
+                        <td class="text-right" style="padding: 5px 0; border-bottom: 1px solid #eee;">250,000 Ks</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px 0; border-bottom: 1px solid #eee;">Tax (5%)</td>
+                        <td class="text-right" style="padding: 5px 0; border-bottom: 1px solid #eee;">12,500 Ks</td>
+                    </tr>
+                    <tr class="bg-gray-light">
+                        <td class="font-bold" style="padding: 10px 5px; border-top: 2px solid #1e3a8a;">GRAND TOTAL</td>
+                        <td class="text-right font-bold" style="padding: 10px 5px; border-top: 2px solid #1e3a8a;">322,500 Ks</td>
+                    </tr>
+                    <tr>
+                        <td class="font-bold" style="padding: 8px 5px;">Total Paid</td>
+                        <td class="text-right font-bold" style="padding: 8px 5px;">150,000 Ks</td>
+                    </tr>
+                    <tr>
+                        <td class="font-bold" style="padding: 8px 5px; color: #dc2626;">BALANCE DUE</td>
+                        <td class="text-right font-bold" style="padding: 8px 5px; color: #dc2626;">172,500 Ks</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <div style="text-align: center; margin-top: 30px; border-top: 1px solid #e5e7eb; padding-top: 20px;">
+        <h3 class="text-blue" style="margin: 0 0 5px 0;">Thank you for choosing Kyaw Family Scaffolding!</h3>
+        <p class="text-gray" style="margin-bottom: 15px;">For any inquiries regarding this rental invoice, please contact us.</p>
+        <p style="color: #9ca3af; font-size: 10px;">
+            Phone: +95 1 234 5678 | Email: info@kyawscaffolding.com | Website: www.kyawscaffolding.com
+        </p>
+    </div>
+
+</body>
+</html>

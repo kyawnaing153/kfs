@@ -10,12 +10,12 @@ class QuotationService
     public function generateQuotationNumber(): string
     {
         $prefix = 'QUOT';
-        $year = date('Y');
+        $year = date('Ym');
         $month = date('m');
         $day = date('d');
         $random = strtoupper(substr(md5(microtime()), 0, 6));
         
-        return "{$prefix}-{$year}{$month}{$day}-{$random}";
+        return "{$prefix}-{$year}-{$random}";
     }
 
     /**

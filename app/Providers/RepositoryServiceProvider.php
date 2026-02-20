@@ -11,8 +11,8 @@ use App\Repositories\Interfaces\ProductRepositoryInterface;
 use App\Repositories\ProductRepository;
 use App\Repositories\Interfaces\ProductVariantRepositoryInterface;
 use App\Repositories\ProductVariantRepository;
-use App\Repositories\Interfaces\{RentRepositoryInterface, RentItemRepositoryInterface};
-use App\Repositories\{RentRepository, RentItemRepository};
+use App\Repositories\Interfaces\{RentRepositoryInterface, RentItemRepositoryInterface, RentReturnRepositoryInterface, SaleRepositoryInterface, SaleItemRepositoryInterface};
+use App\Repositories\{RentRepository, RentItemRepository, RentReturnRepository, SaleRepository, SaleItemRepository};
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -24,7 +24,9 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(ProductVariantRepositoryInterface::class, ProductVariantRepository::class);
         $this->app->bind(RentRepositoryInterface::class, RentRepository::class);
         $this->app->bind(RentItemRepositoryInterface::class, RentItemRepository::class);
-        $this->app->bind(\App\Repositories\Interfaces\RentReturnRepositoryInterface::class, \App\Repositories\RentReturnRepository::class);
+        $this->app->bind(RentReturnRepositoryInterface::class, RentReturnRepository::class);
+        $this->app->bind(SaleRepositoryInterface::class, SaleRepository::class);
+        $this->app->bind(SaleItemRepositoryInterface::class, SaleItemRepository::class);
     }
 
     public function boot()

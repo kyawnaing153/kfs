@@ -2,6 +2,9 @@
 <style>
     @media print {
         body {
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+                "Segoe UI", Roboto, "Helvetica Neue", Arial,
+                "Noto Sans", sans-serif;
             background: white !important;
             margin: 0 !important;
             padding: 0 !important;
@@ -76,6 +79,11 @@
     .invoice-container {
         margin-top: 20px;
     }
+
+    @page {
+        size: A4;
+        margin: 2.5mm 3mm 2.5mm 3mm;
+    }
 </style>
 
 @section('content')
@@ -90,19 +98,16 @@
                 <p class="text-gray-600 text-sm">123 Construction Street, Yangon, Myanmar</p>
                 <p class="text-gray-600 text-sm">Phone: +95 1 234 5678 | Email: info@kyawscaffolding.com</p>
             </div>
-            @php
-                $phones = array_map('trim', explode(',', $rent->customer->phone_number ?? ''));
-            @endphp
             <div class="invoice-details text-right">
-                <h2 class="text-blue-900 text-2xl font-bold mb-1">RENTAL INVOICE</h2>
+                <h2 class="text-blue-900 text-2xl font-bold mb-1">SALE INVOICE</h2>
                 <p class="text-gray-600 text-sm mb-1"><span class="font-semibold text-gray-800">Invoice No:</span>
-                    {{ $rent->rent_code }}</p>
+                    {{ $sale->sale_code }}</p>
                 <p class="text-gray-600 text-sm mb-1"><span class="font-semibold text-gray-800">Print Date:</span>
-                    {{ $rent->current_time }}</p>
-                <p class="text-gray-600 text-sm mb-1"><span class="font-semibold text-gray-800">Rent Date:</span>
-                    {{ \Carbon\Carbon::parse($rent->rent_date)->format('Y-m-d') }}</p>
+                    {{ $sale->current_time }}</p>
+                <p class="text-gray-600 text-sm mb-1"><span class="font-semibold text-gray-800">Sale Date:</span>
+                    {{ \Carbon\Carbon::parse($sale->sale_date)->format('Y-m-d') }}</p>
                 <p class="text-gray-600 text-sm"><span class="font-semibold text-gray-800">Payment Method:</span>
-                    {{ ucfirst($rent->payment_type) }}</p>
+                    {{ ucfirst($sale->payment_type) }}</p>
             </div>
         </div>
 
@@ -112,14 +117,14 @@
                 <div class="text-blue-900 font-bold text-sm uppercase mb-2">Rented To:</div>
                 <div class="text-gray-600 text-sm">
                     <p class="font-semibold text-gray-800">
-                        {{ $rent->customer->first_name ?? '' }} {{ $rent->customer->last_name ?? '' }}
+                        {{ $sale->customer->first_name ?? '' }} {{ $sale->customer->last_name ?? '' }}
                     </p>
-                    @if ($rent->customer->company_name ?? false)
-                        <p>{{ $rent->customer->company_name }}</p>
+                    @if ($sale->customer->company_name ?? false)
+                        <p>{{ $sale->customer->company_name }}</p>
                     @endif
-                    <p>Phone: {{ $phones[0] ?? '' }}</p>
-                    @if ($rent->customer->email ?? false)
-                        <p>Email: {{ $rent->customer->email }}</p>
+                    <p>Phone: {{ $sale->customer->phone_number ?? '' }}</p>
+                    @if ($sale->customer->email ?? false)
+                        <p>Email: {{ $sale->customer->email }}</p>
                     @endif
                 </div>
             </div>
@@ -127,13 +132,13 @@
                 <div class="text-blue-900 font-bold text-sm uppercase mb-2">Delivery To:</div>
                 <div class="text-gray-600 text-sm">
                     <p class="font-semibold text-gray-800">Project Site</p>
-                    <p>{{ $rent->note ?? '' }}</p>
-                    <p>Phone: {{  $phones[1] ?? '' }}</p>
+                    <p>{{ $sale->customer->address ?? '' }}</p>
+                    <p>Phone: {{ $sale->customer->phone_number ?? '' }}</p>
                 </div>
             </div>
         </div>
 
-        <!-- Rental Items Table -->
+        <!-- Sale Items Table -->
         <table class="w-full border-collapse mb-4">
             <tbody>
                 <tr>
@@ -147,7 +152,7 @@
                 </tr>
             </tbody>
             <tbody>
-                @foreach ($rent->items as $item)
+                @foreach ($sale->items as $item)
                     <tr>
                         <td class="p-2 border-b border-gray-200 text-sm">
                             <p class="font-semibold text-gray-800">
@@ -158,28 +163,14 @@
                             </p>
                             {{-- <p class="text-gray-600 text-xs">{{ $item->productVariant->product->description ?? '' }}</p> --}}
                         </td>
-                        <td class="p-2 border-b border-gray-200 text-sm text-center">{{ $item->rent_qty }}</td>
+                        <td class="p-2 border-b border-gray-200 text-sm text-center">{{ $item->sale_qty }}</td>
                         <td class="p-2 border-b border-gray-200 text-sm text-center">{{ $item->unit }}</td>
                         <td class="p-2 border-b border-gray-200 text-sm text-center">
                             {{ number_format($item->unit_price, 0) }}</td>
                         <td class="p-2 border-b border-gray-200 text-sm text-right">
-                            {{ number_format($item->daily_total ?? $item->rent_qty * $item->unit_price, 0) }}</td>
+                            {{ number_format($item->daily_total ?? $item->sale_qty * $item->unit_price, 0) }}</td>
                     </tr>
                 @endforeach
-
-                @if (count($rent->items) > 0)
-                    <tr class="bg-gray-50">
-                        <td class="p-2 font-semibold text-sm" colspan="4">Daily Rental Subtotal</td>
-                        <td class="p-2 text-sm text-right font-semibold">{{ number_format($rent->daily_subtotal, 0) }} Ks
-                        </td>
-                    </tr>
-                @else
-                    <tr>
-                        <td colspan="5" class="p-2 border-b border-gray-200 text-sm text-center text-gray-500">
-                            No rental items found
-                        </td>
-                    </tr>
-                @endif
             </tbody>
         </table>
 
@@ -199,29 +190,16 @@
 
                 <!-- Terms & Conditions -->
                 <div class="bg-gray-100 p-4 rounded custom mt-6">
-                    <h3 class="text-blue-900 font-bold mb-3">Rental Terms & Conditions</h3>
+                    <h3 class="text-blue-900 font-bold mb-3">Sale Terms & Conditions</h3>
 
                     <p class="text-gray-600 text-sm mb-1"><span class="font-semibold text-gray-800">Damage/Loss:</span>
                         Customer is
-                        responsible for any damage or loss of rented items</p>
+                        responsible for any damage or loss of sold items</p>
 
-                    @if ($rent->payment_type == 'kpay')
+                    @if ($sale->payment_type == 'kpay')
                         <p class="text-gray-600 text-sm"><span class="font-semibold text-gray-800">K-pay Number:</span>
-                            09428111750
+                            09428111750 (Kyaw Thu)
                         </p>
-                    @endif
-
-                    <!-- Payment History -->
-                    @if ($rent->payments->count() > 0)
-                        <div class="mt-4">
-                            <h4 class="text-blue-900 font-semibold mb-2">Payment History:</h4>
-                            @foreach ($rent->payments as $payment)
-                                <p class="text-gray-600 text-sm mb-1">
-                                    {{ \Carbon\Carbon::parse($payment->payment_date)->format('Y-m-d') }}:
-                                    {{ number_format($payment->amount, 0) }} Ks via {{ $payment->payment_method }}
-                                </p>
-                            @endforeach
-                        </div>
                     @endif
                 </div>
             </div>
@@ -230,40 +208,33 @@
             <!-- Summary Section -->
             <div class="flex justify-end mb-8">
                 <table class="w-full max-w-sm border-collapse">
-                    @if (($rent->deposit ?? 0) > 0)
-                        <tr>
-                            <td class="p-1 border-b border-gray-200 text-sm">Security Deposit</td>
-                            <td class="p-1 border-b border-gray-200 text-sm text-right">+
-                                {{ number_format($rent->deposit, 0) }} Ks</td>
-                        </tr>
-                    @endif
 
-                    @if (($rent->transport ?? 0) > 0)
+                    @if (($sale->transport ?? 0) > 0)
                         <tr>
                             <td class="p-1 border-b border-gray-200 text-sm">Transport Fee</td>
                             <td class="p-1 border-b border-gray-200 text-sm text-right">+
-                                {{ number_format($rent->transport, 0) }} Ks</td>
+                                {{ number_format($sale->transport, 0) }} Ks</td>
                         </tr>
                     @endif
 
-                    @if (($rent->discount ?? 0) > 0)
+                    @if (($sale->discount ?? 0) > 0)
                         <tr>
                             <td class="p-1 border-b border-gray-200 text-sm">Discount</td>
                             <td class="p-1 border-b border-gray-200 text-sm text-right">-
-                                {{ number_format($rent->discount, 0) }} Ks</td>
+                                {{ number_format($sale->discount, 0) }} Ks</td>
                         </tr>
                     @endif
 
                     <tr>
                         <td class="p-1 border-b border-gray-200 text-sm">Subtotal</td>
                         <td class="p-1 border-b border-gray-200 text-sm text-right">
-                            {{ number_format($rent->sub_total, 0) }} Ks</td>
+                            {{ number_format($sale->sub_total, 0) }} Ks</td>
                     </tr>
 
                     <tr>
-                        <td class="p-1 border-b border-gray-200 text-sm">Tax ({{ $rent->tax_amount }}%)</td>
+                        <td class="p-1 border-b border-gray-200 text-sm">Tax ({{ $sale->tax_amount }}%)</td>
                         <td class="p-1 border-b border-gray-200 text-sm text-right">
-                            {{ number_format($rent->tax_amount, 0) }} Ks</td>
+                            {{ number_format($sale->tax_amount, 0) }} Ks</td>
                     </tr>
 
                     <tr class="font-bold bg-gray-100">
@@ -271,26 +242,26 @@
                             GRAND TOTAL
                         </td>
                         <td class="p-1 border-t-1 border-b-1 border-blue-900 text-right">
-                            {{ number_format($rent->total, 0) }} Ks
+                            {{ number_format($sale->total, 0) }} Ks
                         </td>
                     </tr>
 
                     <!-- Payment Status -->
-                    @if ($rent->total_paid > 0)
+                    @if ($sale->total_paid > 0)
                         <tr>
                             <td class="p-1 border-b border-gray-200 text-sm font-semibold">Total Paid</td>
                             <td class="p-1 border-b border-gray-200 text-sm text-right font-semibold">
-                                {{ number_format($rent->total_paid, 0) }} Ks</td>
+                                {{ number_format($sale->total_paid, 0) }} Ks</td>
                         </tr>
-                        <tr class="{{ $rent->total_due > 0 ? 'text-red-600' : 'text-green-600' }} font-bold">
+                        <tr class="{{ $sale->total_due > 0 ? 'text-red-600' : 'text-green-600' }} font-bold">
                             <td class="p-1 border-b border-gray-200">
-                                {{ $rent->total_due > 0 ? 'BALANCE DUE' : 'PAID IN FULL' }}
+                                {{ $sale->total_due > 0 ? 'BALANCE DUE' : 'PAID IN FULL' }}
                             </td>
                             <td class="p-1 border-b border-gray-200 text-right">
-                                @if ($rent->total_due > 0)
-                                    {{ number_format($rent->total_due, 0) }} Ks
+                                @if ($sale->total_due > 0)
+                                    {{ number_format($sale->total_due, 0) }} Ks
                                 @else
-                                    {{ number_format(abs($rent->total_due), 0) }} Ks
+                                    {{ number_format(abs($sale->total_due), 0) }} Ks
                                 @endif
                             </td>
                         </tr>
@@ -302,7 +273,7 @@
         <!-- Footer -->
         <div class="text-center pt-4 mt-4 border-t border-gray-200">
             <h3 class="text-blue-900 font-bold mb-1">Thank you for choosing Kyaw Family Scaffolding!</h3>
-            <p class="text-gray-600 text-sm mb-4">For any inquiries regarding this rental invoice, please contact us.</p>
+            <p class="text-gray-600 text-sm mb-4">For any inquiries regarding this sale invoice, please contact us.</p>
             <div class="text-gray-500 text-xs">
                 {{-- <p>Kyaw Family Scaffolding | 123 Construction Street, Yangon, Myanmar</p> --}}
                 <p>Phone: +95 1 234 5678 | Email: info@kyawscaffolding.com | Website: www.kyawscaffolding.com</p>
