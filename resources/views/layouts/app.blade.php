@@ -14,9 +14,9 @@
     <!-- Alpine.js -->
     {{-- <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script> --}}
 
-    <script src="{{ asset('backend/js/jquery-3.7.1.min.js') }}"></script>
+    <script src="{{ asset('Backend/js/jquery-3.7.1.min.js') }}"></script>
     <!-- Toastr CSS -->
-    <link rel="stylesheet" href="{{ asset('backend/css/toastr.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('Backend/css/toastr.min.css') }}">
 
     <!-- Theme Store -->
     <script>
@@ -26,7 +26,7 @@
                     const savedTheme = localStorage.getItem('theme');
                     const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' :
                         'light';
-                    this.theme = savedTheme || systemTheme;
+                    this.theme = savedTheme || 'light';
                     this.updateTheme();
                 },
                 theme: 'light',
@@ -135,9 +135,10 @@
 
     </div>
 
-        <!-- Toastr JS -->
-    <script src="{{ asset('backend/js/toastr.min.js') }}"></script>
-    <script src="{{ asset('backend/js/flatpickr.js') }}"></script>
+    <!-- Toastr JS -->
+    <script src="{{ asset('Backend/js/toastr.min.js') }}"></script>
+    <script src="{{ asset('Backend/js/flatpickr.js') }}"></script>
+
     <script>
         toastr.options = {
             "closeButton": true,
@@ -158,9 +159,12 @@
             toastr.error("{{ $errors->first() }}");
         @endif
     </script>
-</body>
-{{-- In your layout file --}}
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-@stack('scripts')
 
+    <!-- SweetAlert -->
+    <script src="{{ asset('Backend/js/sweetalert2@11.js') }}"></script>
+
+    {{-- REQUIRED FOR @push --}}
+    @stack('scripts')
+
+</body>
 </html>

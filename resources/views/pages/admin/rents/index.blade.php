@@ -420,7 +420,7 @@
                                                         {{ $return->rent->customer->name }}
                                                     </div>
                                                     <div class="text-xs text-gray-400">
-                                                        <a href="tel:{{ $phones[0] }}"
+                                                        <a href="tel:{{ $phones[0] ?? $phones[1] ?? '' }}"
                                                             class="hover:underline">
                                                             {{ $phones[0] ?? $phones[1] ?? 'No phone' }}
                                                         </a>

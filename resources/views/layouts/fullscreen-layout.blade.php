@@ -13,9 +13,9 @@
 
     <!-- Alpine.js -->
     {{-- <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script> --}}
-    <script src="{{ asset('backend/js/jquery-3.7.1.min.js') }}"></script>
+    <script src="{{ asset('Backend/js/jquery-3.7.1.min.js') }}"></script>
     <!-- Toastr CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" href="{{ asset('Backend/css/toastr.min.css') }}">
 
     <!-- Theme Store -->
     <script>
@@ -115,16 +115,15 @@ window.addEventListener('resize', checkMobile);">
     @yield('content')
 
     <!-- Toastr JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="{{ asset('Backend/js/toastr.min.js') }}"></script>
 
     <script>
         toastr.options = {
             "closeButton": true,
             "progressBar": true,
             "positionClass": "toast-top-right",
-            "timeOut": "60000"
+            "timeOut": "90000"
         };
-        console.log('hi')
         @if (session('success'))
             toastr.success("{{ session('success') }}");
         @endif
