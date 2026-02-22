@@ -19,7 +19,8 @@
                     <a href="{{ route('rents.index') }}"
                         class="inline-flex items-center gap-2 rounded-lg border border-brand-600 bg-white px-4 py-2.5 text-sm font-medium text-brand-600 hover:bg-brand-50 dark:border-brand-400 dark:bg-gray-800 dark:text-brand-400 dark:hover:bg-gray-700">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
                         View Rents
                     </a>
@@ -58,7 +59,8 @@
 
                         <!-- Status Filter -->
                         <div>
-                            <select name="status" id="statusFilter" onchange="document.getElementById('searchForm').submit()"
+                            <select name="status" id="statusFilter"
+                                onchange="document.getElementById('searchForm').submit()"
                                 class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm
                                            focus:border-brand-500 focus:ring-2 focus:ring-brand-200 dark:border-gray-700
                                            dark:bg-gray-900 dark:focus:border-brand-500 dark:focus:ring-brand-900">
@@ -74,8 +76,10 @@
                                 class="flex-1 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm
                                            focus:border-brand-500 focus:ring-2 focus:ring-brand-200 dark:border-gray-700
                                            dark:bg-gray-900 dark:focus:border-brand-500 dark:focus:ring-brand-900">
-                                <option value="return_date" {{ $orderBy === 'return_date' ? 'selected' : '' }}>Sort by Date</option>
-                                <option value="created_at" {{ $orderBy === 'created_at' ? 'selected' : '' }}>Sort by Created Date</option>
+                                <option value="return_date" {{ $orderBy === 'return_date' ? 'selected' : '' }}>Sort by Date
+                                </option>
+                                <option value="created_at" {{ $orderBy === 'created_at' ? 'selected' : '' }}>Sort by Created
+                                    Date</option>
                                 <option value="id" {{ $orderBy === 'id' ? 'selected' : '' }}>Sort by Return ID</option>
                             </select>
                             <select name="order_dir" onchange="document.getElementById('searchForm').submit()"
@@ -123,22 +127,28 @@
                         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                             <thead>
                                 <tr class="bg-gray-50 dark:bg-gray-800/50">
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[180px]">
+                                    <th
+                                        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[180px]">
                                         Return Details
                                     </th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[200px]">
+                                    <th
+                                        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[200px]">
                                         Rent Information
                                     </th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th
+                                        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Customer
                                     </th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th
+                                        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Financial Summary
                                     </th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th
+                                        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Status
                                     </th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th
+                                        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Actions
                                     </th>
                                 </tr>
@@ -191,26 +201,27 @@
                                         <!-- Financial Summary -->
                                         <td class="px-4 py-4">
                                             <div class="space-y-1">
-                                                @if($return->refund_amount > 0)
-                                                <div class="text-sm">
-                                                    <span class="text-gray-500">Refund:</span>
-                                                    <span class="font-medium text-blue-600 dark:text-blue-400 ml-1">
-                                                        Ks {{ number_format($return->refund_amount, 1) }}
-                                                    </span>
-                                                </div>
+                                                @if ($return->refund_amount > 0)
+                                                    <div class="text-sm">
+                                                        <span class="text-gray-500">Refund:</span>
+                                                        <span class="font-medium text-blue-600 dark:text-blue-400 ml-1">
+                                                            Ks {{ number_format($return->refund_amount, 1) }}
+                                                        </span>
+                                                    </div>
                                                 @endif
-                                                @if($return->collect_amount > 0)
-                                                <div class="text-sm">
-                                                    <span class="text-gray-500">Collect:</span>
-                                                    <span class="font-medium text-green-600 dark:text-green-400 ml-1">
-                                                        Ks {{ number_format($return->collect_amount, 1) }}
-                                                    </span>
-                                                </div>
+                                                @if ($return->collect_amount > 0)
+                                                    <div class="text-sm">
+                                                        <span class="text-gray-500">Collect:</span>
+                                                        <span class="font-medium text-green-600 dark:text-green-400 ml-1">
+                                                            Ks {{ number_format($return->collect_amount, 1) }}
+                                                        </span>
+                                                    </div>
                                                 @endif
-                                                @if($return->items->sum('damage_fee') > 0)
-                                                <div class="text-xs text-red-600 dark:text-red-400">
-                                                    Damage: Ks {{ number_format($return->items->sum('damage_fee'), 1) }}
-                                                </div>
+                                                @if ($return->items->sum('damage_fee') > 0)
+                                                    <div class="text-xs text-red-600 dark:text-red-400">
+                                                        Damage: Ks
+                                                        {{ number_format($return->items->sum('damage_fee'), 1) }}
+                                                    </div>
                                                 @endif
                                             </div>
                                         </td>
@@ -219,42 +230,60 @@
                                         <td class="px-4 py-4">
                                             @php
                                                 $statusColors = [
-                                                    'partial' => 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-                                                    'completed' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+                                                    'partial' =>
+                                                        'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+                                                    'completed' =>
+                                                        'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
                                                 ];
                                                 $returnStatus = $return->status ?? 'partial';
                                             @endphp
-                                            <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium {{ $statusColors[$returnStatus] ?? $statusColors['partial'] }}">
+                                            <span
+                                                class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium {{ $statusColors[$returnStatus] ?? $statusColors['partial'] }}">
                                                 {{ ucfirst($returnStatus) }}
                                             </span>
                                         </td>
 
                                         <!-- Actions -->
-                                        <td class="px-4 py-4">
-                                            <div class="flex flex-col gap-2">
-                                                <a href="{{ route('rents.returns.show', [$return->rent_id, $return->id]) }}"
-                                                    class="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
-                                                    <svg class="h-4 w-4" fill="none" stroke="currentColor"
-                                                        viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2"
-                                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                        <td class="px-4 py-4 text-center">
+                                            <div class="relative inline-block text-left" x-data="{ open: false }">
+                                                <button @click="open = !open" @click.away="open = false"
+                                                    class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200
+                                                                dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600">
+                                                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path
+                                                            d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
                                                     </svg>
-                                                    View Details
-                                                </a>
-                                                <a href="{{ route('rents.returns.print', [$return->rent_id, $return->id, 'autoprint' => true]) }}"
-                                                    class="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
-                                                    target="_blank">
-                                                    <svg class="h-4 w-4" fill="none" stroke="currentColor"
-                                                        viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2"
-                                                            d="M9 14h6m-6-4h6m-7 8h8a2 2 0 002-2V6a2 2 0 00-2-2H8l-2 2H6a2 2 0 00-2 2v10a2 2 0 002 2h2" />
-                                                    </svg>
-                                                    Print Receipt
-                                                </a>
+                                                </button>
+
+                                                <div x-show="open" x-transition:enter="transition ease-out duration-100"
+                                                    x-transition:enter-start="opacity-0 scale-95"
+                                                    x-transition:enter-end="opacity-100 scale-100"
+                                                    x-transition:leave="transition ease-in duration-75"
+                                                    x-transition:leave-start="opacity-100 scale-100"
+                                                    x-transition:leave-end="opacity-0 scale-95"
+                                                    class="absolute right-0 z-20 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5
+                                                            dark:bg-gray-800"
+                                                    style="display: none;">
+                                                    <div class="py-1">
+                                                        <a href="{{ route('rents.returns.print', [$return->rent_id, $return->id, 'autoprint' => true]) }}"
+                                                            class="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
+                                                            target="_blank">
+                                                            Invoice
+                                                        </a>
+                                                        <a href="{{ route('rents.returns.show', [$return->rent_id, $return->id]) }}"
+                                                            class="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">
+                                                            View
+                                                        </a>
+                                                        <form action="{{ route('rents.returns.send-mail', [$return->rent_id, $return->id]) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            <button type="submit"
+                                                                class="flex w-full items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">
+                                                                Send Mail
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>
@@ -264,7 +293,7 @@
                     </div>
 
                     <!-- Pagination (if applicable) -->
-                    @if(method_exists($returns, 'links'))
+                    @if (method_exists($returns, 'links'))
                         <div class="mt-6">
                             {{ $returns->links() }}
                         </div>

@@ -7,6 +7,9 @@ use App\Repositories\RentItemRepository;
 use App\Repositories\ProductVariantRepository;
 use App\Repositories\RentRepository;
 use Illuminate\Support\Facades\DB;
+use App\Mail\RentReturnInvoiceMail;
+use Illuminate\Support\Facades\Mail;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class RentReturnService
 {
@@ -14,17 +17,20 @@ class RentReturnService
     protected $rentItemRepository;
     protected $productVariantRepository;
     protected $rentRepository;
+    protected $rentPaymentService;
 
     public function __construct(
         RentReturnRepository $returnRepository,
         RentItemRepository $rentItemRepository,
         ProductVariantRepository $productVariantRepository,
-        RentRepository $rentRepository
+        RentRepository $rentRepository,
+        RentPaymentService $rentPaymentService
     ) {
         $this->returnRepository = $returnRepository;
         $this->rentItemRepository = $rentItemRepository;
         $this->productVariantRepository = $productVariantRepository;
         $this->rentRepository = $rentRepository;
+        $this->rentPaymentService = $rentPaymentService;
     }
 
     /**
@@ -125,5 +131,84 @@ class RentReturnService
     public function getRemainingItems($rent)
     {
         return $this->rentItemRepository->getItemsWithRemainingQuantity($rent->id);
+    }
+
+    /**
+     * Send return invoice email
+     */
+    public function sendReturnInvoiceEmail($rent, $return)
+    {
+        #\Log::warning('No email found for customer ID: ' . $rent->customer->email . ' Return ID: ' . $return->id);
+        $customerEmail = $rent->customer->email;
+
+            if (!$customerEmail) {
+                \Log::warning('No email found for customer ID123: ' . $rent->customer_id);
+                return;
+            }
+
+            // Prepare the return data with all calculations (like in print method)
+            $return = $this->prepareReturnInvoiceData($rent, $return);
+
+            // Generate PDF content for attachment
+            $pdfContent = $this->getReturnInvoicePdf($rent, $return);
+
+            // Send email with PDF attachment
+            Mail::to($customerEmail)
+                ->cc(config('mail.from.address')) // CC to admin
+                ->send(new RentReturnInvoiceMail($rent, $return, $pdfContent));
+        // try {
+            
+            
+        // } catch (\Exception $e) {
+        //     // Don't throw - email failure shouldn't break the process
+        // }
+    }
+
+    /**
+     * Prepare return invoice data (mirroring your print method logic)
+     */
+    private function prepareReturnInvoiceData($rent, $return)
+    {
+        // Load relationships
+        $return->load([
+            'items.rentItem.productVariant.product',
+            'rent.customer',
+            'rent.payments'
+        ]);
+
+        // Get total payment by rent ID
+        $totalPaymentByRentId = $this->rentPaymentService->getTotalPaymentByRentId($rent->id);
+        $return->total_payments = $totalPaymentByRentId;
+
+        // Calculate total rental amount
+        $return->total_rental_amount = $return->rent->sub_total * $return->total_days;
+        
+        // Set current time
+        $return->current_time = now()->format('Y-m-d H:i:s');
+        
+        // Calculate item totals
+        foreach ($return->items as $item) {
+            $item->damage_total = $item->damage_fee ?? 0;
+            $item->returned_total = $item->qty * ($item->rentItem->unit_price ?? 0);
+        }
+        
+        // Calculate total damage fee
+        $return->total_damage_fee = $return->items->sum('damage_fee');
+        
+        return $return;
+    }
+
+    /**
+     * Generate PDF content for email attachment
+     */
+    public function getReturnInvoicePdf($rent, $return)
+    {
+        // Get total payment by rent ID
+        $totalPaymentByRentId = $this->rentPaymentService->getTotalPaymentByRentId($rent->id);
+
+        // Generate PDF using your existing invoice blade view
+        $pdf = Pdf::loadView('pages.admin.pdf.rent-return-invoice', compact('rent', 'return', 'totalPaymentByRentId'));
+        
+        return $pdf->output();
     }
 }

@@ -8,6 +8,7 @@ use App\Services\{RentReturnService, RentPaymentService};
 use App\Models\Backend\Rent;
 use App\Models\Backend\RentReturn;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class RentReturnController extends Controller
 {
@@ -41,11 +42,11 @@ class RentReturnController extends Controller
             return redirect()->route('rents.show', $rent->id)
                 ->with('error', 'This rent is already completed.');
         }
-        
+
         $rent->load('items.productVariant');
         $remainingItems = $this->returnService->getRemainingItems($rent);
         $totalPaymentByRentId = $this->rentPaymentService->getTotalPaymentByRentId($rent->id);
-        
+
         return view('pages.admin.rent_returns.create', compact('rent', 'remainingItems', 'totalPaymentByRentId'));
     }
 
@@ -57,10 +58,9 @@ class RentReturnController extends Controller
         #dd($request->all());
         try {
             $return = $this->returnService->createReturn($rent, $request->validated());
-            
+
             return redirect()->route('rents.show', $rent->id)
                 ->with('success', 'Return processed successfully.');
-                
         } catch (\Exception $e) {
             return back()->withInput()
                 ->with('error', 'Error processing return: ' . $e->getMessage());
@@ -87,26 +87,41 @@ class RentReturnController extends Controller
             'items.rentItem.productVariant.product',
             'rent.customer'
         ]);
-        
+
         //get total payment for the rent
         $totalPaymentByRentId = $this->rentPaymentService->getTotalPaymentByRentId($rent->id);
 
         $return->total_rental_amount = $return->rent->sub_total * $return->total_days;
         // Calculate totals
         $return->current_time = now()->format('Y-m-d H:i');
-        
+
         // Calculate item totals
         foreach ($return->items as $item) {
             $item->damage_total = $item->damage_fee ?? 0;
             $item->returned_total = $item->qty * ($item->rentItem->unit_price ?? 0);
         }
-        
+
         // Calculate summary
         $return->total_damage_fee = $return->items->sum('damage_fee');
-        
+
         // Calculate net amount (collect - refund)
         //$return->final_balance = ($return->total_rental_amount ?? 0) + ($return->transport ?? 0) + ($return->collect_amount ?? 0) + ($return->total_damage_fee ?? 0) - ($rent->deposit ?? 0) - ($return->refund_amount ?? 0) - ($totalPaymentByRentId ?? 0);
         #dd($return);
         return view('pages.admin.rent_returns.invoice', compact('rent', 'return', 'totalPaymentByRentId'));
+    }
+
+    /**
+     * Send return invoice email
+     */
+    public function sendReturnEmail(Rent $rent, RentReturn $return)
+    {
+        try {
+            $this->returnService->sendReturnInvoiceEmail($rent, $return);
+
+            return redirect()->route('rent-returns.index')
+                ->with('success', 'Return receipt email sent successfully.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to send return receipt email: ' . $e->getMessage());
+        }
     }
 }

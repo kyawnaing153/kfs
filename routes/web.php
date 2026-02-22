@@ -178,6 +178,7 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth']], function () {
         Route::prefix('{rent}/returns')->name('returns.')->group(function () {
             Route::get('/create', [RentReturnController::class, 'create'])->name('create');
             Route::post('/', [RentReturnController::class, 'store'])->name('store');
+            Route::post('/{return}/send-mail', [RentReturnController::class, 'sendReturnEmail'])->name('send-mail');
             Route::get('/{return}', [RentReturnController::class, 'show'])->name('show');
             Route::get('/{return}/print', [RentReturnController::class, 'print'])->name('print');
         });
