@@ -217,7 +217,7 @@ class RentController extends Controller
         try {
             $this->rentService->sendRentInvoiceEmail($rent);
 
-            return redirect()->route('rents.show', $rent->id)
+            return redirect()->route('rents.index', $rent->id)
                 ->with('success', 'Invoice email sent successfully.');
         } catch (\Exception $e) {
             return back()->with('error', 'Failed to send invoice email: ' . $e->getMessage());
