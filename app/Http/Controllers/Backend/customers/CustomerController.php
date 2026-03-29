@@ -35,7 +35,7 @@ class CustomerController extends Controller
 
         $customers = $this->customerService
             ->getCustomers($filters, $orderBy, $orderDir)
-            ->paginate(6);
+            ->paginate(15);
 
         return view('pages.admin.customers.index', compact('customers'));
     }

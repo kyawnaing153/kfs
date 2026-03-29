@@ -10,18 +10,18 @@
     <div class="max-w-4xl mx-auto">
         <!-- Print Container -->
         <div id="printable-content">
-            <x-common.component-card title="Payment Receipt" class="print:shadow-none print:border-0">
+            <x-common.component-card title="{{ $settings['companyName'] }}" class="print:shadow-none print:border-0">
                 <!-- Receipt Header -->
                 <div class="flex justify-between items-start mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
                     <div>
-                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Payment Receipt</h1>
+                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Payment Receipt</h2>
                         <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                            Receipt #{{ $payment->id }} • Issued on {{ date('F d, Y', strtotime($payment->created_at)) }}
+                            Receipt #{{ $payment->id }} • Created on {{ date('F d, Y', strtotime($payment->created_at)) }}
                         </p>
                     </div>
                     <div class="text-right">
                         <div class="text-2xl font-bold text-green-600 dark:text-green-400">
-                            Ks {{ number_format($payment->amount, 1) }}
+                            Ks {{ number_format($payment->amount, 0) }}
                         </div>
                         <div class="mt-1">
                             <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium {{ $payment->payment_method_badge }}">
@@ -99,47 +99,40 @@
                     <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
                         <div class="space-y-3">
                             <div class="flex justify-between">
-                                <span class="text-gray-600 dark:text-gray-400">Total Rent Amount:</span>
+                                <span class="text-gray-600 dark:text-gray-400">Total Deposit:</span>
                                 <span class="font-medium text-gray-900 dark:text-white">
-                                    Ks {{ number_format($rent->total, 1) }}
+                                    Ks {{ number_format($rent->deposit, 0) }}
                                 </span>
                             </div>
                             <div class="flex justify-between">
                                 <span class="text-gray-600 dark:text-gray-400">Previously Paid:</span>
                                 <span class="font-medium text-gray-900 dark:text-white">
-                                    Ks {{ number_format($rent->total_paid - $payment->amount, 1) }}
+                                    
+                                    Ks {{ number_format($total_payment_without_current_payment, 0) }}
                                 </span>
                             </div>
                             <div class="flex justify-between border-t border-gray-200 dark:border-gray-700 pt-3">
                                 <span class="text-gray-600 dark:text-gray-400">This Payment:</span>
                                 <span class="font-bold text-green-600 dark:text-green-400 text-lg">
-                                    Ks {{ number_format($payment->amount, 1) }}
+                                    Ks {{ number_format($payment->amount, 0) }}
                                 </span>
                             </div>
                             <div class="flex justify-between">
-                                <span class="text-gray-600 dark:text-gray-400">Total Paid Now:</span>
+                                <span class="text-gray-600 dark:text-gray-400">Total Paid:</span>
                                 <span class="font-bold text-blue-600 dark:text-blue-400 text-lg">
-                                    Ks {{ number_format($rent->total_paid, 1) }}
-                                </span>
-                            </div>
-                            <div class="flex justify-between border-t border-gray-300 dark:border-gray-600 pt-3">
-                                <span class="text-gray-800 dark:text-gray-300 font-semibold">Remaining Due:</span>
-                                <span class="font-bold text-lg {{ $rent->total_due > 0 ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400' }}">
-                                    Ks {{ number_format($rent->total_due, 1) }}
+                                    Ks {{ number_format($get_total_payment_by_rent_id, 0) }}
                                 </span>
                             </div>
                         </div>
                         
-                        @if($rent->total_due == 0)
                         <div class="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg dark:bg-green-900/20 dark:border-green-800">
                             <div class="flex items-center">
                                 <svg class="w-5 h-5 text-green-600 dark:text-green-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
-                                <span class="text-green-800 dark:text-green-300 font-medium">Rent is fully paid!</span>
+                                <span class="text-green-800 dark:text-green-300 font-medium">Payment recorded successfully!</span>
                             </div>
                         </div>
-                        @endif
                     </div>
                 </div>
 

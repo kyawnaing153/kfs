@@ -118,6 +118,10 @@ class RentPaymentController extends Controller
      */
     public function show(Rent $rent, RentPayment $payment)
     {
-        return view('pages.admin.rent_payments.show', compact('rent', 'payment'));
+        // Get payments with filters
+        $get_total_payment_by_rent_id = $this->paymentService->getTotalPaymentByRentId($rent->id);
+        $total_payment_without_current_payment = $get_total_payment_by_rent_id - $payment->amount;
+
+        return view('pages.admin.rent_payments.show', compact('rent', 'payment', 'total_payment_without_current_payment', 'get_total_payment_by_rent_id'));
     }
 }

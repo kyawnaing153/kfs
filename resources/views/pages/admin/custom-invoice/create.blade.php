@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
- <x-common.page-breadcrumb pageTitle="Create New Quotation" />
+ <x-common.page-breadcrumb pageTitle="Create New Invoice" />
     <div class="space-y-6">
         <div class="rounded-2xl border border-gray-200 bg-white pt-4 dark:border-gray-800 dark:bg-white/[0.03]">
             
@@ -26,7 +26,7 @@
                 <!-- Form Column -->
                 <div class="lg:col-span-2">
                     <div class="bg-white shadow-lg rounded-lg p-6 mb-6">
-                        <form method="POST" action="{{ route('quotation.preview') }}" id="quotationForm">
+                        <form method="POST" action="{{ route('custom-invoice.preview') }}" id="quotationForm">
                             @csrf
 
                             <!-- Company & Client Info -->
@@ -98,32 +98,20 @@
                                 @enderror
                             </div>
 
-                            <!-- Quotation Header -->
+                            <!-- Invoice Header -->
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                                
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        Quotation Title
-                                        <span class="text-red-500">*</span>
-                                    </label>
-                                    <input type="text" name="quotation_title"
-                                        value="{{ old('quotation_title', $formData['quotation_title']) }}" required
-                                        class="w-full px-3 py-2 border {{ $errors->has('quotation_title') ? 'border-red-300' : 'border-gray-300' }} rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                    @error('quotation_title')
-                                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        Quotation No 
+                                        Invoice No 
                                         <span class="text-red-500">*</span>
                                     </label>
                                     <div class="flex gap-2">
-                                        <input type="text" name="quotation_no"
-                                            value="{{ old('quotation_no', $formData['quotation_no']) }}" required
-                                            class="flex-1 px-3 py-2 border {{ $errors->has('quotation_no') ? 'border-red-300' : 'border-gray-300' }} rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                        <input type="text" name="invoice_no"
+                                            value="{{ old('invoice_no', $formData['invoice_no']) }}" required
+                                            class="flex-1 px-3 py-2 border {{ $errors->has('invoice_no') ? 'border-red-300' : 'border-gray-300' }} rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                                     </div>
-                                    @error('quotation_no')
+                                    @error('invoice_no')
                                         <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                                     @enderror
                                 </div>
@@ -294,12 +282,16 @@
                             <div class="flex flex-wrap gap-3">
                                 <button type="submit" name="action" value="preview"
                                     class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                    👁 Preview Quotation
+                                    Preview Invoice
                                 </button>
 
                                 <button type="submit" formaction="{{ route('quotation.download') }}"
                                     class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
-                                    📄 Download PDF
+                                    Download PDF
+                                </button>
+                                <button type="reset"
+                                    class="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500">
+                                    Clear
                                 </button>
                             </div>
                         </form>
@@ -330,7 +322,7 @@
                                 @csrf
                                 <input type="hidden" name="company_email" value="{{ $formData['company_email'] }}">
                                 <input type="hidden" name="client_name" value="{{ $formData['client_name'] }}">
-                                <input type="hidden" name="quotation_no" value="{{ $formData['quotation_no'] }}">
+                                <input type="hidden" name="invoice_no" value="{{ $formData['invoice_no'] }}">
 
                                 <div class="space-y-3">
                                     <div>
@@ -345,7 +337,7 @@
                                             <span class="text-red-500">*</span>
                                         </label>
                                         <input type="text" name="subject"
-                                            value="Quotation {{ $formData['quotation_no'] }}" required
+                                            value="Invoice {{ $formData['invoice_no'] }}" required
                                             class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm">
                                     </div>
                                     <div>
@@ -354,7 +346,7 @@
                                     </div>
                                     <button type="submit"
                                         class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">
-                                        Send Quotation
+                                        Send Invoice
                                     </button>
                                 </div>
                             </form>

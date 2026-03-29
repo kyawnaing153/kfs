@@ -124,4 +124,18 @@ class RentReturnController extends Controller
             return back()->with('error', 'Failed to send return receipt email: ' . $e->getMessage());
         }
     }
+
+    /*
+    * Show list of returned items
+    */
+    public function itemList(Request $request){
+        $search = $request->get('search', '');
+        $status = $request->get('status', 'completed');
+        $orderBy = $request->get('order_by', 'return_date');
+        $orderDir = $request->get('order_dir', 'desc');
+
+        $returns = $this->returnService->getAllReturns(['search' => $search], $status, $orderBy, $orderDir);
+
+        return view('pages.admin.rent_returns.index', compact('returns', 'search', 'status', 'orderBy', 'orderDir'));
+    }
 }

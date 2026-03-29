@@ -27,10 +27,15 @@ class MenuHelper
                 'name' => 'Customer',
                 'path' => '/admin/customers',
             ],
+            [
+                'icon' => 'user-profile',
+                'name' => 'Supplier',
+                'path' => '/admin/suppliers',
+            ],
         ];
     }
 
-    public static function getRentSections(){
+    public static function getRentSalePurchaseSections(){
         return [
             [
                 'icon' => 'calendar',
@@ -46,6 +51,11 @@ class MenuHelper
                 'name' => 'Sales',
                 'path' => '/admin/sales',
             ],
+            [
+                'icon' => 'task',
+                'name' => 'Purchase',
+                'path' => '/admin/sales',
+            ],
         ];
     }
 
@@ -56,6 +66,11 @@ class MenuHelper
                 'icon' => 'user-profile',
                 'name' => 'Rental List',
                 'path' => '/admin/rents/items-list',
+            ],
+            [
+                'icon' => 'user-profile',
+                'name' => 'Returned List',
+                'path' => '/admin/rent-returns/items-list',
             ],
             [
                 'icon' => 'user-profile',
@@ -74,10 +89,15 @@ class MenuHelper
                 'name' => 'Products',
                 'path' => '/admin/products',
             ],
-                        [
+            [
                 'icon' => 'user-profile',
                 'name' => 'Quotation',
                 'path' => '/admin/quotation'
+            ],
+            [
+                'icon' => 'user-profile',
+                'name' => 'Custom Invoice',
+                'path' => '/admin/custom-invoice'
             ],
             [
                 'icon' => 'calendar',
@@ -152,7 +172,7 @@ class MenuHelper
             ],
             [
                 'title' => 'Rents & Sales',
-                'items' => self::getRentSections()
+                'items' => self::getRentSalePurchaseSections()
             ],
             [
                 'title' => 'Lists',

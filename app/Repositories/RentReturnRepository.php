@@ -36,7 +36,7 @@ class RentReturnRepository extends BaseRepository implements RentReturnRepositor
                             ->orWhere('phone_number', 'like', "%{$search}%");
                       });
                 });
-            });
+            })->orWhere('return_date', 'like', "%{$search}%");
         }
         
         return $query->orderBy($orderBy, $orderDir)->get();

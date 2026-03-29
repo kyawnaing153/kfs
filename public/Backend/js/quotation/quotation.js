@@ -7,7 +7,6 @@ $(document).ready(function() {
     let itemCount = itemCountBlade.items;
     const itemsContainer = $('#itemsContainer');
     const addItemBtn = $('#addItemBtn');
-    //const generateNumberBtn = $('#generateNumber');
     const quotationForm = $('#quotationForm');
     const emailForm = $('#emailForm');
     
@@ -287,21 +286,6 @@ $(document).ready(function() {
     $('.item-row').each(function() {
         attachItemListeners($(this));
     });
-    
-    // Generate new quotation number
-    // generateNumberBtn.on('click', function() {
-    //     $.ajax({
-    //         url: '{{ route("quotation.generate-number") }}',
-    //         type: 'GET',
-    //         success: function(response) {
-    //             $('input[name="quotation_no"]').val(response.quotation_no);
-    //             updateLivePreview();
-    //         },
-    //         error: function() {
-    //             alert('Failed to generate quotation number. Please try again.');
-    //         }
-    //     });
-    // });
     
     // Update live preview on form changes
     quotationForm.on('input change', 'input, select, textarea', function() {

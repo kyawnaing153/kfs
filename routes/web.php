@@ -5,13 +5,14 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Backend\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Backend\users\UserController;
 use App\Http\Controllers\Backend\customers\CustomerController;
+use App\Http\Controllers\Backend\suppliers\SupplierController;
 use App\Http\Controllers\Backend\products\ProductController;
 use App\Http\Controllers\Backend\products\ProductVariantController;
 use App\Http\Controllers\Backend\rents\{RentController, RentReturnController, RentPaymentController};
 use App\Http\Controllers\Backend\quotation\QuotationController;
 use App\Http\Controllers\Backend\staffs\StaffController;
 use App\Http\Controllers\Backend\sales\SaleController;
-use App\Models\Backend\Rent;
+use App\Http\Controllers\Backend\customInvoice\CustomInvoiceController;
 
 // dashboard pages
 Route::get('/', function () {
@@ -136,6 +137,17 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth']], function () {
     ]);
     Route::post('/customers/toggle-status/{customer}', [CustomerController::class, 'toggleStatus'])->name('customers.toggle-status');
 
+    Route::resource('/suppliers', SupplierController::class)->names([
+        'index'   => 'suppliers.index',
+        'create'  => 'suppliers.create',
+        'store'   => 'suppliers.store',
+        'show'    => 'suppliers.show',
+        'edit'    => 'suppliers.edit',
+        'update'  => 'suppliers.update',
+        'destroy' => 'suppliers.destroy',
+    ]);
+    Route::post('/suppliers/toggle-status/{suppliers}', [SupplierController::class, 'toggleStatus'])->name('suppliers.toggle-status');
+
     Route::resource('/products', ProductController::class)->names([
         'index'   => 'products.index',
         'create'  => 'products.create',
@@ -193,6 +205,7 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth']], function () {
 
     Route::prefix('rent-returns')->name('rent-returns.')->group(function () {
         Route::get('/', [RentReturnController::class, 'index'])->name('index');
+        Route::get('/items-list', [RentReturnController::class, 'itemList'])->name('items-list');
     });
 
     Route::prefix('rent-payments')->name('rent-payments.')->group(function () {
@@ -208,7 +221,6 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth']], function () {
         Route::post('/preview', [QuotationController::class, 'preview'])->name('quotation.preview');
         Route::post('/download', [QuotationController::class, 'download'])->name('quotation.download');
         Route::post('/email', [QuotationController::class, 'sendEmail'])->name('quotation.email');
-        Route::get('/generate-number', [QuotationController::class, 'generateNumber'])->name('quotation.generate-number');
     });
 
     Route::resource('/staffs', StaffController::class);
@@ -225,6 +237,14 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth']], function () {
     });
     
     Route::resource('/sales', SaleController::class);
+
+    // Quotation Routes
+    Route::prefix('custom-invoice')->group(function () {
+        Route::get('/', [CustomInvoiceController::class, 'index'])->name('custom-invoice.index');
+        Route::post('/preview', [CustomInvoiceController::class, 'preview'])->name('custom-invoice.preview');
+        // Route::post('/download', [CustomInvoiceController::class, 'download'])->name('custom-invoice.download');
+        // Route::post('/email', [CustomInvoiceController::class, 'sendEmail'])->name('custom-invoice.email');
+    });
         
 });
 

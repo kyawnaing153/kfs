@@ -72,6 +72,7 @@ class QuotationController extends Controller
 
         // Calculate totals
         $quotationData = $this->quotationService->calculateTotals($validated);
+        $quotationData['current_time'] = now()->format('Y-m-d H:i');
 
         return view('pages.admin.quotation.preview', compact('quotationData'));
     }
@@ -126,10 +127,10 @@ class QuotationController extends Controller
     /**
      * Generate new quotation number (AJAX endpoint)
      */
-    public function generateNumber(Request $request)
-    {
-        return response()->json([
-            'quotation_no' => $this->quotationService->generateQuotationNumber()
-        ]);
-    }
+    // public function generateNumber(Request $request)
+    // {
+    //     return response()->json([
+    //         'quotation_no' => $this->quotationService->generateQuotationNumber()
+    //     ]);
+    // }
 }
