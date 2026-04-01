@@ -117,7 +117,7 @@ class RentReturnController extends Controller
     {
         try {
             $this->returnService->sendReturnInvoiceEmail($rent, $return);
-
+            
             return redirect()->route('rent-returns.index')
                 ->with('success', 'Return receipt email sent successfully.');
         } catch (\Exception $e) {

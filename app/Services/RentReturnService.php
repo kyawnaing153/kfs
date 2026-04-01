@@ -50,14 +50,14 @@ class RentReturnService
             // Calculate refund and collect amounts
             $refundAmount = 0;
             $collectAmount = 0;
-            
+
             foreach ($data['items'] as &$item) {
                 // Update returned quantity
                 $this->rentItemRepository->updateReturnedQuantity(
                     $item['rent_item_id'],
                     $item['qty']
                 );
-                
+
                 // Increase stock
                 $rentItem = $this->rentItemRepository->find($item['rent_item_id']);
                 $this->productVariantRepository->increaseStock(
@@ -65,10 +65,10 @@ class RentReturnService
                     $item['qty']
                 );
             }
-            
+
             // Set return status
             $returnStatus = $this->areAllItemsReturned($rent) ? 'completed' : 'partial';
-            
+
             // Create return record
             $returnData = [
                 'refund_amount' => $data['refund_amount'] ?? 0,
@@ -80,16 +80,16 @@ class RentReturnService
                 'status' => $returnStatus,
                 'note' => $data['note'] ?? null
             ];
-            
+
             $return = $this->returnRepository->createWithItems(
                 $rent->id,
                 $returnData,
                 $data['items']
             );
-            
+
             // Update rent totals and status
             $this->updateRentAfterReturn($rent, $collectAmount, $refundAmount);
-            
+
             return $return;
         });
     }
@@ -138,30 +138,22 @@ class RentReturnService
      */
     public function sendReturnInvoiceEmail($rent, $return)
     {
-        #\Log::warning('No email found for customer ID: ' . $rent->customer->email . ' Return ID: ' . $return->id);
         $customerEmail = $rent->customer->email;
 
-            if (!$customerEmail) {
-                \Log::warning('No email found for customer ID123: ' . $rent->customer_id);
-                return;
-            }
+        if (!$customerEmail) {
+            return;
+        }
 
-            // Prepare the return data with all calculations (like in print method)
-            $return = $this->prepareReturnInvoiceData($rent, $return);
+        // Prepare the return data with all calculations (like in print method)
+        $return = $this->prepareReturnInvoiceData($rent, $return);
 
-            // Generate PDF content for attachment
-            $pdfContent = $this->getReturnInvoicePdf($rent, $return);
+        // Generate PDF content for attachment
+        $pdfContent = $this->getReturnInvoicePdf($rent, $return);
 
-            // Send email with PDF attachment
-            Mail::to($customerEmail)
-                ->cc(config('mail.from.address')) // CC to admin
-                ->send(new RentReturnInvoiceMail($rent, $return, $pdfContent));
-        // try {
-            
-            
-        // } catch (\Exception $e) {
-        //     // Don't throw - email failure shouldn't break the process
-        // }
+        // Send email with PDF attachment
+        Mail::to($customerEmail)
+            ->cc(config('mail.from.address')) // CC to admin
+            ->send(new RentReturnInvoiceMail($rent, $return, $pdfContent));
     }
 
     /**
@@ -182,19 +174,19 @@ class RentReturnService
 
         // Calculate total rental amount
         $return->total_rental_amount = $return->rent->sub_total * $return->total_days;
-        
+
         // Set current time
         $return->current_time = now()->format('Y-m-d H:i:s');
-        
+
         // Calculate item totals
         foreach ($return->items as $item) {
             $item->damage_total = $item->damage_fee ?? 0;
             $item->returned_total = $item->qty * ($item->rentItem->unit_price ?? 0);
         }
-        
+
         // Calculate total damage fee
         $return->total_damage_fee = $return->items->sum('damage_fee');
-        
+
         return $return;
     }
 
@@ -208,7 +200,7 @@ class RentReturnService
 
         // Generate PDF using your existing invoice blade view
         $pdf = Pdf::loadView('pages.admin.pdf.rent-return-invoice', compact('rent', 'return', 'totalPaymentByRentId'));
-        
+
         return $pdf->output();
     }
 }
