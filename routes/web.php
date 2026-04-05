@@ -260,7 +260,6 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth']], function () {
     Route::post('/expenses/toggle-status/{expense}', [ExpenseController::class, 'toggleStatus'])->name('expenses.toggle-status');
 
     // Purchase Routes
-    // Purchase Routes
     Route::prefix('purchases')->name('purchases.')->group(function () {
         Route::get('/', [PurchaseController::class, 'index'])->name('index');
         Route::get('/create', [PurchaseController::class, 'create'])->name('create');
