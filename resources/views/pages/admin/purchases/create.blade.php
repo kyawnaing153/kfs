@@ -1,0 +1,183 @@
+@extends('layouts.app')
+
+@section('content')
+    <x-common.page-breadcrumb pageTitle="Create New Purchase" />
+
+    <div class="grid grid-cols-1 gap-6">
+        <x-common.component-card title="Purchase Information">
+
+            <form method="POST" action="{{ route('purchases.store') }}" id="purchaseForm">
+                @csrf
+
+                <div class="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Supplier -->
+                    <div>
+                        <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                            Supplier<span class="text-red-500">*</span>
+                        </label>
+
+                        <select name="supplier_id" id="supplier_id" required
+                            class="dark:bg-dark-900 shadow-theme-xs h-11 w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm">
+                            <option value="">Select Supplier</option>
+
+                            @foreach ($suppliers as $supplier)
+                                <option value="{{ $supplier->id }}"
+                                    {{ old('supplier_id') == $supplier->id ? 'selected' : '' }}>
+                                    {{ $supplier->name }} - {{ $supplier->phone_number ?? 'No phone' }}
+                                </option>
+                            @endforeach
+
+                        </select>
+
+                        @error('supplier_id')
+                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Purchase Date -->
+                    <div>
+                        <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                            Purchase Date<span class="text-red-500">*</span>
+                        </label>
+
+                        <input type="date" name="purchase_date" id="purchase_date"
+                            value="{{ old('purchase_date', date('Y-m-d')) }}" required
+                            class="h-11 w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm">
+
+                        @error('purchase_date')
+                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
+
+                <!-- Items -->
+                <div class="mb-6">
+
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-medium">Purchase Items</h3>
+
+                        <button type="button" id="addItemBtn"
+                            class="bg-brand-600 text-white px-3 py-1.5 rounded-lg text-sm">
+                            Add Item
+                        </button>
+                    </div>
+
+                    <div id="itemsContainer" class="space-y-4"></div>
+
+                </div>
+
+                <!-- Pricing -->
+                <div class="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+
+                    <!-- Transport -->
+                    <div>
+                        <label class="text-sm font-medium">Transport Cost</label>
+
+                        <input type="number" name="transport" id="transport" value="{{ old('transport', 0) }}"
+                            min="0" step="0.1" class="h-11 w-full rounded-lg border px-4">
+                    </div>
+
+                    <!-- Discount -->
+                    <div>
+                        <label class="text-sm font-medium">Discount</label>
+
+                        <input type="number" name="discount" id="discount" value="{{ old('discount', 0) }}" min="0"
+                            step="0.1" class="h-11 w-full rounded-lg border px-4">
+                    </div>
+
+                    <!-- Tax -->
+                    <div>
+                        <label class="text-sm font-medium">Tax</label>
+
+                        <input type="number" name="tax" id="tax" value="{{ old('tax', 0) }}" min="0"
+                            step="1" class="h-11 w-full rounded-lg border px-4">
+                    </div>
+
+                </div>
+
+                <!-- Payment -->
+                <div class="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+
+                    <!-- Payment Status -->
+                    <div>
+                        <label class="text-sm font-medium">Payment Status</label>
+
+                        <select name="payment_status" id="paymentStatus" class="h-11 w-full rounded-lg border px-4">
+
+                            <option value="0" {{ old('payment_status') == '0' ? 'selected' : '' }}>Unpaid</option>
+                            <option value="1" {{ old('payment_status') == '1' ? 'selected' : '' }}>Paid</option>
+
+                        </select>
+                    </div>
+
+                    <!-- Delivery Status -->
+                    <div>
+                        <label class="text-sm font-medium">Delivery Status</label>
+
+                        <select name="status" id="deliveryStatus" class="h-11 w-full rounded-lg border px-4">
+
+                            <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>Pending</option>
+                            <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>Delivered</option>
+
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Totals -->
+                <div class="mb-6 border rounded-lg p-4 bg-gray-50">
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                        <div>
+                            <p class="text-sm">Sub Total</p>
+                            <p class="text-lg font-semibold" id="displaySubTotal">$0.00</p>
+                        </div>
+
+                        <div>
+                            <p class="text-sm">Grand Total</p>
+                            <p class="text-lg font-semibold text-green-600" id="total_amount">$0.00</p>
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="sub_total" id="hiddenSubTotal" value="0">
+                    <input type="hidden" name="total_amount" id="hiddenTotal" value="0">
+                </div>
+
+                <!-- Notes -->
+                <div class="mb-6">
+                    <label class="text-sm font-medium">Purchase Notes</label>
+
+                    <textarea name="notes" rows="3" class="w-full rounded-lg border px-4 py-2" placeholder="Any additional notes">{{ old('notes') }}</textarea>
+
+                </div>
+
+                <!-- Buttons -->
+                <div class="flex flex-col sm:flex-row gap-3">
+
+                    <button type="submit" class="bg-brand-600 text-white px-4 py-2.5 rounded-lg text-sm">
+                        Create Purchase
+                    </button>
+
+                    <a href="{{ route('purchases.index') }}" class="border px-4 py-2.5 rounded-lg text-sm">
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </x-common.component-card>
+    </div>
+@endsection
+
+@push('scripts')
+    <script>
+        flatpickr("#purchase_date", {
+            dateFormat: "Y-m-d",
+            defaultDate: "{{ date('Y-m-d') }}"
+        });
+    </script>
+
+    <script src="{{ asset('Backend/js/purchases/create.js') }}" defer></script>
+@endpush

@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Repositories\Interfaces\ProductRepositoryInterface;
+use App\Repositories\ProductRepository;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
@@ -10,7 +10,7 @@ class ProductService
 {
     protected $productRepository;
 
-    public function __construct(ProductRepositoryInterface $productRepository)
+    public function __construct(ProductRepository $productRepository)
     {
         $this->productRepository = $productRepository;
     }
@@ -73,9 +73,9 @@ class ProductService
         return $this->productRepository->toggleFeature($id);
     }
 
-    public function getProductsWithVariants(array $filters = [])
+    public function getProductsWithVariants()
     {
-        return $this->productRepository->getProductsWithVariants($filters);
+        return $this->productRepository->getProductsWithVariants();
     }
 
     public function getFeaturedProducts()

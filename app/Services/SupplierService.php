@@ -38,4 +38,8 @@ class SupplierService {
             $this->repo->update($id, ['status' => $newStatus]);
         }
     }
+
+    public function getActiveSuppliersForDropdown() {
+        return $this->repo->getActiveSuppliersForDropdown();
+    }
 }

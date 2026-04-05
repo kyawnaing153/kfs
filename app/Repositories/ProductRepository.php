@@ -119,13 +119,9 @@ class ProductRepository implements ProductRepositoryInterface
         return $product;
     }
 
-    public function getProductsWithVariants(array $filters = [])
+    public function getProductsWithVariants()
     {
-        $query = $this->model->with(['variants.prices']);
-
-        if (isset($filters['status'])) {
-            $query->where('status', $filters['status']);
-        }
+        $query = $this->model->with(['variants.prices'])->where('status', 1);
 
         return $query->orderBy('product_name')->get();
     }

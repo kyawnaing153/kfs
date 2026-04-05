@@ -56,4 +56,9 @@ class SupplierRepository implements SupplierRepositoryInterface
         }
         return false;
     }
+
+    public function getActiveSuppliersForDropdown()
+    {
+        return Supplier::active()->orderBy('name')->get(['id', 'name', 'phone_number']);
+    }
 }

@@ -13,6 +13,8 @@ use App\Http\Controllers\Backend\quotation\QuotationController;
 use App\Http\Controllers\Backend\staffs\StaffController;
 use App\Http\Controllers\Backend\sales\SaleController;
 use App\Http\Controllers\Backend\customInvoice\CustomInvoiceController;
+use App\Http\Controllers\Backend\expenses\ExpenseController;
+use App\Http\Controllers\Backend\purchases\PurchaseController;
 
 // dashboard pages
 Route::get('/', function () {
@@ -235,7 +237,7 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth']], function () {
         Route::post('/{sale}/complete', [SaleController::class, 'markAsCompleted'])->whereNumber('sale')->name('complete');
         Route::post('/{sale}/send-mail', [SaleController::class, 'sendInvoiceEmail'])->name('send-mail');
     });
-    
+
     Route::resource('/sales', SaleController::class);
 
     // Quotation Routes
@@ -245,11 +247,31 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth']], function () {
         // Route::post('/download', [CustomInvoiceController::class, 'download'])->name('custom-invoice.download');
         // Route::post('/email', [CustomInvoiceController::class, 'sendEmail'])->name('custom-invoice.email');
     });
-        
-});
 
-Route::get('/test-email/{rent}', function ($id) {
-    $rent = \App\Models\Backend\Rent::find($id);
-    \Mail::to('labroom108@gmail.com')->send(new \App\Mail\RentInvoiceMail($rent));
-    return 'Email sent!';
-})->middleware('auth');
+    Route::resource('/expenses', ExpenseController::class)->names([
+        'index'   => 'expenses.index',
+        'create'  => 'expenses.create',
+        'store'   => 'expenses.store',
+        'show'    => 'expenses.show',
+        'edit'    => 'expenses.edit',
+        'update'  => 'expenses.update',
+        'destroy' => 'expenses.destroy',
+    ]);
+    Route::post('/expenses/toggle-status/{expense}', [ExpenseController::class, 'toggleStatus'])->name('expenses.toggle-status');
+
+    // Purchase Routes
+    // Purchase Routes
+    Route::prefix('purchases')->name('purchases.')->group(function () {
+        Route::get('/', [PurchaseController::class, 'index'])->name('index');
+        Route::get('/create', [PurchaseController::class, 'create'])->name('create');
+        Route::post('/', [PurchaseController::class, 'store'])->name('store');
+        Route::get('/available-variants', [PurchaseController::class, 'getAvailableVariants'])->name('available-variants');
+        Route::get('/{id}', [PurchaseController::class, 'show'])->name('show');
+        Route::get('/{id}/edit', [PurchaseController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [PurchaseController::class, 'update'])->name('update');
+        Route::delete('/{id}', [PurchaseController::class, 'destroy'])->name('destroy');
+        Route::post('/{id}/mark-as-delivered', [PurchaseController::class, 'markAsDelivered'])->name('mark-as-delivered');
+        Route::post('/{id}/update-payment', [PurchaseController::class, 'updatePaymentStatus'])->name('update-payment');
+    });
+    Route::get('/products/{productId}/variants', [PurchaseController::class, 'getProductVariants'])->name('products.variants');
+});

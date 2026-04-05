@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Interfaces;
 
-interface SupplierRepositoryInterface
+interface ExpenseRepositoryInterface
 {
     public function findById(int $id);
     /**
@@ -15,5 +15,5 @@ interface SupplierRepositoryInterface
     public function create(array $data);
     public function update(int $id, array $data);
     public function delete(int $id);
-    public function getActiveSuppliersForDropdown();
+    public function toggleStatus(int $id);
 }

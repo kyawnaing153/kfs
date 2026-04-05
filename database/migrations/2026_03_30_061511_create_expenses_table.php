@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('expense_title');
             $table->decimal('amount', 12, 1);
             $table->date('expense_date');
-            $table->text('note');
+            $table->text('note')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });

@@ -53,9 +53,15 @@ class MenuHelper
             ],
             [
                 'icon' => 'task',
-                'name' => 'Purchase',
-                'path' => '/admin/sales',
+                'name' => 'Expenses',
+                'path' => '/admin/expenses',
+
             ],
+            [
+                'icon' => 'task',
+                'name' => 'Purchase',
+                'path' => '/admin/purchases',
+            ]
         ];
     }
 
