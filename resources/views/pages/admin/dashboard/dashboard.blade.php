@@ -228,7 +228,7 @@
                                     <td class="px-4 py-3 text-sm font-medium text-gray-900">
                                         {{ number_format($rent['total'], 0) }} Ks</td>
                                     <td class="px-4 py-3 text-sm font-medium text-red-600">
-                                        {{ number_format($rent['total_due']0) }} Ks</td>
+                                        {{ number_format($rent['total_due'], 0) }} Ks</td>
                                 </tr>
                             @empty
                                 <tr>
