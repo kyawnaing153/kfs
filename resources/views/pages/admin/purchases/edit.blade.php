@@ -138,12 +138,12 @@
 
                         <div>
                             <p class="text-sm">Sub Total</p>
-                            <p class="text-lg font-semibold" id="displaySubTotal">${{ number_format($purchase->sub_total, 2) }}</p>
+                            <p class="text-lg font-semibold" id="displaySubTotal">${{ number_format($purchase->sub_total, 0) }}</p>
                         </div>
 
                         <div>
                             <p class="text-sm">Grand Total</p>
-                            <p class="text-lg font-semibold text-green-600" id="total_amount">${{ number_format($purchase->total_amount, 2) }}</p>
+                            <p class="text-lg font-semibold text-green-600" id="total_amount">${{ number_format($purchase->total_amount, 0) }}</p>
                         </div>
                     </div>
 

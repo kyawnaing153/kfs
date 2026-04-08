@@ -83,12 +83,12 @@
         <!-- Header -->
         <div class="flex justify-between items-center mb-4 pb-6 border-b-2 border-blue-700">
             <div class="company-info">
-                <h1 class="text-blue-700 text-2xl font-bold mb-1">Kyaw Family Scaffolding</h1>
-                <p class="text-gray-600 text-sm">123 Construction Street, Yangon, Myanmar</p>
-                <p class="text-gray-600 text-sm">Phone: +95 1 234 5678 | Email: info@kyawscaffolding.com</p>
+                <h1 class="text-blue-700 text-2xl font-bold mb-1">{{ $settings['companyName'] ?? ''}}</h1>
+                <p class="text-gray-600 text-sm">{{ $settings['address'] ?? '' }}</p>
+                <p class="text-gray-600 text-sm">Phone: {{ $settings['phone'] ?? ''}} | Email: {{ $settings['email'] ?? '' }}</p>
             </div>
             <div class="invoice-details text-right">
-                <h2 class="text-blue-700 text-2xl font-bold mb-1">RETURN RECEIPT</h2>
+                <h2 class="text-blue-700 text-2xl font-bold mb-1">RETURN INVOICE</h2>
                 <p class="text-gray-600 text-sm mb-1"><span class="font-semibold text-gray-800">Receipt No:</span>
                     RETURN-{{ $return->id }}</p>
                 <p class="text-gray-600 text-sm mb-1"><span class="font-semibold text-gray-800">Rent No:</span>
@@ -119,6 +119,7 @@
             <div class="rent-info w-[48%] lg:ml-[60%]">
                 <div class="text-blue-700 font-bold text-sm uppercase mb-2">Rental Period:</div>
                 <div class="text-gray-600 text-sm">
+                    <p>{{ $rent->note ?? '' }}</p>
                     <p><span class="font-semibold text-gray-800">From:</span>
                         {{ \Carbon\Carbon::parse($rent->rent_date)->format('Y-m-d') }}</p>
                     <p><span class="font-semibold text-gray-800">To:</span>
@@ -349,11 +350,11 @@
 
         <!-- Footer -->
         <div class="text-center pt-4 mt-4 border-t border-gray-200">
-            <h3 class="text-blue-700 font-bold mb-1">Thank you for choosing Kyaw Family Scaffolding!</h3>
+            <h3 class="text-blue-700 font-bold mb-1">Thank you for choosing {{ $settings['companyName'] ?? ''}}!</h3>
             {{-- <p class="text-gray-600 text-sm mb-4">For any inquiries regarding this return receipt, please contact our
                 returns department.</p> --}}
             <div class="text-gray-500 text-xs">
-                <p>Phone: +95 9 428 111 750 | Email: sales@kyawscaffolding.com | Website: www.kyawscaffolding.com</p>
+                <p>Phone: {{ $settings['phone'] ?? ''}} | Email: {{ $settings['email'] ?? '' }} | Website: kyawfamilyscaffolding.com</p>
             </div>
         </div>
 

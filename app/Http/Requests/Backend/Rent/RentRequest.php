@@ -138,7 +138,7 @@ class RentRequest extends FormRequest
 
             // Notes
             'note' => [
-                'nullable',
+                'required',
                 'string',
                 'max:1000'
             ]

@@ -141,9 +141,15 @@
                                 <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                                     SKU<span class="text-red-500">*</span>
                                 </label>
-                                <input type="text" name="sku" value="{{ old('sku') }}"
-                                    class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
-                                    placeholder="Unique stock code" required />
+                                <div class="flex gap-2">
+                                    <input type="text" id="sku" name="sku" value="{{ old('sku') }}"
+                                        class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
+                                        placeholder="SKU-YYYY-DD-01" required />
+                                    <button type="button" onclick="generateSKU()"
+                                        class="inline-flex shrink-0 items-center justify-center rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800">
+                                        Generate
+                                    </button>
+                                </div>
                                 @error('sku')
                                     <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                                 @enderror
@@ -251,11 +257,11 @@
                                             Stock & Price
                                         </th>
                                         <th
-                                            class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            class="min-w-[220px] px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Pricing
                                         </th>
                                         <th
-                                            class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Actions
                                         </th>
                                     </tr>
@@ -264,7 +270,7 @@
                                     @foreach ($product->variants as $variant)
                                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50">
                                             <!-- Variant Details -->
-                                            <td class="px-4 py-4">
+                                            <td class="min-w-[180px] px-4 py-4">
                                                 <div class="flex flex-col">
                                                     <div class="font-medium text-gray-900 dark:text-white">
                                                         {{ $variant->size ?: 'Standard' }}
@@ -273,17 +279,17 @@
                                                                 class="text-sm text-gray-500">({{ $variant->unit }})</span>
                                                         @endif
                                                     </div>
-                                                    <div class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                                    {{-- <div class="mt-1 text-sm text-gray-500 dark:text-gray-400">
                                                         SKU: <span class="font-mono">{{ $variant->sku }}</span>
-                                                    </div>
+                                                    </div> --}}
                                                     <div class="mt-1 text-xs text-gray-400">
-                                                        Purchase: ${{ number_format($variant->purchase_price, 1) }}
+                                                        Purchase: ${{ number_format($variant->purchase_price, 0) }}
                                                     </div>
                                                 </div>
                                             </td>
 
                                             <!-- Stock & Price -->
-                                            <td class="px-4 py-4">
+                                            <td class="min-w-[150px] px-4 py-4">
                                                 <div class="space-y-2">
                                                     <!-- Stock Management -->
                                                     <div>
@@ -298,7 +304,7 @@
 
                                                         <form method="POST"
                                                             action="{{ route('products.variants.update-stock', [$product->id, $variant->id]) }}"
-                                                            class="flex gap-2"
+                                                            class=""
                                                             onsubmit="return confirm('Update stock quantity?')">
                                                             @csrf
                                                             <input type="number" name="quantity"
@@ -314,7 +320,7 @@
                                             </td>
 
                                             <!-- Pricing -->
-                                            <td class="px-4 py-4">
+                                            <td class="min-w-[220px] px-4 py-4 text-center">
                                                 <div class="space-y-1">
                                                     @php
                                                         $salePrice = $variant->prices
@@ -326,7 +332,7 @@
                                                     @endphp
 
                                                     @if ($salePrice)
-                                                        <div class="text-sm">
+                                                        <div class="whitespace-nowrap text-sm">
                                                             <span class="text-gray-600 dark:text-gray-400">Sale:</span>
                                                             <span
                                                                 class="ml-2 font-medium text-green-600 dark:text-green-400">
@@ -336,14 +342,14 @@
                                                     @endif
 
                                                     @foreach ($rentPrices as $rentPrice)
-                                                        <div class="text-sm">
+                                                        <div class="whitespace-nowrap text-sm">
                                                             <span class="text-gray-600 dark:text-gray-400">
                                                                 {{ $rentPrice->duration_days }}
                                                                 day{{ $rentPrice->duration_days > 1 ? 's' : '' }}:
                                                             </span>
                                                             <span
                                                                 class="ml-2 font-medium text-blue-600 dark:text-blue-400">
-                                                                ${{ number_format($rentPrice->price, 1) }}
+                                                                ${{ number_format($rentPrice->price, 0) }}
                                                             </span>
                                                         </div>
                                                     @endforeach
@@ -357,51 +363,42 @@
 
                                             <!-- Actions -->
                                             <td class="px-4 py-4">
-                                                <div class="flex items-center space-x-2">
-                                                    <!-- Edit Variant Modal Trigger -->
-                                                    <button type="button"
-                                                        onclick="editVariant({{ $product->id }}, {{ $variant->id }})"
-                                                        class="inline-flex items-center rounded-lg border border-gray-300 bg-white p-1.5 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
-                                                        title="Edit Variant">
+                                                <details class="relative inline-block text-left">
+                                                    <summary
+                                                        class="inline-flex cursor-pointer list-none items-center rounded-lg border border-gray-300 bg-white p-1.5 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
                                                         <svg class="h-4 w-4" fill="none" stroke="currentColor"
                                                             viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2"
-                                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                                stroke-width="2" d="M12 6h.01M12 12h.01M12 18h.01" />
                                                         </svg>
-                                                    </button>
+                                                    </summary>
 
-                                                    <!-- Add/Edit Price Modal Trigger -->
-                                                    <button type="button"
-                                                        onclick="managePrices({{ $product->id }}, {{ $variant->id }})"
-                                                        class="inline-flex items-center rounded-lg border border-gray-300 bg-white p-1.5 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
-                                                        title="Manage Prices">
-                                                        <svg class="h-4 w-4" fill="none" stroke="currentColor"
-                                                            viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2"
-                                                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                        </svg>
-                                                    </button>
-
-                                                    <!-- Delete Variant -->
-                                                    <form method="POST"
-                                                        action="{{ route('products.variants.destroy', [$product->id, $variant->id]) }}"
-                                                        onsubmit="return confirm('Are you sure you want to delete this variant? This will also delete all associated prices.')">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit"
-                                                            class="inline-flex items-center rounded-lg border border-red-300 bg-white p-1.5 text-red-600 hover:bg-red-50 dark:border-red-700 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/30"
-                                                            title="Delete Variant">
-                                                            <svg class="h-4 w-4" fill="none" stroke="currentColor"
-                                                                viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    stroke-width="2"
-                                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                            </svg>
+                                                    <div
+                                                        class="absolute right-0 z-20 mt-2 w-44 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800">
+                                                        <button type="button"
+                                                            onclick="editVariant({{ $product->id }}, {{ $variant->id }}); this.closest('details').removeAttribute('open');"
+                                                            class="flex w-full items-center px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700">
+                                                            Edit Variant
                                                         </button>
-                                                    </form>
-                                                </div>
+
+                                                        <button type="button"
+                                                            onclick="managePrices({{ $product->id }}, {{ $variant->id }}); this.closest('details').removeAttribute('open');"
+                                                            class="flex w-full items-center px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700">
+                                                            Manage Prices
+                                                        </button>
+
+                                                        <form method="POST"
+                                                            action="{{ route('products.variants.destroy', [$product->id, $variant->id]) }}"
+                                                            onsubmit="this.closest('details').removeAttribute('open'); return confirm('Are you sure you want to delete this variant? This will also delete all associated prices.')">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit"
+                                                                class="flex w-full items-center px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/30">
+                                                                Delete Variant
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </details>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -888,6 +885,28 @@
                 });
         }
 
+        function generateSKU() {
+            const skuInput = document.getElementById('sku');
+
+            if (!skuInput) {
+                return;
+            }
+
+            const existingSkus = @json($product->variants->pluck('sku')->values());
+            const now = new Date();
+            const year = now.getFullYear();
+            const day = String(now.getDate()).padStart(2, '0');
+            const prefix = `SKU-${year}-${day}-`;
+
+            const nextSequence = existingSkus
+                .filter(sku => typeof sku === 'string' && sku.startsWith(prefix))
+                .map(sku => parseInt(sku.split('-').pop(), 10))
+                .filter(sequence => !Number.isNaN(sequence))
+                .reduce((max, sequence) => Math.max(max, sequence), 0) + 1;
+
+            skuInput.value = `${prefix}${String(nextSequence).padStart(2, '0')}`;
+        }
+
         // Show/hide duration field based on price type
         document.getElementById('price_type').addEventListener('change', function() {
             const durationField = document.getElementById('durationField');
@@ -924,6 +943,12 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Validate variant form
             const variantForm = document.getElementById('variantForm');
+            const skuInput = document.getElementById('sku');
+
+            if (skuInput && !skuInput.value.trim()) {
+                generateSKU();
+            }
+
             if (variantForm) {
                 variantForm.addEventListener('submit', function(e) {
                     const skuInput = this.querySelector('input[name="sku"]');

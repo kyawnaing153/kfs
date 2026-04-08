@@ -54,7 +54,6 @@
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">PO Number</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Supplier</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Delivery Status</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Payment</th>
@@ -64,10 +63,13 @@
                 <tbody class="divide-y divide-gray-200">
                     @forelse($purchases as $purchase)
                         <tr>
-                            <td class="px-6 py-4">{{ $purchase->purchase_code }}</td>
-                            <td class="px-6 py-4">{{ $purchase->supplier->name }}</td>
-                            <td class="px-6 py-4">{{ $purchase->purchase_date }}</td>
-                            <td class="px-6 py-4">${{ number_format($purchase->total_amount, 2) }}</td>
+                            <td class="px-6 py-4">{{ $purchase->purchase_code }}
+                                <p><span class="text-sm text-gray-500 dark:text-gray-400">{{ $purchase->purchase_date }}</span></p>
+                            </td>
+                            <td class="px-6 py-4">{{ $purchase->supplier->name }} 
+                                <p><span class="text-sm text-gray-500 dark:text-gray-400 hover:underline"> <a href="tel:+{{$purchase->supplier->phone_number}}">{{ $purchase->supplier->phone_number }}</a></span></p>
+                            </td>
+                            <td class="px-6 py-4">${{ number_format($purchase->total_amount, 0) }}</td>
                             <td class="px-6 py-4">
                                 <span class="px-2 py-1 text-xs rounded-full {{ $purchase->status_badge_class }}">
                                     {{ $purchase->status_text }}

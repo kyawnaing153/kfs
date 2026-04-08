@@ -33,7 +33,7 @@
                 <li>Quotation No: {{ $quotationData['quotation_no'] }}</li>
                 <li>Date: {{ $quotationData['formatted_date'] }}</li>
                 <li>Items: {{ count($quotationData['items']) }} item(s)</li>
-                <li>Total Amount: ${{ number_format($quotationData['grand_total'], 2) }}</li>
+                <li>Total Amount: ${{ number_format($quotationData['grand_total'], 0) }}</li>
             </ul>
             
             <p>You can view the detailed quotation in the attached PDF document.</p>

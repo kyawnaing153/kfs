@@ -10,21 +10,40 @@
     x-data="{
         openSubmenus: {},
         init() {
-            // Auto-open Dashboard menu on page load
+            // Auto-open menus based on current path
             this.initializeActiveMenus();
         },
         initializeActiveMenus() {
-            const currentPath = '{{ $currentPath }}';
+            const currentPath = window.location.pathname;
     
             @foreach ($menuGroups as $groupIndex => $menuGroup)
                 @foreach ($menuGroup['items'] as $itemIndex => $item)
                     @if (isset($item['subItems']))
                         // Check if any submenu item matches current path
+                        let shouldOpen = false;
+                        
+                        // Check basePath first (for parent routes like /admin/rents/*)
+                        @if (isset($item['basePath']))
+                            if (currentPath.startsWith('{{ $item['basePath'] }}')) {
+                                shouldOpen = true;
+                            }
+                        @endif
+                        
+                        // Also check exact subitem paths
                         @foreach ($item['subItems'] as $subItem)
-                            if (currentPath === '{{ ltrim($subItem['path'], '/') }}' ||
-                                window.location.pathname === '{{ $subItem['path'] }}') {
-                                this.openSubmenus['{{ $groupIndex }}-{{ $itemIndex }}'] = true;
+                            if (currentPath === '{{ $subItem['path'] }}' ||
+                                currentPath.startsWith('{{ $subItem['path'] }}' + '/')) {
+                                shouldOpen = true;
                             } @endforeach
+    
+            if (shouldOpen) {
+                this.openSubmenus['{{ $groupIndex }}-{{ $itemIndex }}'] = true;
+            }
+            @else
+            // For single menu items with basePath
+            @if (isset($item['basePath'])) if (currentPath.startsWith('{{ $item['basePath'] }}')) {
+                                // You can add logic here if needed
+                            } @endif
             @endif
             @endforeach
             @endforeach
@@ -45,7 +64,16 @@
             return this.openSubmenus[key] || false;
         },
         isActive(path) {
-            return window.location.pathname.startsWith(path) || '{{ $currentPath }}'.startsWith(path.replace(/^\//, ''));
+            const currentPath = window.location.pathname;
+            // Exact match or path starts with the menu path (for nested routes)
+            if (currentPath === path || (currentPath.startsWith(path) && path !== '/')) {
+                return true;
+            }
+            return false;
+        },
+        isParentActive(basePath) {
+            const currentPath = window.location.pathname;
+            return currentPath.startsWith(basePath);
         }
     }"
     :class="{
@@ -57,18 +85,26 @@
     @mouseenter="if (!$store.sidebar.isExpanded) $store.sidebar.setHovered(true)"
     @mouseleave="$store.sidebar.setHovered(false)">
     <!-- Logo Section -->
-    <div class="pt-8 pb-7 flex"
+    <div class="pt-6 pb-6 flex"
         :class="(!$store.sidebar.isExpanded && !$store.sidebar.isHovered && !$store.sidebar.isMobileOpen) ?
         'xl:justify-center' :
         'justify-start'">
-        <a href="/">
+
+        <a href="/" class="block overflow-hidden h-0 sm:h-12 md:h-auto">
+
+            <!-- Light Logo -->
             <img x-show="$store.sidebar.isExpanded || $store.sidebar.isHovered || $store.sidebar.isMobileOpen"
-                class="dark:hidden" src="/images/logo/logo.svg" alt="Logo" width="150" height="40" />
+                class="dark:hidden w-auto h-0 sm:h-16 object-cover object-bottom" src="/images/logo/kfs-logo-teal.svg"
+                alt="Logo" />
+
+            <!-- Dark Logo -->
             <img x-show="$store.sidebar.isExpanded || $store.sidebar.isHovered || $store.sidebar.isMobileOpen"
-                class="hidden dark:block" src="/images/logo/logo-dark.svg" alt="Logo" width="150"
-                height="40" />
+                class="hidden dark:block w-auto h-14 sm:h-16 object-cover object-bottom"
+                src="/images/logo/kfs-logo-dark.svg" alt="Logo" />
+
+            <!-- Icon when sidebar collapsed -->
             <img x-show="!$store.sidebar.isExpanded && !$store.sidebar.isHovered && !$store.sidebar.isMobileOpen"
-                src="/images/logo/logo-icon.svg" alt="Logo" width="32" height="32" />
+                src="/images/logo/kfs-logo-teal.svg" alt="Logo" class="w-8 h-8" />
 
         </a>
     </div>
@@ -128,7 +164,7 @@
                                                 {{ $item['name'] }}
                                                 @if (!empty($item['new']))
                                                     <span class="absolute right-10"
-                                                        :class="isActive('{{ $item['path'] ?? '' }}') ?
+                                                        :class="isSubmenuOpen({{ $groupIndex }}, {{ $itemIndex }}) ?
                                                             'menu-dropdown-badge menu-dropdown-badge-active' :
                                                             'menu-dropdown-badge menu-dropdown-badge-inactive'">
                                                         new
@@ -150,7 +186,6 @@
                                         </button>
 
                                         <!-- Submenu -->
-
                                         <div
                                             x-show="isSubmenuOpen({{ $groupIndex }}, {{ $itemIndex }}) && ($store.sidebar.isExpanded || $store.sidebar.isHovered || $store.sidebar.isMobileOpen)">
                                             <ul class="mt-2 space-y-1 ml-9">

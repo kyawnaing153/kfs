@@ -94,9 +94,9 @@
                 {{-- <div class="w-20 h-20 bg-blue-900 rounded-full flex items-center justify-center mb-2 overflow-hidden">
                     <img src="" alt="Kyaw Family Scaffolding Logo" class="w-full h-full object-cover">
                 </div> --}}
-                <h1 class="text-blue-900 text-2xl font-bold mb-1">Kyaw Family Scaffolding</h1>
-                <p class="text-gray-600 text-sm">123 Construction Street, Yangon, Myanmar</p>
-                <p class="text-gray-600 text-sm">Phone: +95 1 234 5678 | Email: info@kyawscaffolding.com</p>
+                <h1 class="text-blue-900 text-2xl font-bold mb-1">{{ $settings['companyName'] ?? ''}}</h1>
+                <p class="text-gray-600 text-sm">{{ $settings['address'] ?? '' }}</p>
+                <p class="text-gray-600 text-sm">Phone: {{ $settings['phone'] ?? ''}} | Email: {{ $settings['email'] ?? '' }}</p>
             </div>
             <div class="invoice-details text-right">
                 <h2 class="text-blue-900 text-2xl font-bold mb-1">SALE INVOICE</h2>
@@ -106,8 +106,8 @@
                     {{ $sale->current_time }}</p>
                 <p class="text-gray-600 text-sm mb-1"><span class="font-semibold text-gray-800">Sale Date:</span>
                     {{ \Carbon\Carbon::parse($sale->sale_date)->format('Y-m-d') }}</p>
-                <p class="text-gray-600 text-sm"><span class="font-semibold text-gray-800">Payment Method:</span>
-                    {{ ucfirst($sale->payment_type) }}</p>
+                {{-- <p class="text-gray-600 text-sm"><span class="font-semibold text-gray-800">Payment Method:</span>
+                    {{ ucfirst($sale->payment_type) }}</p> --}}
             </div>
         </div>
 
@@ -272,11 +272,11 @@
 
         <!-- Footer -->
         <div class="text-center pt-4 mt-4 border-t border-gray-200">
-            <h3 class="text-blue-900 font-bold mb-1">Thank you for choosing Kyaw Family Scaffolding!</h3>
+            <h3 class="text-blue-900 font-bold mb-1">Thank you for choosing {{ $settings['companyName'] ?? ''}}!</h3>
             <p class="text-gray-600 text-sm mb-4">For any inquiries regarding this sale invoice, please contact us.</p>
             <div class="text-gray-500 text-xs">
                 {{-- <p>Kyaw Family Scaffolding | 123 Construction Street, Yangon, Myanmar</p> --}}
-                <p>Phone: +95 1 234 5678 | Email: info@kyawscaffolding.com | Website: www.kyawscaffolding.com</p>
+                <p>Phone: {{ $settings['phone'] ?? ''}} | Email: {{ $settings['email'] ?? '' }}</p>
             </div>
         </div>
 

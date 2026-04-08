@@ -174,6 +174,14 @@ class RentService
     }
 
     /**
+     * Mark rent as delivered
+     */
+    public function markAsDelivered($rent)
+    {
+        $rent->update(['status' => 'ongoing']);
+    }
+
+    /**
      * Get available customers
      */
     public function getAvailableCustomers()
@@ -194,9 +202,9 @@ class RentService
     /**
      * Get rents by status
      */
-    public function getRents(array $filters=[], string $status = 'all')
+    public function getRents(array $filters = [], string $status = 'all', int $perPage = 20)
     {
-        return $this->rentRepository->getByStatus($filters, $status);
+        return $this->rentRepository->getByStatus($filters, $status, $perPage);
     }
 
     /**

@@ -194,17 +194,17 @@
                 @foreach($quotationData['items'] as $item)
                 <tr>
                     <td>{{ $item['name'] }}</td>
-                    <td style="text-align: center;">{{ number_format($item['quantity'], 2) }}</td>
+                    <td style="text-align: center;">{{ number_format($item['quantity'], 0) }}</td>
                     <td style="text-align: center;">{{ $item['unit'] }}</td>
-                    <td style="text-align: right;">${{ number_format($item['unit_price'], 2) }}</td>
-                    <td style="text-align: right; font-weight: bold;">${{ number_format($item['line_total'], 2) }}</td>
+                    <td style="text-align: right;">${{ number_format($item['unit_price'], 0) }}</td>
+                    <td style="text-align: right; font-weight: bold;">${{ number_format($item['line_total'], 0) }}</td>
                 </tr>
                 @endforeach
                 
                 <!-- Subtotal Row -->
                 <tr>
                     <td colspan="4" style="text-align: right; padding-top: 20px; font-weight: bold;">Items Subtotal</td>
-                    <td style="text-align: right; padding-top: 20px; font-weight: bold;">${{ number_format($quotationData['items_subtotal'], 2) }}</td>
+                    <td style="text-align: right; padding-top: 20px; font-weight: bold;">${{ number_format($quotationData['items_subtotal'], 0) }}</td>
                 </tr>
             </tbody>
         </table>
@@ -214,34 +214,34 @@
             @if($quotationData['secure_deposit'] > 0)
             <tr>
                 <td>Secure Deposit:</td>
-                <td style="text-align: right;">+ ${{ number_format($quotationData['secure_deposit'], 2) }}</td>
+                <td style="text-align: right;">+ ${{ number_format($quotationData['secure_deposit'], 0) }}</td>
             </tr>
             @endif
             
             @if($quotationData['transport_fee'] > 0)
             <tr>
                 <td>Transport Fee:</td>
-                <td style="text-align: right;">+ ${{ number_format($quotationData['transport_fee'], 2) }}</td>
+                <td style="text-align: right;">+ ${{ number_format($quotationData['transport_fee'], 0) }}</td>
             </tr>
             @endif
             
             @if($quotationData['discount'] > 0)
             <tr style="color: #10b981;">
                 <td>Discount:</td>
-                <td style="text-align: right;">- ${{ number_format($quotationData['discount'], 2) }}</td>
+                <td style="text-align: right;">- ${{ number_format($quotationData['discount'], 0) }}</td>
             </tr>
             @endif
             
             @if($quotationData['tax_percentage'] > 0)
             <tr>
                 <td>Tax ({{ $quotationData['tax_percentage'] }}%):</td>
-                <td style="text-align: right;">+ ${{ number_format($quotationData['tax_amount'], 2) }}</td>
+                <td style="text-align: right;">+ ${{ number_format($quotationData['tax_amount'], 0) }}</td>
             </tr>
             @endif
             
             <tr class="grand-total">
                 <td>GRAND TOTAL:</td>
-                <td style="text-align: right;">${{ number_format($quotationData['grand_total'], 2) }}</td>
+                <td style="text-align: right;">${{ number_format($quotationData['grand_total'], 0) }}</td>
             </tr>
         </table>
 

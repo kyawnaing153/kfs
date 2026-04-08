@@ -50,8 +50,8 @@
 
             <!-- Logo (mobile only) -->
             <a href="/" class="xl:hidden">
-                <img class="dark:hidden" src="/images/logo/logo.svg" alt="Logo" />
-                <img class="hidden dark:block" src="/images/logo/logo-dark.svg" alt="Logo" />
+                <img class="dark:hidden w-auto h-14 sm:h-16 object-cover object-bottom" src="/images/logo/kfs-logo-teal.svg" alt="Logo" />
+                <img class="hidden dark:block w-auto h-14 sm:h-16 object-cover object-bottom" src="/images/logo/kfs-logo-dark.svg" alt="Logo" />
             </a>
 
             <!-- Application Menu Toggle (mobile only) -->

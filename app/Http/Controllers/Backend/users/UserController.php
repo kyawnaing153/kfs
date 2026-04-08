@@ -41,7 +41,7 @@ class UserController extends Controller
             ->getUsers($filters, $orderBy, $orderDir)
             ->paginate(15);
 
-        return view('pages.admin.users.index', compact('users'));
+        return view('pages.admin.users.index',['title' => 'KFS Users Management'], compact('users'));
     }
 
     /**

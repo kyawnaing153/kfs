@@ -24,7 +24,7 @@ Your rent invoice has been generated successfully. Please review the details bel
 | Product Details | Quantity | Unit Price | Total |
 |-----------------|----------|------------|-------|
 @foreach ($rent->items as $item)
-| **{{ $item->productVariant->product->product_name }}**<br><small style="color: #6c757d;">Size: {{ $item->productVariant->size }}</small> | {{ $item->rent_qty }} | ${{ number_format($item->unit_price, 2) }} | ${{ number_format($item->total, 2) }} |
+| **{{ $item->productVariant->product->product_name }}**<br><small style="color: #6c757d;">Size: {{ $item->productVariant->size }}</small> | {{ $item->rent_qty }} | ${{ number_format($item->unit_price, 0) }} | ${{ number_format($item->total, 0) }} |
 @endforeach
 </x-mail::table>
 
@@ -34,13 +34,13 @@ Your rent invoice has been generated successfully. Please review the details bel
 <x-mail::table>
 | | |
 |:---|---:|
-| **Subtotal** | ${{ number_format($rent->sub_total, 2) }} |
-| **Transportation** | ${{ number_format($rent->transport, 2) }} |
-| **Security Deposit** | ${{ number_format($rent->deposit, 2) }} |
+| **Subtotal** | ${{ number_format($rent->sub_total, 0) }} |
+| **Transportation** | ${{ number_format($rent->transport, 0) }} |
+| **Security Deposit** | ${{ number_format($rent->deposit, 0) }} |
 @if($rent->discount > 0)
-| **Discount** | <span style="color: #28a745;">-${{ number_format($rent->discount, 2) }}</span> |
+| **Discount** | <span style="color: #28a745;">-${{ number_format($rent->discount, 0) }}</span> |
 @endif
-| **Grand Total** | **${{ number_format($rent->total, 2) }}** |
+| **Grand Total** | **${{ number_format($rent->total, 0) }}** |
 </x-mail::table>
 
 ### Amount Summary
@@ -49,16 +49,16 @@ Your rent invoice has been generated successfully. Please review the details bel
     <table style="width: 100%;">
         <tr>
             <td style="padding: 8px 0;"><strong>Total Amount:</strong></td>
-            <td style="padding: 8px 0; text-align: right;">${{ number_format($rent->total, 2) }}</td>
+            <td style="padding: 8px 0; text-align: right;">${{ number_format($rent->total, 0) }}</td>
         </tr>
         <tr>
             <td style="padding: 8px 0;"><strong>Amount Paid:</strong></td>
-            <td style="padding: 8px 0; text-align: right; color: #28a745;">${{ number_format($rent->total_paid, 2) }}</td>
+            <td style="padding: 8px 0; text-align: right; color: #28a745;">${{ number_format($rent->total_paid, 0) }}</td>
         </tr>
         <tr style="border-top: 2px solid #dee2e6;">
             <td style="padding: 12px 0 8px 0;"><strong style="font-size: 18px;">Amount Due:</strong></td>
             <td style="padding: 12px 0 8px 0; text-align: right;">
-                <strong style="font-size: 20px; color: #dc3545;">${{ number_format($rent->total_due, 2) }}</strong>
+                <strong style="font-size: 20px; color: #dc3545;">${{ number_format($rent->total_due, 0) }}</strong>
             </td>
         </tr>
     </table>

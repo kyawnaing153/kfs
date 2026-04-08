@@ -209,7 +209,7 @@
                                             </div>
                                             <div class="mt-2 flex justify-between items-center">
                                                 <span class="text-sm text-gray-500">Line Total: $<span
-                                                        class="line-total">{{ number_format($item['quantity'] * $item['unit_price'], 2) }}</span></span>
+                                                        class="line-total">{{ number_format($item['quantity'] * $item['unit_price'], 0) }}</span></span>
                                                 @if ($index > 0)
                                                     <button type="button"
                                                         class="remove-item text-red-600 hover:text-red-800 text-sm">

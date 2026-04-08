@@ -181,7 +181,6 @@
                         href="#"
                     >
                         <span class="relative block w-full h-10 rounded-full z-1 max-w-10">
-                            <img src="{{ $notification['userImage'] }}" alt="User" class="overflow-hidden rounded-full" />
                             <span
                                 class="absolute bottom-0 right-0 z-10 h-2.5 w-full max-w-2.5 rounded-full border-[1.5px] border-white dark:border-gray-900 {{ $notification['status'] === 'online' ? 'bg-success-500' : 'bg-error-500' }}"
                             ></span>

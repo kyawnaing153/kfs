@@ -88,7 +88,7 @@
                     <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
                         <div class="flex justify-between items-center">
                             <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Sub Total:</span>
-                            <span class="text-sm font-medium text-gray-900 dark:text-white" id="subTotal">${{ number_format($rent->sub_total, 2) }}</span>
+                            <span class="text-sm font-medium text-gray-900 dark:text-white" id="subTotal">${{ number_format($rent->sub_total, 0) }}</span>
                         </div>
                     </div>
                 </div>
@@ -153,6 +153,22 @@
                             <option value="credit" {{ old('payment_type', $rent->payment_type) == 'credit' ? 'selected' : '' }}>Credit</option>
                         </select>
                     </div>
+
+                    <!-- Status Type -->
+                    <div>
+                        <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                            Rent Status
+                        </label>
+                        <select name="status" id="status"
+                            class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90">
+                            <option value="">Select Status</option>
+                            <option value="pending" {{ old('status', $rent->status) == 'pending' ? 'selected' : '' }}>Pending</option>
+                            <option value="ongoing" {{ old('status', $rent->status) == 'ongoing' ? 'selected' : '' }}>Delivered
+                            </option>
+                            <option value="completed" {{ old('status', $rent->status) == 'completed' ? 'selected' : '' }}>Settled With Customer
+                            </option>
+                        </select>
+                    </div>
                 </div>
 
                 <!-- Totals Display - Mobile Friendly -->
@@ -160,15 +176,15 @@
                     <div class="space-y-3 md:space-y-0 md:grid md:grid-cols-3 md:gap-4">
                         <div class="flex justify-between items-center md:block">
                             <p class="text-sm text-gray-600 dark:text-gray-400 md:mb-1">Sub Total</p>
-                            <p class="text-lg font-semibold text-gray-800 dark:text-white" id="displaySubTotal">${{ number_format($rent->sub_total, 2) }}</p>
+                            <p class="text-lg font-semibold text-gray-800 dark:text-white" id="displaySubTotal">${{ number_format($rent->sub_total, 0) }}</p>
                         </div>
                         <div class="flex justify-between items-center md:block">
                             <p class="text-sm text-gray-600 dark:text-gray-400 md:mb-1">Grand Total</p>
-                            <p class="text-lg font-semibold text-green-600 dark:text-green-400" id="grandTotal">${{ number_format($rent->total, 2) }}</p>
+                            <p class="text-lg font-semibold text-green-600 dark:text-green-400" id="grandTotal">${{ number_format($rent->total, 0) }}</p>
                         </div>
                         <div class="flex justify-between items-center md:block">
                             <p class="text-sm text-gray-600 dark:text-gray-400 md:mb-1">Due Amount</p>
-                            <p class="text-lg font-semibold text-red-600 dark:text-red-400" id="dueAmount">${{ number_format($rent->total_due, 2) }}</p>
+                            <p class="text-lg font-semibold text-red-600 dark:text-red-400" id="dueAmount">${{ number_format($rent->total_due, 0) }}</p>
                         </div>
                     </div>
                     <input type="hidden" name="sub_total" id="hiddenSubTotal" value="{{ $rent->sub_total }}">

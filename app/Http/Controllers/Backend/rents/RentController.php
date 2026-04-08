@@ -7,7 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Backend\Rent\RentRequest;
 use App\Services\{RentService, RentReturnService};
 use App\Models\Backend\Rent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 use function Symfony\Component\Clock\now;
 
@@ -31,9 +33,10 @@ class RentController extends Controller
         $status = $request->get('status', 'all');
         $search = $request->get('search', '');
         $returnStatus = $request->get('return_status', 'all');
+        $perPage = (int) $request->get('per_page', 20);
 
         // Always load both data sets
-        $rents = $this->rentService->getRents(['search' => $search], $status);
+        $rents = $this->rentService->getRents(['search' => $search], $status, $perPage);
         $returns = $this->rentReturnService->getAllReturns(['search' => $search], $returnStatus);
 
         return view('pages.admin.rents.index', compact('rents', 'returns', 'status', 'returnStatus', 'activeTab', 'search'));
@@ -222,5 +225,98 @@ class RentController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', 'Failed to send invoice email: ' . $e->getMessage());
         }
+    }
+
+    /*
+    * Status marks as delivered
+    */
+    public function markAsDelivered(Rent $rent)
+    {
+        try {
+            $this->rentService->markAsDelivered($rent);
+
+            return redirect()->route('rents.index', $rent->id)
+                ->with('success', 'Rent delivered successfully.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to mark rent as delivered: ' . $e->getMessage());
+        }
+
+    }
+
+    /**
+     * Display overdue rents report
+     */
+    public function overdueReport()
+    {
+        $thresholdDate = Carbon::now()->subDays(30)->toDateString();
+
+        $rents = Rent::with([
+                'customer',
+                'items',
+                'payments' => function ($query) {
+                    $query->orderBy('payment_date', 'desc');
+                }
+            ])
+            ->whereNotIn('status', ['completed', 'returned', 'cancelled'])
+            ->whereDate('rent_date', '<=', $thresholdDate)
+            ->where(function ($query) use ($thresholdDate) {
+                $query->where(function ($q) use ($thresholdDate) {
+                    $q->whereHas('payments')
+                        ->whereDoesntHave('payments', function ($paymentQuery) use ($thresholdDate) {
+                            $paymentQuery->whereDate('payment_date', '>', $thresholdDate);
+                        });
+                })->orWhereDoesntHave('payments');
+            })
+            ->get();
+
+        // Calculate additional metrics
+        $rents->each(function ($rent) use ($thresholdDate) {
+            $rentDate = Carbon::parse($rent->rent_date);
+            $rent->days_since_rent = intval(Carbon::now()->diffInDays($rentDate, true));
+            $rent->is_rent_date_overdue = $rentDate->lte($thresholdDate);
+            
+            $lastPayment = $rent->payments->first();
+            if ($lastPayment) {
+                $lastPaymentDate = Carbon::parse($lastPayment->payment_date);
+                $rent->days_since_last_payment = intval(Carbon::now()->diffInDays($lastPaymentDate, true));
+                $rent->last_payment_date = $lastPaymentDate->toDateString();
+                $rent->last_payment_amount = $lastPayment->amount;
+                $rent->has_recent_payment = $lastPaymentDate->gt($thresholdDate);
+            } else {
+                $rent->days_since_last_payment = null;
+                $rent->last_payment_date = null;
+                $rent->last_payment_amount = null;
+                $rent->has_recent_payment = false;
+            }
+            
+            // Determine overdue reason
+            if (!$lastPayment && $rent->is_rent_date_overdue) {
+                $rent->overdue_reason = 'No payment ever and rent period exceeded 30 days';
+            } elseif ($rent->is_rent_date_overdue && !$rent->has_recent_payment) {
+                $rent->overdue_reason = 'Both rent period exceeded and no recent payment';
+            } else {
+                $rent->overdue_reason = 'Unknown';
+            }
+            
+            // Calculate outstanding items
+            $totalRented = $rent->items->sum('rent_qty');
+            $totalReturned = $rent->items->sum('return_qty');
+            $rent->items_outstanding = $totalRented - $totalReturned;
+            
+            // Calculate payment status
+            $rent->total_paid = $rent->payments->sum('amount');
+            $rent->remaining_balance = $rent->total_due - $rent->total_paid;
+        });
+        
+        $summary = [
+            'total_overdue_rents' => $rents->count(),
+            'rent_date_overdue_count' => $rents->where('is_rent_date_overdue', true)->count(),
+            'payment_overdue_count' => $rents->where('has_recent_payment', false)->count(),
+            'no_payment_ever_count' => $rents->whereNull('last_payment_date')->count(),
+            'as_of_date' => Carbon::now()->toDateString(),
+            'threshold_date' => $thresholdDate
+        ];
+        
+        return view('pages.admin.rents.overdue-report', compact('rents', 'summary'));
     }
 }

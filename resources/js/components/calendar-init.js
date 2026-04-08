@@ -42,38 +42,38 @@ export function calendarInit() {
     };
 
     const calendarEventsList = [
-      {
-        id: "1",
-        title: "Event Conf.",
-        start: `${newDate.getFullYear()}-${getDynamicMonth()}-01`,
-        extendedProps: { calendar: "Danger" },
-      },
-      {
-        id: "2",
-        title: "Seminar #4",
-        start: `${newDate.getFullYear()}-${getDynamicMonth()}-07`,
-        end: `${newDate.getFullYear()}-${getDynamicMonth()}-10`,
-        extendedProps: { calendar: "Success" },
-      },
-      {
-        id: "3",
-        title: "Meeting #5",
-        start: `${newDate.getFullYear()}-${getDynamicMonth()}-09T16:00:00`,
-        extendedProps: { calendar: "Primary" },
-      },
-      {
-        id: "4",
-        title: "Submission #1",
-        start: `${newDate.getFullYear()}-${getDynamicMonth()}-16T16:00:00`,
-        extendedProps: { calendar: "Warning" },
-      },
-      {
-        id: "5",
-        title: "Seminar #6",
-        start: `${newDate.getFullYear()}-${getDynamicMonth()}-11`,
-        end: `${newDate.getFullYear()}-${getDynamicMonth()}-13`,
-        extendedProps: { calendar: "Danger" },
-      },
+      // {
+      //   id: "1",
+      //   title: "Event Conf.",
+      //   start: `${newDate.getFullYear()}-${getDynamicMonth()}-01`,
+      //   extendedProps: { calendar: "Danger" },
+      // },
+      // {
+      //   id: "2",
+      //   title: "Seminar #4",
+      //   start: `${newDate.getFullYear()}-${getDynamicMonth()}-07`,
+      //   end: `${newDate.getFullYear()}-${getDynamicMonth()}-10`,
+      //   extendedProps: { calendar: "Success" },
+      // },
+      // {
+      //   id: "3",
+      //   title: "Meeting #5",
+      //   start: `${newDate.getFullYear()}-${getDynamicMonth()}-09T16:00:00`,
+      //   extendedProps: { calendar: "Primary" },
+      // },
+      // {
+      //   id: "4",
+      //   title: "Submission #1",
+      //   start: `${newDate.getFullYear()}-${getDynamicMonth()}-16T16:00:00`,
+      //   extendedProps: { calendar: "Warning" },
+      // },
+      // {
+      //   id: "5",
+      //   title: "Seminar #6",
+      //   start: `${newDate.getFullYear()}-${getDynamicMonth()}-11`,
+      //   end: `${newDate.getFullYear()}-${getDynamicMonth()}-13`,
+      //   extendedProps: { calendar: "Danger" },
+      // },
     ];
 
     // Modal Functions

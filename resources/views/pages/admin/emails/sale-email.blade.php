@@ -26,7 +26,7 @@ Your sale invoice has been generated successfully. Please review the details bel
 | Product Details | Quantity | Unit Price | Total |
 |-----------------|----------|------------|-------|
 @foreach ($sale->items as $item)
-| **{{ $item->productVariant->product->product_name }}**<br><small style="color: #6c757d;">Size: {{ $item->productVariant->size }}</small> | {{ $item->sale_qty }} | {{ number_format($item->unit_price, 2) }} Ks | {{ number_format($item->total, 2) }} Ks |
+| **{{ $item->productVariant->product->product_name }}**<br><small style="color: #6c757d;">Size: {{ $item->productVariant->size }}</small> | {{ $item->sale_qty }} | {{ number_format($item->unit_price, 0) }} Ks | {{ number_format($item->total, 0) }} Ks |
 @endforeach
 </x-mail::table>
 
@@ -36,12 +36,12 @@ Your sale invoice has been generated successfully. Please review the details bel
 <x-mail::table>
 | | |
 |:---|---:|
-| **Subtotal** | {{ number_format($sale->sub_total, 2) }} Ks |
-| **Transportation** | {{ number_format($sale->transport, 2) }} Ks |
+| **Subtotal** | {{ number_format($sale->sub_total, 0) }} Ks |
+| **Transportation** | {{ number_format($sale->transport, 0) }} Ks |
 @if($sale->discount > 0)
-| **Discount** | <span style="color: #28a745;">-{{ number_format($sale->discount, 2) }}Ks</span> |
+| **Discount** | <span style="color: #28a745;">-{{ number_format($sale->discount, 0) }}Ks</span> |
 @endif
-| **Grand Total** | **{{ number_format($sale->total, 2) }}Ks** |
+| **Grand Total** | **{{ number_format($sale->total, 0) }}Ks** |
 </x-mail::table>
 
 ---
@@ -52,17 +52,17 @@ Your sale invoice has been generated successfully. Please review the details bel
     <table style="width: 100%;">
         <tr>
             <td style="padding: 8px 0;"><strong>Total Amount:</strong>
-            <td style="padding: 8px 0; text-align: right;">{{ number_format($sale->total, 2) }} Ks</td>
+            <td style="padding: 8px 0; text-align: right;">{{ number_format($sale->total, 0) }} Ks</td>
         </tr>
         </tr>
             <td style="padding: 8px 0;"><strong>Amount Paid:</strong>
-            <td style="padding: 8px 0; text-align: right; color: #28a745;">{{ number_format($sale->total_paid, 2) }} Ks</td>
+            <td style="padding: 8px 0; text-align: right; color: #28a745;">{{ number_format($sale->total_paid, 0) }} Ks</td>
         </tr>
         <tr style="border-top: 2px solid #dee2e6;">
             <td style="padding: 12px 0 8px 0;"><strong style="font-size: 18px;">Amount Due:</strong>
             <td style="padding: 12px 0 8px 0; text-align: right;">
                 @if($sale->total_due > 0)
-                    <strong style="font-size: 18px; color: #dc3545;">{{ number_format($sale->total_due, 1) }} Ks</strong>
+                    <strong style="font-size: 18px; color: #dc3545;">{{ number_format($sale->total_due, 0) }} Ks</strong>
                 @else
                     <strong style="font-size: 18px; color: #28a745;">0.00 Ks</strong>
                     <div style="font-size: 12px; color: #28a745;">(Fully Paid)</div>

@@ -4,13 +4,14 @@ namespace App\Repositories\Interfaces;
 
 use App\Models\Backend\Rent;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 interface RentRepositoryInterface extends BaseRepositoryInterface
 {
     /**
      * Get rents by status
      */
-    public function getByStatus(array $filters = [], string $status = 'all', int $perPage = 20): Collection;
+    public function getByStatus(array $filters = [], string $status = 'all', int $perPage = 20): LengthAwarePaginator;
 
     /**
      * Create rent with items

@@ -294,7 +294,7 @@
                                                     <div class="py-1">
                                                         <a href="{{ route('sales.print', $sale->id) }}" target="_blank"
                                                             class="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">
-                                                            Print
+                                                            Invoice
                                                         </a>
 
                                                         <form action="{{ route('sales.send-mail', $sale->id) }}"

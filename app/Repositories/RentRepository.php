@@ -2,10 +2,11 @@
 
 namespace App\Repositories;
 
-use App\Models\Backend\Rent;
+use App\Models\Backend\{Rent, RentItem};
 use App\Repositories\BaseRepository;
 use App\Repositories\Interfaces\RentRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class RentRepository extends BaseRepository implements RentRepositoryInterface
 {
@@ -17,7 +18,7 @@ class RentRepository extends BaseRepository implements RentRepositoryInterface
     /**
      * Get rents by status
      */
-    public function getByStatus(array $filters = [], string $status = 'all', int $perPage = 20): Collection
+    public function getByStatus(array $filters = [], string $status = 'all', int $perPage = 20): LengthAwarePaginator
     {
         $query = $this->model->with(['customer', 'items.productVariant']);
 
@@ -25,6 +26,7 @@ class RentRepository extends BaseRepository implements RentRepositoryInterface
             $search = $filters['search'];
             $query->where(function ($q) use ($search) {
                 $q->where('rent_code', 'like', "%{$search}%")
+                    ->orWhere('rent_date', 'like', "%{$search}%")
                     ->orWhereHas('customer', function ($q2) use ($search) {
                         $q2->where('name', 'like', "%{$search}%")
                             ->orWhere('phone_number', 'like', "%{$search}%");
@@ -39,7 +41,7 @@ class RentRepository extends BaseRepository implements RentRepositoryInterface
             $query->where('status', $status);
         }
 
-        return $query->orderBy('created_at', 'desc')->get();
+        return $query->orderBy('created_at', 'desc')->paginate($perPage);
     }
 
     /**

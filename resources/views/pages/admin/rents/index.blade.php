@@ -30,22 +30,22 @@
             <div class="mt-6 grid grid-cols-2 gap-4 md:grid-cols-4">
                 <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-900">
                     <p class="text-sm text-gray-500 dark:text-gray-400">Total Rents</p>
-                    <p class="text-2xl font-semibold text-gray-800 dark:text-white">{{ $rents->count() }}</p>
+                    <p class="text-2xl font-semibold text-gray-800 dark:text-white">{{ $rents->total() }}</p>
                 </div>
                 <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-900">
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Pending</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Pending Rents</p>
                     <p class="text-2xl font-semibold text-yellow-600 dark:text-yellow-400">
                         {{ $rents->where('status', 'pending')->count() }}
                     </p>
                 </div>
                 <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-900">
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Ongoing</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Ongoing Rents</p>
                     <p class="text-2xl font-semibold text-blue-600 dark:text-blue-400">
                         {{ $rents->where('status', 'ongoing')->count() }}
                     </p>
                 </div>
                 <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-900">
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Completed</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Completed Rents</p>
                     <p class="text-2xl font-semibold text-green-600 dark:text-green-400">
                         {{ $rents->where('status', 'completed')->count() }}
                     </p>
@@ -63,7 +63,7 @@
                                {{ $activeTab === 'rents' ? 'text-brand-600 border-b-2 border-brand-600 dark:text-brand-400 dark:border-brand-400' : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300' }}">
                         Rental Transactions
                         <span class="ml-2 rounded-full bg-gray-100 px-2 py-0.5 text-xs dark:bg-gray-800">
-                            {{ $rents->count() }}
+                            {{ $rents->total() }}
                         </span>
                     </button>
                     <button data-tab="returns"
@@ -81,6 +81,7 @@
             <div class="p-6 pb-0">
                 <form method="GET" action="{{ route('rents.index') }}" id="searchForm">
                     <input type="hidden" name="tab" id="activeTabInput" value="{{ $activeTab }}">
+                    <input type="hidden" name="per_page" value="{{ request('per_page', 20) }}">
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <!-- Search Input -->
@@ -114,8 +115,8 @@
                                            dark:bg-gray-900 dark:focus:border-brand-500 dark:focus:ring-brand-900">
                                 <option value="all" {{ $status === 'all' ? 'selected' : '' }}>All Status</option>
                                 <option value="pending" {{ $status === 'pending' ? 'selected' : '' }}>Pending</option>
-                                <option value="ongoing" {{ $status === 'ongoing' ? 'selected' : '' }}>Ongoing</option>
-                                <option value="completed" {{ $status === 'completed' ? 'selected' : '' }}>Completed
+                                <option value="ongoing" {{ $status === 'ongoing' ? 'selected' : '' }}>Delivered</option>
+                                <option value="completed" {{ $status === 'completed' ? 'selected' : '' }}>Settled With Customer
                                 </option>
                             </select>
                         </div>
@@ -182,6 +183,9 @@
                                 <thead>
                                     <tr class="bg-gray-50 dark:bg-gray-800/50">
                                         <th
+                                            class="px-4 py-3 w-auto text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            No</th>
+                                        <th
                                             class="px-4 py-3 min-w-[220px] text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Rent Details
                                         </th>
@@ -200,13 +204,24 @@
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-                                    @foreach ($rents as $rent)
+                                    @php
+                                        $startNumber = $rents->firstItem() ?? 1;
+                                    @endphp
+                                    @foreach ($rents as $key => $rent)
                                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50">
                                             <!-- Rent Details -->
                                             <td class="px-4 py-4">
+                                                <div class="font-medium text-sm text-gray-900 dark:text-white">
+                                                    {{ $startNumber + $key }}.
+                                                </div>
+                                            </td>
+                                            <td class="px-4 py-4">
                                                 <div class="flex flex-col">
                                                     <div class="font-medium text-gray-900 dark:text-white">
-                                                        {{ $rent->rent_code }}
+                                                        <a href="{{ route('rents.print', $rent->id) }}"
+                                                            class="text-blue-500 hover:text-blue-700">
+                                                            {{ $rent->rent_code }}
+                                                        </a>
                                                     </div>
                                                     <div class="mt-1 text-sm text-gray-500 dark:text-gray-400">
                                                         {{ $rent->rent_date }}
@@ -229,7 +244,10 @@
                                                     {{ $rent->customer->name }}
                                                 </div>
                                                 <div class="text-sm text-gray-500 dark:text-gray-400">
-                                                    {{ $phones[0] ?? ($phones[1] ?? 'No phone') }}
+                                                    <a href="tel:+{{ $phones[0] ?? $phones[1] }}"
+                                                        class="underline hover:text-blue-700">
+                                                        {{ $phones[0] ?? $phones[1] }}
+                                                    </a>
                                                 </div>
                                             </td>
 
@@ -250,7 +268,11 @@
                                                         @if ($rent->status === 'pending') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200
                                                         @elseif($rent->status === 'ongoing') bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200
                                                         @else bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 @endif">
-                                                            {{ ucfirst($rent->status) }}
+                                                            @if($rent->status === 'completed')
+                                                                {{ 'Settled' }}
+                                                            @else
+                                                                {{ ucfirst($rent->status) }}
+                                                            @endif
                                                         </span>
                                                     </div>
                                                 </div>
@@ -279,15 +301,24 @@
                                                             dark:bg-gray-800"
                                                         style="display: none;">
                                                         <div class="py-1">
-                                                            <a href="{{ route('rents.show', $rent->id) }}"
-                                                                class="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">
-                                                                View
-                                                            </a>
+                                                            @if ($rent->status === 'pending')
+                                                                <form action="{{ route('rents.mark-as-delivered', $rent->id) }}"
+                                                                    method="POST">
+                                                                    @csrf
+                                                                    <button type="submit"
+                                                                        class="flex w-full items-center gap-2 px-4 py-2 text-sm text-brand-500 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                                                        Mark as Delivered
+                                                                    </button>
+                                                                </form>
+                                                            @endif
                                                             <a href="{{ route('rents.print', $rent->id) }}"
                                                                 class="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">
                                                                 Invoice
                                                             </a>
-
+                                                            <a href="{{ route('rents.show', $rent->id) }}"
+                                                                class="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">
+                                                                View
+                                                            </a>
                                                             <form action="{{ route('rents.send-mail', $rent->id) }}"
                                                                 method="POST">
                                                                 @csrf
@@ -303,7 +334,7 @@
                                                                     Edit
                                                                 </a>
                                                             @endif
-                                                            @if ($rent->status !== 'completed')
+                                                            @if ($rent->status === 'ongoing')
                                                                 <a href="{{ route('rents.returns.create', $rent->id) }}"
                                                                     class="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">
                                                                     Return Items
@@ -330,6 +361,10 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                        </div>
+
+                        <div class="mt-6">
+                            {{ $rents->appends(request()->query())->links() }}
                         </div>
                     @endif
                 </div>
@@ -420,9 +455,9 @@
                                                         {{ $return->rent->customer->name }}
                                                     </div>
                                                     <div class="text-xs text-gray-400">
-                                                        <a href="tel:{{ $phones[0] ?? $phones[1] ?? '' }}"
+                                                        <a href="tel:{{ $phones[0] ?? ($phones[1] ?? '') }}"
                                                             class="hover:underline">
-                                                            {{ $phones[0] ?? $phones[1] ?? 'No phone' }}
+                                                            {{ $phones[0] ?? ($phones[1] ?? 'No phone') }}
                                                         </a>
                                                     </div>
                                                 </div>

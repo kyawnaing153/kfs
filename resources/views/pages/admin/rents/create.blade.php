@@ -85,7 +85,7 @@
                     <!-- Deposit -->
                     <div>
                         <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                            Deposit
+                            Deposit <span class="text-red-500">*</span>
                         </label>
                         <input type="number" name="deposit" id="deposit" value="{{ old('deposit', 0) }}" min="0"
                             step="0.1"
@@ -97,8 +97,8 @@
                         <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                             Total Paid
                         </label>
-                        <input type="number" name="total_paid" id="totalPaid" value="{{ old('total_paid', 0) }}" min="0"
-                            step="1"
+                        <input type="number" name="total_paid" id="totalPaid" value="{{ old('total_paid', 0) }}"
+                            min="0" step="1"
                             class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90">
                     </div>
 
@@ -120,13 +120,26 @@
                         <select name="payment_type" id="payment_type"
                             class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90">
                             <option value="">Select Payment Type</option>
-                            <option value="cash" {{ old('payment_type') == 'cash' ? 'selected' : '' }}>Cash</option>
-                            <option value="card" {{ old('payment_type') == 'card' ? 'selected' : '' }}>Card</option>
+                            <option value="cash" {{ old('payment_type', 'cash') == 'cash' ? 'selected' : '' }}>Cash</option>
+                            <option value="card" {{ old('payment_type') == 'KPay' ? 'selected' : '' }}>KPay</option>
+                            <option value="credit" {{ old('payment_type') == 'AYAPay' ? 'selected' : '' }}>AYAPay</option>
+                            <option value="credit" {{ old('payment_type') == 'WavePay' ? 'selected' : '' }}>WavePay</option>
                             <option value="bank_transfer" {{ old('payment_type') == 'bank_transfer' ? 'selected' : '' }}>
                                 Bank Transfer</option>
-                            <option value="mobile_payment" {{ old('payment_type') == 'mobile_payment' ? 'selected' : '' }}>
-                                Mobile Payment</option>
-                            <option value="credit" {{ old('payment_type') == 'credit' ? 'selected' : '' }}>Credit</option>
+                        </select>
+                    </div>
+
+                    <!-- Status Type -->
+                    <div>
+                        <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                            Rent Status
+                        </label>
+                        <select name="status" id="status"
+                            class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90">
+                            <option value="">Select Status</option>
+                            <option value="pending" {{ old('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                            <option value="ongoing" {{ old('status', 'ongoing') == 'ongoing' ? 'selected' : '' }}>Delivered
+                            </option>
                         </select>
                     </div>
                 </div>
@@ -155,11 +168,11 @@
                 <!-- Notes -->
                 <div class="mb-6">
                     <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                        Transport Address
+                        Transport Address <span class="text-red-500">*</span>
                     </label>
                     <textarea name="note" rows="3"
                         class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
-                        placeholder="Any additional notes">{{ old('note') }}</textarea>
+                        placeholder="Complete address for delivery">{{ old('note') }}</textarea>
                 </div>
 
                 <!-- Submit Buttons - Stack on mobile -->
