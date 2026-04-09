@@ -72,7 +72,7 @@
                         Ks</span>
                 </div>
             </x-common.component-card>
-            
+
             <x-common.component-card title="Total Customers">
                 <div class="flex items-center text-green-600 mt-2">
                     <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -99,16 +99,34 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
             <div class="lg:col-span-2">
                 <x-common.component-card title="Financial Overview">
+                    <div class="flex items-center justify-end gap-2 mb-4">
+                        <button type="button"
+                            class="chart-period-btn px-3 py-1.5 text-sm font-medium rounded-md border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 transition-colors"
+                            data-period="week">
+                            This Week
+                        </button>
+                        <button type="button"
+                            class="chart-period-btn px-3 py-1.5 text-sm font-medium rounded-md border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 transition-colors"
+                            data-period="month">
+                            This Month
+                        </button>
+                        <button type="button"
+                            class="chart-period-btn px-3 py-1.5 text-sm font-medium rounded-md border border-blue-500 text-blue-700 bg-blue-50 transition-colors"
+                            data-period="year">
+                            This Year
+                        </button>
+                    </div>
                     <canvas id="financialChart" height="300"></canvas>
                 </x-common.component-card>
             </div>
 
             <div class="lg:col-span-1">
-                <x-common.component-card title="Financial Summary of This Year">
+                <x-common.component-card title="Financial Summary of Current Month">
                     @php
-                        $salesTotal = array_sum($dashboardData['charts']['sales_data'] ?? []);
-                        $rentsTotal = array_sum($dashboardData['charts']['rents_data'] ?? []);
-                        $expensesTotal = array_sum($dashboardData['charts']['expenses_data'] ?? []);
+                        $currentMonth = now()->month;
+                        $salesTotal = $dashboardData['charts']['sales_data'][$currentMonth - 1] ?? [];
+                        $rentsTotal = $dashboardData['charts']['rents_data'][$currentMonth - 1] ?? [];
+                        $expensesTotal = $dashboardData['charts']['expenses_data'][$currentMonth - 1] ?? [];
                         $financialTotal = $salesTotal + $rentsTotal - $expensesTotal;
 
                         $salesPercent = $financialTotal > 0 ? ($salesTotal / $financialTotal) * 100 : 0;
@@ -408,47 +426,63 @@
 @endsection
 
 @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> --}}
+    <script src="{{ asset('Backend/js/chart.js') }}" defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+
             const ctx = document.getElementById('financialChart').getContext('2d');
 
-            new Chart(ctx, {
+            const chartPeriodButtons = document.querySelectorAll('.chart-period-btn');
+            const chartDataUrl = @json(route('admin.dashboard.chart-data'));
+
+            const initialChartData = {
+                labels: @json($dashboardData['charts']['months']),
+                sales: @json($dashboardData['charts']['sales_data']),
+                expenses: @json($dashboardData['charts']['expenses_data']),
+                rents: @json($dashboardData['charts']['rents_data']),
+            };
+
+            // Create Chart
+            const chart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: {!! json_encode($dashboardData['charts']['months']) !!},
+                    labels: initialChartData.labels,
                     datasets: [{
-                        label: 'Sales (Ks)',
-                        data: {!! json_encode($dashboardData['charts']['sales_data']) !!},
-                        borderColor: 'rgb(34, 197, 94)',
-                        backgroundColor: 'rgba(34, 197, 94, 0.1)',
-                        borderWidth: 2,
-                        tension: 0.4,
-                        fill: true
-                    }, {
-                        label: 'Expenses (Ks)',
-                        data: {!! json_encode($dashboardData['charts']['expenses_data']) !!},
-                        borderColor: 'rgb(239, 68, 68)',
-                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                        borderWidth: 2,
-                        tension: 0.4,
-                        fill: true
-                    }, {
-                        label: 'Rents (Ks)',
-                        data: {!! json_encode($dashboardData['charts']['rents_data']) !!},
-                        borderColor: 'rgb(59, 130, 246)',
-                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                        borderWidth: 2,
-                        tension: 0.4,
-                        fill: true
-                    }]
+                            label: 'Sales (Ks)',
+                            data: initialChartData.sales,
+                            borderColor: 'rgb(34, 197, 94)',
+                            backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Expenses (Ks)',
+                            data: initialChartData.expenses,
+                            borderColor: 'rgb(239, 68, 68)',
+                            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Rents (Ks)',
+                            data: initialChartData.rents,
+                            borderColor: 'rgb(59, 130, 246)',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: true,
                     interaction: {
                         mode: 'index',
-                        intersect: false,
+                        intersect: false
                     },
                     plugins: {
                         legend: {
@@ -459,7 +493,7 @@
                             }
                         },
                         tooltip: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            backgroundColor: 'rgba(0,0,0,0.8)',
                             padding: 12,
                             callbacks: {
                                 label: function(context) {
@@ -477,7 +511,7 @@
                         y: {
                             beginAtZero: true,
                             grid: {
-                                color: 'rgba(0, 0, 0, 0.05)'
+                                color: 'rgba(0,0,0,0.05)'
                             },
                             ticks: {
                                 callback: function(value) {
@@ -493,6 +527,83 @@
                     }
                 }
             });
+
+            // Change active button style
+            function setActivePeriodButton(activePeriod) {
+                chartPeriodButtons.forEach((button) => {
+
+                    const isActive = button.dataset.period === activePeriod;
+
+                    button.classList.toggle('border-blue-500', isActive);
+                    button.classList.toggle('text-blue-700', isActive);
+                    button.classList.toggle('bg-blue-50', isActive);
+
+                    button.classList.toggle('border-gray-300', !isActive);
+                    button.classList.toggle('text-gray-700', !isActive);
+                    button.classList.toggle('bg-white', !isActive);
+                });
+            }
+
+            // Apply new chart data
+            function applyChartData(chartData) {
+
+                chart.data.labels = chartData.labels ?? [];
+
+                chart.data.datasets[0].data = chartData.sales ?? [];
+                chart.data.datasets[1].data = chartData.expenses ?? [];
+                chart.data.datasets[2].data = chartData.rents ?? [];
+
+                chart.update();
+            }
+
+            // Load data from Laravel controller
+            async function loadChartData(period) {
+
+                if (period === 'year') {
+                    applyChartData(initialChartData);
+                    return;
+                }
+
+                try {
+
+                    const response = await fetch(`${chartDataUrl}?period=${period}`, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to load chart data');
+                    }
+
+                    const payload = await response.json();
+
+                    if (!payload.success || !payload.data) {
+                        throw new Error('Invalid chart response');
+                    }
+
+                    applyChartData(payload.data);
+
+                } catch (error) {
+                    console.error('Chart load error:', error);
+                }
+            }
+
+            // Period button click
+            chartPeriodButtons.forEach((button) => {
+
+                button.addEventListener('click', async function() {
+
+                    const period = this.dataset.period;
+
+                    setActivePeriodButton(period);
+
+                    await loadChartData(period);
+
+                });
+
+            });
+
         });
     </script>
 @endpush

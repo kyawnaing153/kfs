@@ -2,6 +2,8 @@
 
 namespace App\Repositories\Interfaces;
 
+use Carbon\Carbon;
+
 interface DashboardRepositoryInterface
 {
     public function getTotalSales(): float;
@@ -14,8 +16,11 @@ interface DashboardRepositoryInterface
     public function getRecentRents(int $limit = 5): array;
     public function getRecentExpenses(int $limit = 5): array;
     public function getMonthlySalesData(int $year): array;
-    public function getMonthlyRentsData(): array;
+    public function getMonthlyRentsData(int $year): array;
     public function getMonthlyExpensesData(int $year): array;
+    public function getSalesByDateRange(Carbon $startDate, Carbon $endDate): array;
+    public function getExpensesByDateRange(Carbon $startDate, Carbon $endDate): array;
+    public function getRentsByDateRange(Carbon $startDate, Carbon $endDate): array;
     public function getPaymentStatusSummary(): array;
     public function getTopProducts(int $limit = 5): array;
     public function getLowStockProducts(int $limit = 5): array;

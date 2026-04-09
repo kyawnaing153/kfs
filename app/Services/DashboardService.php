@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Repositories\Interfaces\DashboardRepositoryInterface;
 use App\Models\Backend\{Sale, Expense, Rent};
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 
 class DashboardService
 {
@@ -22,7 +23,7 @@ class DashboardService
 
         $monthlySales = $this->dashboardRepository->getMonthlySalesData($currentYear);
         $monthlyExpenses = $this->dashboardRepository->getMonthlyExpensesData($currentYear);
-        $monthlyRents = $this->dashboardRepository->getMonthlyRentsData();
+        $monthlyRents = $this->dashboardRepository->getMonthlyRentsData($currentYear);
 
         $netProfit = $this->dashboardRepository->getTotalSales() + 
                      $this->dashboardRepository->getTotalRents() - 
@@ -71,6 +72,72 @@ class DashboardService
                 ->sum('amount'),
             'pending_rents' => Rent::where('status', 'pending')->count(),
             'pending_sales' => Sale::where('status', 'pending')->count(),
+        ];
+    }
+
+    public function getFinancialChartData(string $period = 'year', ?int $year = null): array
+    {
+        $period = strtolower($period);
+        $now = Carbon::now();
+
+        if (!in_array($period, ['week', 'month', 'year'], true)) {
+            $period = 'year';
+        }
+
+        if ($period === 'week') {
+            $weekStart = $now->copy()->startOfWeek(Carbon::MONDAY);
+            return $this->buildRangeChartData(
+                $weekStart,
+                $weekStart->copy()->addDays(6),
+                'D'
+            );
+        }
+
+        if ($period === 'month') {
+            return $this->buildRangeChartData(
+                $now->copy()->startOfMonth(),
+                $now->copy()->endOfMonth(),
+                'j'
+            );
+        }
+
+        $selectedYear = $year ?? $now->year;
+        $salesData = array_values($this->dashboardRepository->getMonthlySalesData($selectedYear));
+        $expensesData = array_values($this->dashboardRepository->getMonthlyExpensesData($selectedYear));
+        $rentsData = array_values($this->dashboardRepository->getMonthlyRentsData($selectedYear));
+
+        return [
+            'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            'sales' => $salesData,
+            'expenses' => $expensesData,
+            'rents' => $rentsData,
+        ];
+    }
+
+    private function buildRangeChartData(Carbon $startDate, Carbon $endDate, string $labelFormat): array
+    {
+        $salesByDate = $this->dashboardRepository->getSalesByDateRange($startDate, $endDate);
+        $expensesByDate = $this->dashboardRepository->getExpensesByDateRange($startDate, $endDate);
+        $rentsByDate = $this->dashboardRepository->getRentsByDateRange($startDate, $endDate);
+
+        $labels = [];
+        $sales = [];
+        $expenses = [];
+        $rents = [];
+
+        foreach (CarbonPeriod::create($startDate, $endDate) as $date) {
+            $dateKey = $date->toDateString();
+            $labels[] = $date->format($labelFormat);
+            $sales[] = (float) ($salesByDate[$dateKey] ?? 0);
+            $expenses[] = (float) ($expensesByDate[$dateKey] ?? 0);
+            $rents[] = (float) ($rentsByDate[$dateKey] ?? 0);
+        }
+
+        return [
+            'labels' => $labels,
+            'sales' => $sales,
+            'expenses' => $expenses,
+            'rents' => $rents,
         ];
     }
 }

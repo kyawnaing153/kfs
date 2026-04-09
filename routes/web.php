@@ -55,6 +55,8 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth']], function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('admin.dashboard');
+    Route::get('/dashboard/chart-data', [DashboardController::class, 'getChartData'])
+        ->name('admin.dashboard.chart-data');
 
     // Custom route to allow /admin/users/index to call the index method
     Route::get('/users/index', [UserController::class, 'index'])->name('users.index.custom');

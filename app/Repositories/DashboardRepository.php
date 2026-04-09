@@ -10,6 +10,7 @@ use App\Models\Backend\Rent;
 use App\Models\Customer;
 use App\Models\{Product, ProductVariant};
 use App\Models\Backend\SaleItem;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class DashboardRepository implements DashboardRepositoryInterface
@@ -79,7 +80,7 @@ class DashboardRepository implements DashboardRepositoryInterface
     {
         $data = Sale::select(
             DB::raw('MONTH(sale_date) as month'),
-            DB::raw('SUM(total) as total')
+            DB::raw('SUM(sub_total) as total')
         )
             ->whereYear('sale_date', $year)
             ->groupBy('month')
@@ -96,12 +97,13 @@ class DashboardRepository implements DashboardRepositoryInterface
         return $result;
     }
 
-    public function getMonthlyRentsData(): array
+    public function getMonthlyRentsData(int $year): array
     {
         $data = Rent::select(
             DB::raw('MONTH(rent_date) as month'),
             DB::raw('SUM(sub_total) as total')
         )
+            ->whereYear('rent_date', $year)
             ->groupBy('month')
             ->orderBy('month')
             ->get()
@@ -114,6 +116,46 @@ class DashboardRepository implements DashboardRepositoryInterface
         }
 
         return $result;
+    }
+
+    public function getSalesByDateRange(Carbon $startDate, Carbon $endDate): array
+    {
+        return Sale::select(
+            DB::raw('DATE(sale_date) as period'),
+            DB::raw('SUM(total) as total')
+        )
+            ->whereBetween('sale_date', [$startDate->toDateString(), $endDate->toDateString()])
+            ->groupBy('period')
+            ->orderBy('period')
+            ->pluck('total', 'period')
+            ->toArray();
+    }
+
+    public function getExpensesByDateRange(Carbon $startDate, Carbon $endDate): array
+    {
+        return Expense::select(
+            DB::raw('DATE(expense_date) as period'),
+            DB::raw('SUM(amount) as total')
+        )
+            ->where('status', 1)
+            ->whereBetween('expense_date', [$startDate->toDateString(), $endDate->toDateString()])
+            ->groupBy('period')
+            ->orderBy('period')
+            ->pluck('total', 'period')
+            ->toArray();
+    }
+
+    public function getRentsByDateRange(Carbon $startDate, Carbon $endDate): array
+    {
+        return Rent::select(
+            DB::raw('DATE(rent_date) as period'),
+            DB::raw('SUM(sub_total) as total')
+        )
+            ->whereBetween('rent_date', [$startDate->toDateString(), $endDate->toDateString()])
+            ->groupBy('period')
+            ->orderBy('period')
+            ->pluck('total', 'period')
+            ->toArray();
     }
 
     public function getMonthlyExpensesData(int $year): array

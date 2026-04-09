@@ -104,7 +104,7 @@
 
             <!-- Icon when sidebar collapsed -->
             <img x-show="!$store.sidebar.isExpanded && !$store.sidebar.isHovered && !$store.sidebar.isMobileOpen"
-                src="/images/logo/kfs-logo-teal.svg" alt="Logo" class="w-8 h-8" />
+                src="/images/logo/kfs-logo-teal.svg" alt="Logo" class="w-4 h-2" />
 
         </a>
     </div>

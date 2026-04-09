@@ -25,18 +25,19 @@ class DashboardController extends Controller
 
     public function getChartData(Request $request)
     {
-        $year = $request->get('year', date('Y'));
-        
-        $salesData = $this->dashboardService->getMonthlySalesData($year);
-        $expensesData = $this->dashboardService->getMonthlyExpensesData($year);
-        
+        $validated = $request->validate([
+            'period' => 'nullable|in:week,month,year',
+            'year' => 'nullable|integer|min:2000|max:2100',
+        ]);
+
+        $period = $validated['period'] ?? 'year';
+        $year = isset($validated['year']) ? (int) $validated['year'] : null;
+
+        $chartData = $this->dashboardService->getFinancialChartData($period, $year);
+
         return response()->json([
             'success' => true,
-            'data' => [
-                'sales' => array_values($salesData),
-                'expenses' => array_values($expensesData),
-                'months' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            ]
+            'data' => $chartData,
         ]);
     }
 }
