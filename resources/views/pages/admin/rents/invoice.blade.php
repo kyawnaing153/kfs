@@ -5,6 +5,15 @@
             background: white !important;
             margin: 0 !important;
             padding: 0 !important;
+
+            /* Force color printing */
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
         }
 
         .invoice-container {
@@ -86,9 +95,10 @@
                 {{-- <div class="w-20 h-20 bg-blue-900 rounded-full flex items-center justify-center mb-2 overflow-hidden">
                     <img src="" alt="Kyaw Family Scaffolding Logo" class="w-full h-full object-cover">
                 </div> --}}
-                <h1 class="text-blue-900 text-2xl font-bold mb-1">{{ $settings['companyName'] ?? ''}}</h1>
+                <h1 class="text-blue-900 text-2xl font-bold mb-1">{{ $settings['companyName'] ?? '' }}</h1>
                 <p class="text-gray-600 text-sm">{{ $settings['address'] ?? '' }}</p>
-                <p class="text-gray-600 text-sm">Phone: {{ $settings['phone'] ?? ''}} | Email: {{ $settings['email'] ?? '' }}</p>
+                <p class="text-gray-600 text-sm">Phone: {{ $settings['phone'] ?? '' }} | Email:
+                    {{ $settings['email'] ?? '' }}</p>
             </div>
             @php
                 $phones = array_map('trim', explode(',', $rent->customer->phone_number ?? ''));
@@ -126,8 +136,8 @@
                 <div class="text-gray-600 text-sm">
                     <p class="font-semibold text-gray-800">Project Site</p>
                     <p>{{ $rent->note ?? '' }}</p>
-                    @if($phones[1] ?? false)
-                        <p>Phone: {{  $phones[1] ?? '' }}</p>
+                    @if ($phones[1] ?? false)
+                        <p>Phone: {{ $phones[1] ?? '' }}</p>
                     @endif
                 </div>
             </div>
@@ -139,8 +149,8 @@
                 <tr>
                     <th class="bg-blue-900 text-white rounded-l-lg text-left p-3 font-semibold text-sm w-[40%]">Item
                         Description</th>
-                    <th class="bg-blue-900 text-white text-center p-3 font-semibold text-sm w-[15%]">Quantity</th>
-                    <th class="bg-blue-900 text-white text-center p-3 font-semibold text-sm w-[5%]">Unit</th>
+                    <th class="bg-blue-900 text-white text-center p-3 font-semibold text-sm w-[20%]">Quantity</th>
+                    {{-- <th class="bg-blue-900 text-white text-center p-3 font-semibold text-sm w-[5%]">Unit</th> --}}
                     <th class="bg-blue-900 text-white text-center p-3 font-semibold text-sm w-[20%]">Daily Rate (Ks)</th>
                     <th class="bg-blue-900 text-white rounded-r-lg text-right p-3 font-semibold text-sm w-[20%]">Daily Total
                         (Ks)</th>
@@ -158,8 +168,8 @@
                             </p>
                             {{-- <p class="text-gray-600 text-xs">{{ $item->productVariant->product->description ?? '' }}</p> --}}
                         </td>
-                        <td class="p-2 border-b border-gray-200 text-sm text-center">{{ $item->rent_qty }}</td>
-                        <td class="p-2 border-b border-gray-200 text-sm text-center">{{ $item->unit }}</td>
+                        <td class="p-2 border-b border-gray-200 text-sm text-center">{{ $item->rent_qty }} {{ $item->unit }}</td>
+                        {{-- <td class="p-2 border-b border-gray-200 text-sm text-center">{{ $item->unit }}</td> --}}
                         <td class="p-2 border-b border-gray-200 text-sm text-center">
                             {{ number_format($item->unit_price, 0) }}</td>
                         <td class="p-2 border-b border-gray-200 text-sm text-right">
@@ -169,7 +179,7 @@
 
                 @if (count($rent->items) > 0)
                     <tr class="bg-gray-50">
-                        <td class="p-2 font-semibold text-sm" colspan="4">Daily Rental Subtotal</td>
+                        <td class="p-2 font-semibold text-sm" colspan="3">Daily Rental Subtotal</td>
                         <td class="p-2 text-sm text-right font-semibold">{{ number_format($rent->daily_subtotal, 0) }} Ks
                         </td>
                     </tr>
@@ -303,10 +313,6 @@
         <div class="text-center pt-4 mt-4 border-t border-gray-200">
             <h3 class="text-blue-900 font-bold mb-1">Thank you for choosing Kyaw Family Scaffolding!</h3>
             <p class="text-gray-600 text-sm mb-4">For any inquiries regarding this rental invoice, please contact us.</p>
-            <div class="text-gray-500 text-xs">
-                {{-- <p>Kyaw Family Scaffolding | 123 Construction Street, Yangon, Myanmar</p> --}}
-                <p>Phone: {{ $settings['phone'] ?? ''}} | Email: {{ $settings['email'] ?? '' }}</p>
-            </div>
         </div>
 
         <div class="flex justify-end mb-4 print:hidden">

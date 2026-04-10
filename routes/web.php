@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Backend\DashboardController;
+use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\Backend\{DashboardController, SettingController};
 use App\Http\Controllers\Backend\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Backend\users\UserController;
 use App\Http\Controllers\Backend\customers\CustomerController;
@@ -127,7 +128,7 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth']], function () {
         Route::get('/available-variants', [RentController::class, 'getAvailableVariants'])->name('available-variants');
 
         Route::get('/overdue-report', [RentController::class, 'overdueReport'])->name('overdue-report');
-        
+
         Route::get('/{rent}', [RentController::class, 'show'])->name('show');
         Route::post('/{rent}/mark-as-delivered', [RentController::class, 'markAsDelivered'])->name('mark-as-delivered');
         Route::get('/{rent}/edit', [RentController::class, 'edit'])->name('edit');
@@ -221,4 +222,17 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth']], function () {
         Route::post('/{id}/update-payment', [PurchaseController::class, 'updatePaymentStatus'])->name('update-payment');
     });
     Route::get('/products/{productId}/variants', [PurchaseController::class, 'getProductVariants'])->name('products.variants');
+
+    // Settings Routes
+    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
+
+    //clear cache route
+    Route::post('/system/clear', function () {
+
+        Artisan::call('optimize:clear');
+
+        return back()->with('success', 'System cache cleared!');
+    })->name('system.clear');
+
 });

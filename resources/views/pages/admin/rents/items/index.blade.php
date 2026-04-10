@@ -123,7 +123,7 @@
                 <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
                     <p class="text-sm text-gray-500 dark:text-gray-400">Total Value</p>
                     <p class="text-2xl font-bold text-green-600 dark:text-green-400">
-                        ${{ number_format($rents->sum('total'), 0) }}</p>
+                        Ks {{ number_format($rents->sum('total'), 0) }}</p>
                 </div>
 
                 <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
@@ -202,11 +202,11 @@
                                 </td>
 
                                 <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                    ${{ number_format($item->unit_price, 0) }}
+                                    Ks {{ number_format($item->unit_price, 0) }}
                                 </td>
 
                                 <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
-                                    ${{ number_format($item->total, 0) }}
+                                    Ks {{ number_format($item->total, 0) }}
                                 </td>
 
                                 <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">

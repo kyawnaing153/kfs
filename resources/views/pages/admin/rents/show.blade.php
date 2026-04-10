@@ -137,7 +137,7 @@
                         <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-900">
                             <p class="text-sm text-gray-500 dark:text-gray-400">Daily Rental Sub Total</p>
                             <p class="text-xl font-semibold text-gray-800 dark:text-white">
-                                ${{ number_format($rent->sub_total, 0) }}
+                                Ks {{ number_format($rent->sub_total, 0) }}
                             </p>
                         </div>
 
@@ -146,7 +146,7 @@
                             class="rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-900/20">
                             <p class="text-sm text-gray-500 dark:text-gray-400">Deposit</p>
                             <p class="text-xl font-semibold text-blue-600 dark:text-blue-400">
-                                +${{ number_format($rent->deposit, 0) }}
+                                +Ks {{ number_format($rent->deposit, 0) }}
                             </p>
                         </div>
 
@@ -154,7 +154,7 @@
                         <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-900">
                             <p class="text-sm text-gray-500 dark:text-gray-400">Transport</p>
                             <p class="text-xl font-semibold text-gray-800 dark:text-white">
-                                +${{ number_format($rent->transport, 1) }}
+                                +Ks {{ number_format($rent->transport, 1) }}
                             </p>
                         </div>
 
@@ -163,7 +163,7 @@
                             class="rounded-lg border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-900/20">
                             <p class="text-sm text-gray-500 dark:text-gray-400">Total Amount</p>
                             <p class="text-xl font-semibold text-green-600 dark:text-green-400">
-                                ${{ number_format($rent->total, 1) }}
+                                Ks {{ number_format($rent->total, 1) }}
                             </p>
                         </div>
 
@@ -175,7 +175,7 @@
                         <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-900">
                             <p class="text-sm text-gray-500 dark:text-gray-400">Discount</p>
                             <p class="text-xl font-semibold text-red-600 dark:text-red-400">
-                                -${{ number_format($rent->discount, 0) }}
+                                -Ks {{ number_format($rent->discount, 0) }}
                             </p>
                         </div>
 
@@ -184,7 +184,7 @@
                             class="rounded-lg border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-900/20">
                             <p class="text-sm text-gray-500 dark:text-gray-400">Total Paid</p>
                             <p class="text-xl font-semibold text-green-600 dark:text-green-400">
-                                ${{ number_format($rent->total_paid, 1) }}
+                                Ks {{ number_format($rent->total_paid, 1) }}
                             </p>
                         </div>
 
@@ -192,7 +192,7 @@
                         <div class="rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/20">
                             <p class="text-sm text-gray-500 dark:text-gray-400">Total Due</p>
                             <p class="text-xl font-semibold text-red-600 dark:text-red-400">
-                                ${{ number_format($rent->total_due, 1) }}
+                                Ks {{ number_format($rent->total_due, 1) }}
                             </p>
                         </div>
 
@@ -201,7 +201,7 @@
                             class="rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-900/20">
                             <p class="text-sm text-gray-500 dark:text-gray-400">Total Payment</p>
                             <p class="text-xl font-semibold text-blue-600 dark:text-blue-400">
-                                +${{ number_format($rent->payments->sum('amount'), 0) }}
+                                +Ks {{ number_format($rent->payments->sum('amount'), 0) }}
                             </p>
                             <p class="mt-1 text-xs text-gray-500">
                                 {{ $rent->payments->count() }} payment(s)
@@ -265,9 +265,6 @@
                                                         </div>
                                                         <div class="text-sm text-gray-500 dark:text-gray-400">
                                                             {{ $item->productVariant->size ?: 'Standard' }}
-                                                            @if ($item->unit)
-                                                                <span class="text-xs">({{ $item->unit }})</span>
-                                                            @endif
                                                         </div>
                                                         <div class="text-xs text-gray-400">
                                                             SKU: {{ $item->productVariant->sku }}
@@ -280,20 +277,23 @@
                                             <td class="px-4 py-4">
                                                 <div class="text-sm text-gray-900 dark:text-white">
                                                     {{ $item->rent_qty }}
+                                                    @if ($item->unit)
+                                                        <span class="text-xs">{{ $item->unit }}</span>
+                                                    @endif
                                                 </div>
                                             </td>
 
                                             <!-- Unit Price -->
                                             <td class="px-4 py-4">
                                                 <div class="text-sm text-gray-900 dark:text-white">
-                                                    ${{ number_format($item->unit_price, 1) }}
+                                                    Ks {{ number_format($item->unit_price, 1) }}
                                                 </div>
                                             </td>
 
                                             <!-- Total -->
                                             <td class="px-4 py-4">
                                                 <div class="text-sm font-medium text-gray-900 dark:text-white">
-                                                    ${{ number_format($item->total, 1) }}
+                                                    Ks {{ number_format($item->total, 1) }}
                                                 </div>
                                             </td>
 
@@ -327,7 +327,7 @@
                                         </td>
                                         <td class="px-4 py-3">
                                             <div class="text-sm font-semibold text-gray-900 dark:text-white">
-                                                ${{ number_format($rent->items->sum('total'), 1) }}
+                                                Ks {{ number_format($rent->items->sum('total'), 1) }}
                                             </div>
                                         </td>
                                         <td class="px-4 py-3">
@@ -381,7 +381,7 @@
                                                     </span>
                                                     @if ($returnItem->damage_fee > 0)
                                                         <span class="text-red-600 dark:text-red-400">
-                                                            +${{ number_format($returnItem->damage_fee, 1) }} damage
+                                                            +Ks {{ number_format($returnItem->damage_fee, 1) }} damage
                                                         </span>
                                                     @endif
                                                 </div>
@@ -395,12 +395,12 @@
                                         <div class="text-sm">
                                             @if ($return->refund_amount > 0)
                                                 <span class="text-green-600 dark:text-green-400">
-                                                    Refund: ${{ number_format($return->refund_amount, 1) }}
+                                                    Refund: Ks {{ number_format($return->refund_amount, 1) }}
                                                 </span>
                                             @endif
                                             @if ($return->collect_amount > 0)
                                                 <span class="text-red-600 dark:text-red-400 ml-3">
-                                                    Collect: ${{ number_format($return->collect_amount, 1) }}
+                                                    Collect: Ks {{ number_format($return->collect_amount, 1) }}
                                                 </span>
                                             @endif
                                         </div>
@@ -445,7 +445,7 @@
                                     <div class="flex items-center justify-between">
                                         <div>
                                             <p class="font-medium text-gray-900 dark:text-white">
-                                                ${{ number_format($payment->amount, 1) }}
+                                                Ks {{ number_format($payment->amount, 1) }}
                                             </p>
                                             <p class="text-xs text-gray-500 dark:text-gray-400">
                                                 {{ $payment->payment_date }}
@@ -485,7 +485,7 @@
                             <div class="flex justify-between items-center">
                                 <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Total Paid:</span>
                                 <span class="text-lg font-semibold text-green-600 dark:text-green-400">
-                                    ${{ number_format($rent->payments->sum('amount'), 1) }}
+                                    Ks {{ number_format($rent->payments->sum('amount'), 1) }}
                                 </span>
                             </div>
                         </div>

@@ -122,6 +122,11 @@ class MenuHelper
                 'name' => 'Calendar',
                 'path' => '/calendar',
             ],
+            [
+                'icon' => 'settings',
+                'name' => 'Settings',
+                'path' => '/admin/settings',
+            ]
         ];
     }
 
@@ -220,6 +225,9 @@ class MenuHelper
             'rent-report' => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 3V19C3 20.1046 3.89543 21 5 21H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 15L10 12L13 15L20 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 21V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M14 21V12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M20 21V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><rect x="6" y="12" width="3" height="9" rx="0.5" stroke="currentColor" stroke-width="1.5"/></svg>',
 
             'calendar' => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M8 2C8.41421 2 8.75 2.33579 8.75 2.75V3.75H15.25V2.75C15.25 2.33579 15.5858 2 16 2C16.4142 2 16.75 2.33579 16.75 2.75V3.75H18.5C19.7426 3.75 20.75 4.75736 20.75 6V9V19C20.75 20.2426 19.7426 21.25 18.5 21.25H5.5C4.25736 21.25 3.25 20.2426 3.25 19V9V6C3.25 4.75736 4.25736 3.75 5.5 3.75H7.25V2.75C7.25 2.33579 7.58579 2 8 2ZM8 5.25H5.5C5.08579 5.25 4.75 5.58579 4.75 6V8.25H19.25V6C19.25 5.58579 18.9142 5.25 18.5 5.25H16H8ZM19.25 9.75H4.75V19C4.75 19.4142 5.08579 19.75 5.5 19.75H18.5C18.9142 19.75 19.25 19.4142 19.25 19V9.75Z" fill="currentColor"></path></svg>',
+        
+            'settings' => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M18.37 7.29L19.96 6.07C20.21 5.87 20.24 5.49 20.02 5.24L18.76 3.98C18.51 3.76 18.13 3.79 17.93 4.04L16.71 5.63C16.15 5.22 15.53 4.89 14.87 4.66L14.64 2.81C14.6 2.51 14.34 2.29 14.04 2.29H9.96C9.66 2.29 9.4 2.51 9.36 2.81L9.13 4.66C8.47 4.89 7.85 5.22 7.29 5.63L6.07 4.04C5.87 3.79 5.49 3.76 5.24 3.98L3.98 5.24C3.76 5.49 3.79 5.87 4.04 6.07L5.63 7.29C5.22 7.85 4.89 8.47 4.66 9.13L2.81 9.36C2.51 9.4 2.29 9.66 2.29 9.96V14.04C2.29 14.34 2.51 14.6 2.81 14.64L4.66 14.87C4.89 15.53 5.22 16.15 5.63 16.71L4.04 17.93C3.79 18.13 3.76 18.51 3.98 18.76L5.24 20.02C5.49 20.24 5.87 20.21 6.07 19.96L7.29 18.37C7.85 18.78 8.47 19.11 9.13 19.34L9.36 21.19C9.4 21.49 9.66 21.71 9.96 21.71H14.04C14.34 21.71 14.6 21.49 14.64 21.19L14.87 19.34C15.53 19.11 16.15 18.78 16.71 18.37L17.93 19.96C18.13 20.21 18.51 20.24 18.76 20.02L20.02 18.76C20.24 18.51 20.21 18.13 19.96 17.93L18.37 16.71C18.78 16.15 19.11 15.53 19.34 14.87L21.19 14.64C21.49 14.6 21.71 14.34 21.71 14.04V9.96C21.71 9.66 21.49 9.4 21.19 9.36L19.34 9.13C19.11 8.47 18.78 7.85 18.37 7.29Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+            
         ];
 
         return $icons[$iconName] ?? '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor"/></svg>';

@@ -64,7 +64,7 @@
                     <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
                         <div class="flex justify-between items-center">
                             <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Sub Total:</span>
-                            <span class="text-sm font-medium text-gray-900 dark:text-white" id="subTotal">$0.0</span>
+                            <span class="text-sm font-medium text-gray-900 dark:text-white" id="subTotal">Ks 0.0</span>
                         </div>
                     </div>
                 </div>
@@ -149,15 +149,15 @@
                     <div class="space-y-3 md:space-y-0 md:grid md:grid-cols-3 md:gap-4">
                         <div class="flex justify-between items-center md:block">
                             <p class="text-sm text-gray-600 dark:text-gray-400 md:mb-1">Sub Total</p>
-                            <p class="text-lg font-semibold text-gray-800 dark:text-white" id="displaySubTotal">$0.0</p>
+                            <p class="text-lg font-semibold text-gray-800 dark:text-white" id="displaySubTotal">Ks 0.0</p>
                         </div>
                         <div class="flex justify-between items-center md:block">
                             <p class="text-sm text-gray-600 dark:text-gray-400 md:mb-1">Grand Total</p>
-                            <p class="text-lg font-semibold text-green-600 dark:text-green-400" id="grandTotal">$0.0</p>
+                            <p class="text-lg font-semibold text-green-600 dark:text-green-400" id="grandTotal">Ks 0.0</p>
                         </div>
                         <div class="flex justify-between items-center md:block">
                             <p class="text-sm text-gray-600 dark:text-gray-400 md:mb-1">Due Amount</p>
-                            <p class="text-lg font-semibold text-red-600 dark:text-red-400" id="dueAmount">$0.0</p>
+                            <p class="text-lg font-semibold text-red-600 dark:text-red-400" id="dueAmount">Ks 0.0</p>
                         </div>
                     </div>
                     <input type="hidden" name="sub_total" id="hiddenSubTotal" value="0">
@@ -225,11 +225,6 @@
         /* Better spacing for mobile */
         .space-y-4>*+* {
             margin-top: 1rem;
-        }
-
-        /* Hide desktop table on mobile */
-        .hidden-mobile {
-            display: none !important;
         }
 
         /* Card styling for mobile */

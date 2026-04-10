@@ -283,10 +283,10 @@
             var dueAmount = grandTotal - totalPaid;
             
             // Update displays
-            $('#subTotal').text('$' + subTotal.toFixed(1));
-            $('#displaySubTotal').text('$' + subTotal.toFixed(1));
-            $('#grandTotal').text('$' + grandTotal.toFixed(1));
-            $('#dueAmount').text('$' + dueAmount.toFixed(1));
+            $('#subTotal').text('Ks ' + subTotal.toFixed(1));
+            $('#displaySubTotal').text('Ks ' + subTotal.toFixed(1));
+            $('#grandTotal').text('Ks ' + grandTotal.toFixed(1));
+            $('#dueAmount').text('Ks ' + dueAmount.toFixed(1));
             
             // Update hidden inputs
             $('#hiddenSubTotal').val(subTotal);

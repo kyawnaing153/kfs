@@ -94,9 +94,10 @@
                 {{-- <div class="w-20 h-20 bg-blue-900 rounded-full flex items-center justify-center mb-2 overflow-hidden">
                     <img src="" alt="Kyaw Family Scaffolding Logo" class="w-full h-full object-cover">
                 </div> --}}
-                <h1 class="text-blue-900 text-2xl font-bold mb-1">{{ $settings['companyName'] ?? ''}}</h1>
+                <h1 class="text-blue-900 text-2xl font-bold mb-1">{{ $settings['companyName'] ?? '' }}</h1>
                 <p class="text-gray-600 text-sm">{{ $settings['address'] ?? '' }}</p>
-                <p class="text-gray-600 text-sm">Phone: {{ $settings['phone'] ?? ''}} | Email: {{ $settings['email'] ?? '' }}</p>
+                <p class="text-gray-600 text-sm">Phone: {{ $settings['phone'] ?? '' }} | Email:
+                    {{ $settings['email'] ?? '' }}</p>
             </div>
             <div class="invoice-details text-right">
                 <h2 class="text-blue-900 text-2xl font-bold mb-1">SALE INVOICE</h2>
@@ -106,11 +107,11 @@
                     {{ $sale->current_time }}</p>
                 <p class="text-gray-600 text-sm mb-1"><span class="font-semibold text-gray-800">Sale Date:</span>
                     {{ \Carbon\Carbon::parse($sale->sale_date)->format('Y-m-d') }}</p>
-                {{-- <p class="text-gray-600 text-sm"><span class="font-semibold text-gray-800">Payment Method:</span>
-                    {{ ucfirst($sale->payment_type) }}</p> --}}
             </div>
         </div>
-
+        @php
+            $phones = array_map('trim', explode(',', $sale->customer->phone_number ?? ''));
+        @endphp
         <!-- Client Section -->
         <div class="flex justify-between items-center mb-4">
             <div class="bill-to w-[48%]">
@@ -122,7 +123,9 @@
                     @if ($sale->customer->company_name ?? false)
                         <p>{{ $sale->customer->company_name }}</p>
                     @endif
-                    <p>Phone: {{ $sale->customer->phone_number ?? '' }}</p>
+                    @if ($phones[0] ?? false)
+                        <p>Phone: {{ $phones[0] }}</p>
+                    @endif
                     @if ($sale->customer->email ?? false)
                         <p>Email: {{ $sale->customer->email }}</p>
                     @endif
@@ -133,7 +136,10 @@
                 <div class="text-gray-600 text-sm">
                     <p class="font-semibold text-gray-800">Project Site</p>
                     <p>{{ $sale->customer->address ?? '' }}</p>
-                    <p>Phone: {{ $sale->customer->phone_number ?? '' }}</p>
+
+                    @if($phones[1] ?? false)
+                        <p>Phone: {{ $phones[1] }}</p>
+                    @endif
                 </div>
             </div>
         </div>
@@ -144,8 +150,8 @@
                 <tr>
                     <th class="bg-blue-900 text-white rounded-l-lg text-left p-3 font-semibold text-sm w-[40%]">Item
                         Description</th>
-                    <th class="bg-blue-900 text-white text-center p-3 font-semibold text-sm w-[15%]">Quantity</th>
-                    <th class="bg-blue-900 text-white text-center p-3 font-semibold text-sm w-[5%]">Unit</th>
+                    <th class="bg-blue-900 text-white text-center p-3 font-semibold text-sm w-[20%]">Quantity</th>
+                    {{-- <th class="bg-blue-900 text-white text-center p-3 font-semibold text-sm w-[5%]">Unit</th> --}}
                     <th class="bg-blue-900 text-white text-center p-3 font-semibold text-sm w-[20%]">Daily Rate (Ks)</th>
                     <th class="bg-blue-900 text-white rounded-r-lg text-right p-3 font-semibold text-sm w-[20%]">Daily Total
                         (Ks)</th>
@@ -163,8 +169,9 @@
                             </p>
                             {{-- <p class="text-gray-600 text-xs">{{ $item->productVariant->product->description ?? '' }}</p> --}}
                         </td>
-                        <td class="p-2 border-b border-gray-200 text-sm text-center">{{ $item->sale_qty }}</td>
-                        <td class="p-2 border-b border-gray-200 text-sm text-center">{{ $item->unit }}</td>
+                        <td class="p-2 border-b border-gray-200 text-sm text-center">{{ $item->sale_qty }}
+                            {{ $item->unit }}</td>
+                        {{-- <td class="p-2 border-b border-gray-200 text-sm text-center">{{ $item->unit }}</td> --}}
                         <td class="p-2 border-b border-gray-200 text-sm text-center">
                             {{ number_format($item->unit_price, 0) }}</td>
                         <td class="p-2 border-b border-gray-200 text-sm text-right">
@@ -272,12 +279,8 @@
 
         <!-- Footer -->
         <div class="text-center pt-4 mt-4 border-t border-gray-200">
-            <h3 class="text-blue-900 font-bold mb-1">Thank you for choosing {{ $settings['companyName'] ?? ''}}!</h3>
+            <h3 class="text-blue-900 font-bold mb-1">Thank you for choosing {{ $settings['companyName'] ?? '' }}!</h3>
             <p class="text-gray-600 text-sm mb-4">For any inquiries regarding this sale invoice, please contact us.</p>
-            <div class="text-gray-500 text-xs">
-                {{-- <p>Kyaw Family Scaffolding | 123 Construction Street, Yangon, Myanmar</p> --}}
-                <p>Phone: {{ $settings['phone'] ?? ''}} | Email: {{ $settings['email'] ?? '' }}</p>
-            </div>
         </div>
 
         <div class="flex justify-end mb-4 print:hidden">

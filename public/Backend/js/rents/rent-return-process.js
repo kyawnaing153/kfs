@@ -106,7 +106,7 @@ $(document).ready(function () {
             }
         });
 
-        $('#totalDamageFee').text('$' + totalDamage.toFixed(1));
+        $('#totalDamageFee').text('Ks' + totalDamage.toFixed(1));
         return totalDamage;
     }
 
@@ -195,36 +195,36 @@ $(document).ready(function () {
                     </div>
                     <div class="flex justify-between">
                         <span class="text-gray-600 dark:text-gray-400">Daily Rental Cost:</span>
-                        <span class="font-medium text-gray-900 dark:text-white">$${rentData.subTotal.toFixed(0)}/day</span>
+                        <span class="font-medium text-gray-900 dark:text-white">Ks${rentData.subTotal.toFixed(0)}/day</span>
                     </div>
                     <div class="flex justify-between">
                         <span class="text-gray-600 dark:text-gray-400">Total Rental Cost:</span>
-                        <span class="font-medium text-gray-900 dark:text-white">$${calculations.totalRentCost.toFixed(0)}</span>
+                        <span class="font-medium text-gray-900 dark:text-white">Ks${calculations.totalRentCost.toFixed(0)}</span>
                     </div>
                     <div class="flex justify-between">
                         <span class="text-gray-600 dark:text-gray-400">Damage Fees:</span>
-                        <span class="font-medium text-gray-900 dark:text-white">$${calculations.totalDamageFees.toFixed(1)}</span>
+                        <span class="font-medium text-gray-900 dark:text-white">Ks${calculations.totalDamageFees.toFixed(1)}</span>
                     </div>
                     <div class="flex justify-between">
                         <span class="text-gray-600 dark:text-gray-400">Transport:</span>
-                        <span class="font-medium text-gray-900 dark:text-white">$${calculations.transportAmount.toFixed(0)}</span>
+                        <span class="font-medium text-gray-900 dark:text-white">Ks${calculations.transportAmount.toFixed(0)}</span>
                     </div>
                     <div class="flex justify-between border-t border-gray-200 pt-2 dark:border-gray-700">
                         <span class="font-medium text-gray-700 dark:text-gray-300">Sub-total:</span>
-                        <span class="font-medium text-gray-900 dark:text-white">$${calculations.subTotal.toFixed(0)}</span>
+                        <span class="font-medium text-gray-900 dark:text-white">Ks${calculations.subTotal.toFixed(0)}</span>
                     </div>
                     <div class="flex justify-between">
                         <span class="text-gray-600 dark:text-gray-400">Deposit Paid:</span>
-                        <span class="font-medium text-green-600 dark:text-green-400">$${calculations.deposit.toFixed(0)}</span>
+                        <span class="font-medium text-green-600 dark:text-green-400">Ks${calculations.deposit.toFixed(0)}</span>
                     </div>
                     <div class="flex justify-between">
                         <span class="text-gray-600 dark:text-gray-400">Total Payment:</span>
-                        <span class="font-medium text-green-600 dark:text-green-400">$${rentData.totalPayment.toFixed(0)}</span>
+                        <span class="font-medium text-green-600 dark:text-green-400">Ks${rentData.totalPayment.toFixed(0)}</span>
                     </div>
                     <div class="flex justify-between border-t border-gray-200 pt-2 dark:border-gray-700">
                         <span class="font-medium ${calculations.grandTotal >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}">Balance:</span>
                         <span class="font-medium ${calculations.grandTotal >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}">
-                            $${Math.abs(calculations.grandTotal).toFixed(0)} ${calculations.grandTotal >= 0 ? '(Refund)' : '(Collect)'}
+                            Ks${Math.abs(calculations.grandTotal).toFixed(0)} ${calculations.grandTotal >= 0 ? '(Refund)' : '(Collect)'}
                         </span>
                     </div>
                 </div>
@@ -350,14 +350,14 @@ $(document).ready(function () {
         const confirmMessage = `Are you sure you want to process this return?\n\n` +
             `Summary:\n` +
             `- Rental Days: ${rentalDays}\n` +
-            `- Rental Cost: $${totalRentCost.toFixed(0)}\n` +
-            `- Damage Fees: $${totalDamageFees.toFixed(1)}\n` +
-            `- Transport: $${transportAmount.toFixed(0)}\n` +
-            `- Sub-total: $${(totalRentCost + totalDamageFees + transportAmount).toFixed(0)}\n` +
-            `- Deposit: $${rentData.deposit.toFixed(0)}\n` +
-            `- Balance: $${balanceAmount} to ${balanceType}\n\n` +
-            `Refund Amount: $${$('#refund_amount').val()}\n` +
-            `Collect Amount: $${$('#collect_amount').val()}`;
+            `- Rental Cost: Ks${totalRentCost.toFixed(0)}\n` +
+            `- Damage Fees: Ks${totalDamageFees.toFixed(1)}\n` +
+            `- Transport: Ks${transportAmount.toFixed(0)}\n` +
+            `- Sub-total: Ks${(totalRentCost + totalDamageFees + transportAmount).toFixed(0)}\n` +
+            `- Deposit: Ks${rentData.deposit.toFixed(0)}\n` +
+            `- Balance: Ks${balanceAmount} to ${balanceType}\n\n` +
+            `Refund Amount: Ks${$('#refund_amount').val()}\n` +
+            `Collect Amount: Ks${$('#collect_amount').val()}`;
 
         if (confirm(confirmMessage)) {
             // Submit the form normally

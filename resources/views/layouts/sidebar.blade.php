@@ -94,7 +94,7 @@
 
             <!-- Light Logo -->
             <img x-show="$store.sidebar.isExpanded || $store.sidebar.isHovered || $store.sidebar.isMobileOpen"
-                class="dark:hidden w-auto h-0 sm:h-16 object-cover object-bottom" src="/images/logo/kfs-logo-teal.svg"
+                class="dark:hidden w-auto h-14 sm:h-16 object-cover object-bottom" src="/images/logo/kfs-logo-teal.svg"
                 alt="Logo" />
 
             <!-- Dark Logo -->

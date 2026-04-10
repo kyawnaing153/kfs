@@ -19,8 +19,8 @@
                             Customer: {{ $rent->customer->name }} |
                             Rent Date: {{ $rent->rent_date }} |
                             Status: <span class="font-medium">{{ ucfirst($rent->status) }} |
-                                Deposit: ${{ number_format($rent->deposit, 0) }} |
-                                Daily Rental Subtotal : ${{ number_format($rent->sub_total, 0) }}
+                                Deposit: Ks {{ number_format($rent->deposit, 0) }} |
+                                Daily Rental Subtotal : Ks {{ number_format($rent->sub_total, 0) }}
                             </span>
                         </p>
                     </div>
@@ -214,12 +214,12 @@
                                 Transport Amount
                             </label>
                             <div class="flex items-center">
-                                <span class="mr-2 text-gray-500">$</span>
+                                <span class="mr-2 text-gray-500">Ks</span>
                                 <input type="number" name="transport" id="transport" value="{{ old('transport', 0) }}"
                                     class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"
                                     min="0" step="1" required>
                             </div>
-                            <p class="mt-1 text-xs text-gray-500">Transport cost while rents ($
+                            <p class="mt-1 text-xs text-gray-500">Transport cost while rents (Ks
                                 {{ number_format($rent->transport, 0) }})</p>
                             @error('transport')
                                 <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
@@ -232,7 +232,7 @@
                                 Refund Amount
                             </label>
                             <div class="flex items-center">
-                                <span class="mr-2 text-gray-500">$</span>
+                                <span class="mr-2 text-gray-500">Ks</span>
                                 <input type="number" name="refund_amount" id="refund_amount"
                                     value="{{ old('refund_amount', 0) }}"
                                     class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"
@@ -250,7 +250,7 @@
                                 Collect Amount
                             </label>
                             <div class="flex items-center">
-                                <span class="mr-2 text-gray-500">$</span>
+                                <span class="mr-2 text-gray-500">Ks</span>
                                 <input type="number" name="collect_amount" id="collect_amount"
                                     value="{{ old('collect_amount', 0) }}"
                                     class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"
@@ -267,7 +267,7 @@
                     <div class="mt-4">
                         <div class="flex items-center justify-between text-sm">
                             <span class="text-gray-600 dark:text-gray-400">Total Damage Fees:</span>
-                            <span class="font-medium text-gray-900 dark:text-white" id="totalDamageFee">$0.0</span>
+                            <span class="font-medium text-gray-900 dark:text-white" id="totalDamageFee">Ks 0.0</span>
                         </div>
                         <p class="mt-1 text-xs text-gray-500">Auto-calculated from item damage fees above</p>
                     </div>
