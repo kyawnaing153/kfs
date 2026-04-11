@@ -116,7 +116,8 @@
                                 <option value="all" {{ $status === 'all' ? 'selected' : '' }}>All Status</option>
                                 <option value="pending" {{ $status === 'pending' ? 'selected' : '' }}>Pending</option>
                                 <option value="ongoing" {{ $status === 'ongoing' ? 'selected' : '' }}>Delivered</option>
-                                <option value="completed" {{ $status === 'completed' ? 'selected' : '' }}>Settled With Customer
+                                <option value="completed" {{ $status === 'completed' ? 'selected' : '' }}>Settled With
+                                    Customer
                                 </option>
                             </select>
                         </div>
@@ -255,12 +256,20 @@
                                             <td class="px-4 py-4">
                                                 <div class="space-y-2">
                                                     <div>
-                                                        <div class="text-sm font-medium text-gray-900 dark:text-white">
-                                                            Ks {{ number_format($rent->total, 1) }}
-                                                        </div>
+
+                                                        @if ($rent->deposit > 0)
+                                                            <div class="text-sm font-medium text-gray-900 dark:text-white">
+                                                                Deposit: Ks {{ number_format($rent->deposit, 0) }}
+                                                            </div>
+                                                        @endif
                                                         <div class="text-xs text-gray-500">
-                                                            Due: Ks {{ number_format($rent->total_due, 1) }}
+                                                            Total: Ks {{ number_format($rent->total, 0) }}
                                                         </div>
+                                                        @if ($rent->total_due > 0)
+                                                            <div class="text-xs text-gray-500">
+                                                                Due: Ks {{ number_format($rent->total_due, 0) }}
+                                                            </div>
+                                                        @endif
                                                     </div>
                                                     <div>
                                                         <span
@@ -268,7 +277,7 @@
                                                         @if ($rent->status === 'pending') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200
                                                         @elseif($rent->status === 'ongoing') bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200
                                                         @else bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 @endif">
-                                                            @if($rent->status === 'completed')
+                                                            @if ($rent->status === 'completed')
                                                                 {{ 'Settled' }}
                                                             @else
                                                                 {{ ucfirst($rent->status) }}
@@ -302,7 +311,8 @@
                                                         style="display: none;">
                                                         <div class="py-1">
                                                             @if ($rent->status === 'pending')
-                                                                <form action="{{ route('rents.mark-as-delivered', $rent->id) }}"
+                                                                <form
+                                                                    action="{{ route('rents.mark-as-delivered', $rent->id) }}"
                                                                     method="POST">
                                                                     @csrf
                                                                     <button type="submit"

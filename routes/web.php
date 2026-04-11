@@ -16,6 +16,7 @@ use App\Http\Controllers\Backend\sales\SaleController;
 use App\Http\Controllers\Backend\customInvoice\CustomInvoiceController;
 use App\Http\Controllers\Backend\expenses\ExpenseController;
 use App\Http\Controllers\Backend\purchases\PurchaseController;
+use App\Http\Controllers\CustomerRentController;
 
 // dashboard pages
 Route::get('/', function () {
@@ -27,21 +28,11 @@ Route::get('/calendar', function () {
     return view('pages.calender', ['title' => 'Calendar']);
 })->name('calendar');
 
-// profile pages
-Route::get('/profile', function () {
-    return view('pages.profile', ['title' => 'Profile']);
-})->name('profile');
-
-
 // error pages
 Route::get('/error-404', function () {
     return view('pages.errors.error-404', ['title' => 'Error 404']);
 })->name('error-404');
 
-
-Route::get('/bar-chart', function () {
-    return view('pages.chart.bar-chart', ['title' => 'Bar Chart']);
-})->name('bar-chart');
 
 # Backend Auth Routes
 Route::group(['prefix' => 'admin',  'middleware' => ['guest']], function () {
@@ -83,6 +74,7 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth']], function () {
         'destroy' => 'customers.destroy',
     ]);
     Route::post('/customers/toggle-status/{customer}', [CustomerController::class, 'toggleStatus'])->name('customers.toggle-status');
+    Route::get('customers/{customerId}/rents', [CustomerRentController::class, 'index'])->name('customers.rents');
 
     Route::resource('/suppliers', SupplierController::class)->names([
         'index'   => 'suppliers.index',
@@ -235,4 +227,9 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth']], function () {
         return back()->with('success', 'System cache cleared!');
     })->name('system.clear');
 
+});
+
+// Add this at the very end of web.php, after all other routes
+Route::fallback(function () {
+    return response()->view('pages.errors.error-404', ['title' => 'Error 404'], 404);
 });

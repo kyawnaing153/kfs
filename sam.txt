@@ -1,1 +1,0 @@
-Failed to update sale: Attempt to read property "items" on array

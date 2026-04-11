@@ -274,6 +274,14 @@
                                                     Show
                                                 </a>
 
+                                                <!-- Show Rents-->
+                                                <a href="{{ route('customers.rents', $customer->id) }}"
+                                                    class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+                                                    role="menuitem">
+                                                    <i class="fas fa-eye text-green-500"></i>
+                                                    Show Rents
+                                                </a>
+
                                                 <!-- Delete button using component -->
                                                 <x-delete-confirm :action="route('customers.destroy', $customer->id)" :message="json_encode(
                                                     'Are you sure you want to delete customer ' .
