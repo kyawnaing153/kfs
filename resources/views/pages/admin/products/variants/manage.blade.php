@@ -279,9 +279,7 @@
                                                                 class="text-sm text-gray-500">({{ $variant->unit }})</span>
                                                         @endif
                                                     </div>
-                                                    {{-- <div class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                                        SKU: <span class="font-mono">{{ $variant->sku }}</span>
-                                                    </div> --}}
+                                                    
                                                     <div class="mt-1 text-xs text-gray-400">
                                                         Purchase: ${{ number_format($variant->purchase_price, 0) }}
                                                     </div>

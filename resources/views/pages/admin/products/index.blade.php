@@ -240,7 +240,7 @@
                                                 {{ $product->product_name }}
                                             </div>
                                             <div class="text-sm text-gray-500 dark:text-gray-400">
-                                                SKU: {{ $product->variants->first()->sku ?? 'N/A' }}
+                                                {{ $product->variants->first()->sku ?? 'N/A' }}
                                             </div>
                                         </div>
                                     </div>
