@@ -233,7 +233,7 @@
                                     <div class="flex items-center">
                                         <div class="flex-shrink-0 h-12 w-12">
                                             <img class="h-12 w-12 rounded-lg object-cover"
-                                                src="{{ asset('storage/products/thumbnails/'.$product->thumbnail) }}" alt="{{ 'storage/app/public/products/' . $product->product_name }}">
+                                                src="{{ asset('storage/app/public/products/thumbnails/'.$product->thumbnail) }}" alt="{{ $product->product_name }}">
                                         </div>
                                         <div class="ml-4">
                                             <div class="text-sm font-medium text-gray-900 dark:text-white">
