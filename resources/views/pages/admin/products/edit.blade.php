@@ -93,7 +93,7 @@
                             <div class="mb-4">
                                 <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Current Thumbnail:</p>
                                 <div class="relative inline-block">
-                                    <img src="{{ $product->thumb_url }}" 
+                                    <img src="{{ asset('storage/products/thumbnails/'.$product->thumbnail) }}" 
                                          alt="{{ $product->product_name }}"
                                          class="h-32 w-32 rounded-lg object-cover border border-gray-300 dark:border-gray-700">
                                     <a href="{{ $product->thumb_url }}" 

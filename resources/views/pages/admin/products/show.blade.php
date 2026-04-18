@@ -441,7 +441,7 @@
                 @if ($product->thumb_url)
                     <x-common.component-card title="Product Image">
                         <div class="relative">
-                            <img src="{{ $product->thumb_url }}" alt="{{ $product->product_name }}"
+                            <img src="{{ asset('storage/products/thumbnails/'.$product->thumbnail) }}" alt="{{ $product->product_name }}"
                                 class="w-full rounded-lg border border-gray-200 dark:border-gray-700">
                             <a href="{{ $product->thumb_url }}" target="_blank"
                                 class="absolute bottom-3 right-3 inline-flex items-center gap-1 rounded-lg bg-black/70 px-2 py-1 text-xs text-white hover:bg-black/90 transition-colors">

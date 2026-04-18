@@ -309,6 +309,7 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
+                            @dd($dashboardData)
                             @forelse($dashboardData['low_stock_products'] as $product)
                                 @forelse ($product['variants'] as $variant)
                                     <tr class="hover:bg-gray-50">
