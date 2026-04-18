@@ -89,14 +89,14 @@
                         </label>
 
                         <!-- Current Thumbnail Preview -->
-                        @if($product->thumb)
+                        @if($product->thumb_url)
                             <div class="mb-4">
                                 <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Current Thumbnail:</p>
                                 <div class="relative inline-block">
-                                    <img src="{{ asset('storage/app/public/'.$product->thumb) }}" 
+                                    <img src="{{ $product->thumb_url }}"
                                          alt="{{ $product->product_name }}"
                                          class="h-32 w-32 rounded-lg object-cover border border-gray-300 dark:border-gray-700">
-                                    <a href="{{ asset('storage/app/public/'.$product->thumb) }}" 
+                                    <a href="{{ $product->thumb_url }}" 
                                        target="_blank"
                                        class="absolute bottom-2 right-2 inline-flex items-center gap-1 rounded-lg bg-black/70 px-2 py-1 text-xs text-white hover:bg-black/90">
                                         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
