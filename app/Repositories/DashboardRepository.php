@@ -231,6 +231,7 @@ class DashboardRepository implements DashboardRepositoryInterface
             ->orderBy('qty', 'asc')
             ->limit($limit)
             ->get()
+            ->groupBy('product_id')
             ->map(function ($variant) {
                 return [
                     'product_id' => $variant->product_id,

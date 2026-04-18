@@ -309,29 +309,31 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            @dd($dashboardData)
                             @forelse($dashboardData['low_stock_products'] as $product)
-                                @forelse ($product['variants'] as $variant)
-                                    <tr class="hover:bg-gray-50">
-                                        <td class="px-4 py-3 text-sm text-gray-900">{{ $product['product_name'] }}</td>
-                                        <td class="px-4 py-3 text-sm text-gray-600">{{ $variant['name'] ?? 'Default' }}
-                                        </td>
-                                        <td class="px-4 py-3 text-sm font-medium text-red-600">{{ $variant['qty'] }}</td>
-                                        <td class="px-4 py-3">
-                                            <span
-                                                class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">Low
-                                                Stock</span>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="4" class="px-4 py-3 text-center text-gray-500">No low stock variants found</td>
-                                    </tr>
-                                @endforelse
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 text-sm text-gray-900">
+                                        {{ $product['product_name'] }}
+                                    </td>
+
+                                    <td class="px-4 py-3 text-sm text-gray-600">
+                                        {{ $product['size'] ?? 'Default' }}
+                                    </td>
+
+                                    <td class="px-4 py-3 text-sm font-medium text-red-600">
+                                        {{ $product['current_stock'] }}
+                                    </td>
+
+                                    <td class="px-4 py-3">
+                                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
+                                            {{ $product['status'] }}
+                                        </span>
+                                    </td>
+                                </tr>
                             @empty
                                 <tr>
-                                    <td colspan="4" class="px-4 py-3 text-center text-gray-500">All products have
-                                        sufficient stock</td>
+                                    <td colspan="4" class="px-4 py-3 text-center text-gray-500">
+                                        All products have sufficient stock
+                                    </td>
                                 </tr>
                             @endforelse
                         </tbody>

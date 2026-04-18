@@ -54,7 +54,7 @@ class DashboardService
                 'months' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
             ],
             'top_products' => $this->dashboardRepository->getTopProducts(5),
-            'low_stock_products' => $this->dashboardRepository->getLowStockProducts(5) ?? [],
+            'low_stock_products' => $this->dashboardRepository->getLowStockProducts(5),
             'outstanding_summary' => [
                 'rent_due' => $this->dashboardRepository->getRentOutstandingPayments(),
                 'sale_due' => $this->dashboardRepository->getSaleOutstandingPayments(),
