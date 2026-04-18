@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Backend\staffs;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Requests\Backend\staff\StaffRequest;
+use App\Http\Requests\Backend\Staff\StaffRequest;
 use App\Services\StaffService;
 
 class StaffController extends Controller

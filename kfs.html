@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KFS | Future Construction Solutions</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Configuration for Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['Orbitron', 'sans-serif'],
+                        body: ['Rajdhani', 'sans-serif'],
+                    },
+                    colors: {
+                        kfs: {
+                            black: '#0a0a0f',
+                            dark: '#13131f',
+                            accent: '#f59e0b', // Safety Yellow
+                            glow: '#3b82f6',   // Tech Blue
+                        }
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styles & Animation */
+        body {
+            background-color: #0a0a0f;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0f;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3b82f6;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f59e0b;
+        }
+
+        /* Glassmorphism */
+        .glass-panel {
+            background: rgba(19, 19, 31, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Neon Glow Utility */
+        .neon-text-blue {
+            text-shadow: 0 0 10px rgba(59, 130, 246, 0.7);
+        }
+        .neon-text-yellow {
+            text-shadow: 0 0 10px rgba(245, 158, 11, 0.7);
+        }
+        .neon-border:hover {
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5), inset 0 0 10px rgba(59, 130, 246, 0.2);
+            border-color: #3b82f6;
+        }
+
+        /* Animation Classes */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Scanline Effect */
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: rgba(59, 130, 246, 0.5);
+            position: absolute;
+            z-index: 10;
+            animation: scan 3s linear infinite;
+            opacity: 0.5;
+        }
+        @keyframes scan {
+            0% { top: 0%; opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { top: 100%; opacity: 0; }
+        }
+
+        /* Card Hover 3D Effect */
+        .product-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .product-card:hover {
+            transform: translateY(-10px) scale(1.02);
+        }
+    </style>
+</head>
+<body class="font-body selection:bg-kfs-accent selection:text-black">
+
+    <!-- Background Canvas for Animation -->
+    <canvas id="networkCanvas" class="fixed top-0 left-0 w-full h-full -z-10 opacity-30"></canvas>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 transition-all duration-300 glass-panel border-b-0 border-b-white/10" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <div class="w-10 h-10 bg-kfs-accent rounded flex items-center justify-center font-display font-bold text-black text-xl">K</div>
+                    <span class="font-display font-bold text-2xl tracking-widest text-white">KFS</span>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#home" class="text-white hover:text-kfs-accent px-3 py-2 rounded-md text-lg font-medium transition-colors">Home</a>
+                        <a href="#products" class="text-gray-300 hover:text-kfs-accent px-3 py-2 rounded-md text-lg font-medium transition-colors">Products</a>
+                        <a href="#services" class="text-gray-300 hover:text-kfs-accent px-3 py-2 rounded-md text-lg font-medium transition-colors">Services</a>
+                        <a href="#about" class="text-gray-300 hover:text-kfs-accent px-3 py-2 rounded-md text-lg font-medium transition-colors">About</a>
+                        <a href="#contact" class="px-5 py-2 border border-kfs-accent text-kfs-accent hover:bg-kfs-accent hover:text-black transition-all duration-300 rounded font-display font-bold uppercase tracking-wider text-sm">
+                            Contact Us
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" onclick="toggleMobileMenu()" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Panel -->
+        <div class="md:hidden hidden bg-kfs-black/95 backdrop-blur-xl absolute w-full border-b border-gray-800" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Home</a>
+                <a href="#products" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Products</a>
+                <a href="#services" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Services</a>
+                <a href="#about" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">About</a>
+                <a href="#contact" class="text-kfs-accent block px-3 py-2 rounded-md text-base font-bold">Contact Us</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
+        <!-- Overlay Image with Filter -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://picsum.photos/seed/scaffolding/1920/1080" alt="Construction Background" class="w-full h-full object-cover opacity-30 grayscale contrast-125">
+            <div class="absolute inset-0 bg-gradient-to-t from-kfs-black via-kfs-black/80 to-transparent"></div>
+        </div>
+
+        <!-- Scanline Animation -->
+        <div class="scanline"></div>
+
+        <!-- Content -->
+        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto mt-16">
+            <div class="inline-block mb-4 px-4 py-1 rounded-full border border-kfs-glow/50 bg-kfs-glow/10 text-kfs-glow text-sm font-bold tracking-widest uppercase fade-in-up delay-100">
+                System Status: Operational
+            </div>
+            <h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-black text-white mb-6 leading-tight fade-in-up delay-200">
+                BUILDING THE <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-kfs-accent to-red-500 neon-text-yellow">FUTURE</span>
+            </h1>
+            <p class="mt-4 max-w-2xl mx-auto text-xl text-gray-300 font-light mb-10 fade-in-up delay-300">
+                Premium scaffolding solutions for rent and sale. Engineered for safety, designed for efficiency. Hwai Family Scaffolding authorized.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center fade-in-up delay-400">
+                <a href="#services" class="group relative px-8 py-4 bg-kfs-accent text-black font-display font-bold text-lg rounded overflow-hidden transition-all hover:scale-105">
+                    <span class="relative z-10">FOR RENT</span>
+                    <div class="absolute inset-0 h-full w-full bg-white/30 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+                </a>
+                <a href="#products" class="group relative px-8 py-4 border border-kfs-glow text-white font-display font-bold text-lg rounded overflow-hidden transition-all hover:bg-kfs-glow/20 hover:shadow-[0_0_20px_rgba(59,130,246,0.4)]">
+                    <span class="relative z-10">FOR SALE</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-kfs-glow/50">
+            <i class="fas fa-chevron-down text-3xl"></i>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-10 border-y border-white/5 bg-kfs-dark/50 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div class="fade-in-up">
+                <div class="text-4xl font-display font-bold text-kfs-accent mb-2">10+</div>
+                <div class="text-gray-400 uppercase text-sm tracking-wider">Years Experience</div>
+            </div>
+            <div class="fade-in-up delay-100">
+                <div class="text-4xl font-display font-bold text-kfs-glow mb-2">500+</div>
+                <div class="text-gray-400 uppercase text-sm tracking-wider">Projects Completed</div>
+            </div>
+            <div class="fade-in-up delay-200">
+                <div class="text-4xl font-display font-bold text-white mb-2">24/7</div>
+                <div class="text-gray-400 uppercase text-sm tracking-wider">Support</div>
+            </div>
+            <div class="fade-in-up delay-300">
+                <div class="text-4xl font-display font-bold text-green-400 mb-2">100%</div>
+                <div class="text-gray-400 uppercase text-sm tracking-wider">Safety Record</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Showcase -->
+    <section id="products" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16 fade-in-up">
+                <h2 class="font-display text-4xl md:text-5xl font-bold text-white mb-4">EQUIPMENT <span class="text-kfs-accent">CATALOG</span></h2>
+                <div class="h-1 w-24 bg-gradient-to-r from-kfs-accent to-transparent mx-auto rounded-full"></div>
+                <p class="mt-4 text-gray-400">High-grade materials for every structural requirement.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Product 1 -->
+                <div class="product-card glass-panel rounded-xl overflow-hidden group fade-in-up neon-border cursor-pointer">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://picsum.photos/seed/prop/400/300" alt="Adjustable Prop" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute top-2 right-2 bg-kfs-accent text-black text-xs font-bold px-2 py-1 rounded">SALE</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-display text-xl font-bold text-white group-hover:text-kfs-glow transition-colors">Adjustable Props</h3>
+                        <p class="text-gray-400 text-sm mt-2 mb-4">Heavy-duty steel props with precise height adjustment mechanisms.</p>
+                        <div class="flex justify-between items-center text-kfs-accent font-bold">
+                            <span>View Specs</span>
+                            <i class="fas fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card glass-panel rounded-xl overflow-hidden group fade-in-up delay-100 neon-border cursor-pointer">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://picsum.photos/seed/pipe/400/300" alt="Steel Pipes" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute top-2 right-2 bg-kfs-glow text-white text-xs font-bold px-2 py-1 rounded">RENT</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-display text-xl font-bold text-white group-hover:text-kfs-glow transition-colors">Steel Pipes</h3>
+                        <p class="text-gray-400 text-sm mt-2 mb-4">Galvanized steel pipes available in various diameters and thickness.</p>
+                        <div class="flex justify-between items-center text-kfs-accent font-bold">
+                            <span>View Specs</span>
+                            <i class="fas fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card glass-panel rounded-xl overflow-hidden group fade-in-up delay-200 neon-border cursor-pointer">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://picsum.photos/seed/frame/400/300" alt="Scaffolding Frame" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute top-2 right-2 bg-kfs-accent text-black text-xs font-bold px-2 py-1 rounded">SALE</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-display text-xl font-bold text-white group-hover:text-kfs-glow transition-colors">Frame System</h3>
+                        <p class="text-gray-400 text-sm mt-2 mb-4">Modular frame scaffolding for rapid assembly and stability.</p>
+                        <div class="flex justify-between items-center text-kfs-accent font-bold">
+                            <span>View Specs</span>
+                            <i class="fas fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card glass-panel rounded-xl overflow-hidden group fade-in-up delay-300 neon-border cursor-pointer">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://picsum.photos/seed/wheel/400/300" alt="Scaffolding Wheels" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute top-2 right-2 bg-kfs-glow text-white text-xs font-bold px-2 py-1 rounded">RENT</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-display text-xl font-bold text-white group-hover:text-kfs-glow transition-colors">Brake Wheels</h3>
+                        <p class="text-gray-400 text-sm mt-2 mb-4">High-load caster wheels with double locking brakes for mobility.</p>
+                        <div class="flex justify-between items-center text-kfs-accent font-bold">
+                            <span>View Specs</span>
+                            <i class="fas fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- More Items Row -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+                 <!-- Product 5 -->
+                 <div class="product-card glass-panel rounded-xl overflow-hidden group fade-in-up flex flex-row items-center p-4 neon-border cursor-pointer">
+                    <div class="w-32 h-32 flex-shrink-0 overflow-hidden rounded-lg">
+                        <img src="https://picsum.photos/seed/coupler/200/200" alt="Couplers" class="w-full h-full object-cover">
+                    </div>
+                    <div class="ml-6">
+                        <h3 class="font-display text-lg font-bold text-white">Pressed Steel Couplers</h3>
+                        <p class="text-gray-400 text-sm mt-1">Essential connectors for secure tube joints. Forged & pressed options.</p>
+                        <span class="text-kfs-glow text-sm font-bold mt-2 inline-block">View Inventory <i class="fas fa-chevron-right text-xs ml-1"></i></span>
+                    </div>
+                </div>
+
+                <!-- Product 6 -->
+                <div class="product-card glass-panel rounded-xl overflow-hidden group fade-in-up flex flex-row items-center p-4 neon-border cursor-pointer">
+                    <div class="w-32 h-32 flex-shrink-0 overflow-hidden rounded-lg">
+                        <img src="https://picsum.photos/seed/board/200/200" alt="Steel Planks" class="w-full h-full object-cover">
+                    </div>
+                    <div class="ml-6">
+                        <h3 class="font-display text-lg font-bold text-white">Galvanized Steel Planks</h3>
+                        <p class="text-gray-400 text-sm mt-1">Anti-slip, high-strength walkways designed for heavy traffic.</p>
+                        <span class="text-kfs-glow text-sm font-bold mt-2 inline-block">View Inventory <i class="fas fa-chevron-right text-xs ml-1"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section (Rent vs Sale) -->
+    <section id="services" class="py-24 bg-kfs-dark/80 relative overflow-hidden">
+        <!-- Background decorative elements -->
+        <div class="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-kfs-glow/5 to-transparent pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 relative z-10">
+            <div class="text-center mb-16 fade-in-up">
+                <h2 class="font-display text-4xl md:text-5xl font-bold text-white mb-4">CHOOSE YOUR <span class="text-kfs-glow">SERVICE</span></h2>
+                <p class="text-gray-400">Flexible options tailored to your project timeline.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <!-- Rent -->
+                <div class="glass-panel p-8 md:p-12 rounded-2xl border-l-4 border-l-kfs-accent relative fade-in-up group hover:bg-white/5 transition-colors">
+                    <div class="absolute top-4 right-4 text-6xl text-white/5 font-display font-black group-hover:text-kfs-accent/10 transition-colors">01</div>
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-16 h-16 rounded-full bg-kfs-accent/10 flex items-center justify-center text-kfs-accent text-2xl border border-kfs-accent/30">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3 class="font-display text-3xl font-bold text-white">RENTAL</h3>
+                    </div>
+                    <ul class="space-y-4 text-gray-300 mb-8">
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-check-circle text-kfs-accent"></i> Cost-effective for short-term projects
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-check-circle text-kfs-accent"></i> Free transportation (Conditions apply)
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-check-circle text-kfs-accent"></i> 24/7 Maintenance support
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-check-circle text-kfs-accent"></i> Flexible daily, weekly, monthly rates
+                        </li>
+                    </ul>
+                    <button onclick="showQuoteModal('Rental')" class="w-full py-3 border border-kfs-accent text-kfs-accent font-bold rounded hover:bg-kfs-accent hover:text-black transition-all uppercase tracking-widest">
+                        Get Rental Quote
+                    </button>
+                </div>
+
+                <!-- Sale -->
+                <div class="glass-panel p-8 md:p-12 rounded-2xl border-l-4 border-l-kfs-glow relative fade-in-up delay-100 group hover:bg-white/5 transition-colors">
+                    <div class="absolute top-4 right-4 text-6xl text-white/5 font-display font-black group-hover:text-kfs-glow/10 transition-colors">02</div>
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-16 h-16 rounded-full bg-kfs-glow/10 flex items-center justify-center text-kfs-glow text-2xl border border-kfs-glow/30">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <h3 class="font-display text-3xl font-bold text-white">PURCHASE</h3>
+                    </div>
+                    <ul class="space-y-4 text-gray-300 mb-8">
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-check-circle text-kfs-glow"></i> Brand new & certified used stock
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-check-circle text-kfs-glow"></i> Lifetime warranty on frames
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-check-circle text-kfs-glow"></i> Bulk order discounts
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-check-circle text-kfs-glow"></i> Buy-back guarantee available
+                        </li>
+                    </ul>
+                    <button onclick="showQuoteModal('Purchase')" class="w-full py-3 bg-kfs-glow text-white font-bold rounded hover:bg-blue-600 hover:shadow-[0_0_20px_rgba(59,130,246,0.5)] transition-all uppercase tracking-widest">
+                        Request Price List
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="fade-in-up relative">
+                    <div class="absolute -inset-4 bg-gradient-to-r from-kfs-accent to-kfs-glow rounded-2xl opacity-20 blur-lg"></div>
+                    <img src="https://picsum.photos/seed/construction/800/600" alt="Team Working" class="relative rounded-xl shadow-2xl border border-white/10 grayscale hover:grayscale-0 transition-all duration-700 w-full">
+                    
+                    <!-- Floating Badge -->
+                    <div class="absolute bottom-8 left-8 bg-black/80 backdrop-blur border border-kfs-accent p-4 rounded-lg shadow-xl animate-pulse">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-hard-hat text-kfs-accent text-2xl"></i>
+                            <div>
+                                <div class="text-xs text-gray-400 uppercase">Safety First</div>
+                                <div class="font-bold text-white">ISO 9001 Certified</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="fade-in-up">
+                    <h4 class="text-kfs-glow font-bold tracking-widest uppercase mb-2">Who We Are</h4>
+                    <h2 class="font-display text-4xl md:text-5xl font-bold text-white mb-6">Hwai Family <br>Scaffolding</h2>
+                    <p class="text-gray-400 mb-6 text-lg leading-relaxed">
+                        We are a leading provider of construction and scaffolding solutions dedicated to safety, innovation, and reliability. Whether you are building a skyscraper or renovating a home, KFS provides the structural backbone for your success.
+                    </p>
+                    <p class="text-gray-400 mb-8 text-lg leading-relaxed">
+                        Our extensive inventory includes adjustable supports, steel pipes, frame systems, and all necessary accessories. We combine traditional engineering strength with modern logistics to keep your project on time.
+                    </p>
+
+                    <div class="grid grid-cols-2 gap-6 mb-8">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-cogs text-kfs-accent text-xl"></i>
+                            <span class="text-white font-semibold">Expert Engineering</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-truck-loading text-kfs-accent text-xl"></i>
+                            <span class="text-white font-semibold">Fast Logistics</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-user-shield text-kfs-accent text-xl"></i>
+                            <span class="text-white font-semibold">Certified Safety</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-hand-holding-usd text-kfs-accent text-xl"></i>
+                            <span class="text-white font-semibold">Best Rates</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 bg-gradient-to-b from-kfs-dark to-black relative">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="glass-panel rounded-2xl overflow-hidden border border-white/10">
+                <div class="grid grid-cols-1 md:grid-cols-2">
+                    <!-- Form -->
+                    <div class="p-8 md:p-12">
+                        <h2 class="font-display text-3xl font-bold text-white mb-6">GET IN <span class="text-kfs-accent">TOUCH</span></h2>
+                        <form id="contactForm" class="space-y-6">
+                            <div>
+                                <label class="block text-gray-400 text-sm font-bold mb-2">Name</label>
+                                <input type="text" required class="w-full bg-black/50 border border-gray-700 rounded p-3 text-white focus:border-kfs-accent focus:outline-none transition-colors" placeholder="Your Name">
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 text-sm font-bold mb-2">Email</label>
+                                <input type="email" required class="w-full bg-black/50 border border-gray-700 rounded p-3 text-white focus:border-kfs-accent focus:outline-none transition-colors" placeholder="email@example.com">
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 text-sm font-bold mb-2">Message</label>
+                                <textarea rows="4" required class="w-full bg-black/50 border border-gray-700 rounded p-3 text-white focus:border-kfs-accent focus:outline-none transition-colors" placeholder="How can we help you?"></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-kfs-accent text-black font-bold py-3 rounded hover:bg-yellow-400 transition-colors uppercase font-display tracking-wider">
+                                Send Message
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- Info -->
+                    <div class="bg-kfs-glow/10 p-8 md:p-12 flex flex-col justify-between relative overflow-hidden">
+                        <div class="absolute top-0 right-0 p-4 opacity-10">
+                            <i class="fas fa-map-marker-alt text-9xl text-kfs-glow"></i>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-display text-2xl font-bold text-white mb-8">Contact Information</h3>
+                            
+                            <div class="space-y-6">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-10 h-10 rounded bg-kfs-glow/20 flex items-center justify-center text-kfs-glow flex-shrink-0">
+                                        <i class="fas fa-phone"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-gray-400 text-sm">Phone</div>
+                                        <div class="text-white font-semibold text-lg">+95 9 123 456 789</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start gap-4">
+                                    <div class="w-10 h-10 rounded bg-kfs-glow/20 flex items-center justify-center text-kfs-glow flex-shrink-0">
+                                        <i class="fas fa-envelope"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-gray-400 text-sm">Email</div>
+                                        <div class="text-white font-semibold text-lg">info@kfs-scaffold.com</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start gap-4">
+                                    <div class="w-10 h-10 rounded bg-kfs-glow/20 flex items-center justify-center text-kfs-glow flex-shrink-0">
+                                        <i class="fas fa-map-pin"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-gray-400 text-sm">Address</div>
+                                        <div class="text-white font-semibold text-lg">No. 123, Industrial Zone,<br>Yangon, Myanmar</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-12 flex gap-4">
+                            <a href="#" class="w-10 h-10 rounded bg-white/10 hover:bg-kfs-glow hover:text-white flex items-center justify-center text-gray-300 transition-all"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="w-10 h-10 rounded bg-white/10 hover:bg-kfs-glow hover:text-white flex items-center justify-center text-gray-300 transition-all"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="w-10 h-10 rounded bg-white/10 hover:bg-kfs-glow hover:text-white flex items-center justify-center text-gray-300 transition-all"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black py-8 border-t border-gray-900 text-center relative z-10">
+        <p class="text-gray-500 text-sm">
+            &copy; 2023 KFS Scaffolding. All rights reserved. <br>
+            <span class="text-xs text-gray-700 mt-2 block">Designed with Future Tech</span>
+        </p>
+    </footer>
+
+    <!-- Modal for Quote (Hidden by default) -->
+    <div id="quoteModal" class="fixed inset-0 z-[60] hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeModal()"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md p-6">
+            <div class="glass-panel border border-kfs-glow rounded-xl p-6 shadow-[0_0_50px_rgba(59,130,246,0.3)]">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-display text-2xl font-bold text-white" id="modalTitle">Quote Request</h3>
+                    <button onclick="closeModal()" class="text-gray-400 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+                </div>
+                <p class="text-gray-300 mb-6">Please provide your details and our team will contact you with a custom quote for <span id="modalType" class="text-kfs-accent font-bold"></span>.</p>
+                <form onsubmit="handleModalSubmit(event)" class="space-y-4">
+                    <input type="text" placeholder="Project Name" class="w-full bg-black/50 border border-gray-700 rounded p-3 text-white focus:border-kfs-glow focus:outline-none">
+                    <input type="tel" placeholder="Phone Number" class="w-full bg-black/50 border border-gray-700 rounded p-3 text-white focus:border-kfs-glow focus:outline-none">
+                    <button type="submit" class="w-full bg-kfs-glow text-white font-bold py-3 rounded hover:bg-blue-600 transition-colors">Submit Request</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-kfs-glow text-white px-6 py-4 rounded shadow-2xl transform translate-y-24 transition-transform duration-300 z-[70] flex items-center gap-3">
+        <i class="fas fa-check-circle"></i>
+        <div>
+            <h4 class="font-bold text-sm">Success</h4>
+            <p class="text-xs text-blue-100" id="toastMessage">Action completed.</p>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. Background Animation (Canvas Network) ---
+        const canvas = document.getElementById('networkCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2 + 1;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+            }
+
+            draw() {
+                ctx.fillStyle = '#3b82f6';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            const particleCount = Math.min(window.innerWidth / 10, 100);
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw connections first
+            ctx.strokeStyle = 'rgba(59, 130, 246, 0.15)';
+            ctx.lineWidth = 1;
+            
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                
+                for (let j = i; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 150) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            resize();
+            initParticles();
+        });
+        
+        resize();
+        initParticles();
+        animate();
+
+
+        // --- 2. Scroll Animation Observer ---
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); // Only animate once
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-up').forEach(el => {
+            observer.observe(el);
+        });
+
+
+        // --- 3. UI Interactions ---
+        
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Modal Handling
+        const modal = document.getElementById('quoteModal');
+        const modalTitle = document.getElementById('modalType');
+        
+        function showQuoteModal(type) {
+            modalTitle.textContent = type;
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+        }
+
+        function handleModalSubmit(e) {
+            e.preventDefault();
+            closeModal();
+            showToast('Request sent successfully! We will contact you soon.');
+        }
+
+        // Contact Form Handling
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showToast('Message sent! Thank you for contacting KFS.');
+            this.reset();
+        });
+
+        // Toast Notification
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').textContent = msg;
+            toast.classList.remove('translate-y-24');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24');
+            }, 3000);
+        }
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-lg');
+                nav.style.background = 'rgba(10, 10, 15, 0.9)';
+            } else {
+                nav.classList.remove('shadow-lg');
+                nav.style.background = 'rgba(19, 19, 31, 0.7)';
+            }
+        });
+
+    </script>
+</body>
+</html>

@@ -310,7 +310,7 @@
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             @forelse($dashboardData['low_stock_products'] as $product)
-                                @foreach ($product['variants'] as $variant)
+                                @forelse ($product['variants'] as $variant)
                                     <tr class="hover:bg-gray-50">
                                         <td class="px-4 py-3 text-sm text-gray-900">{{ $product['product_name'] }}</td>
                                         <td class="px-4 py-3 text-sm text-gray-600">{{ $variant['name'] ?? 'Default' }}
@@ -322,7 +322,11 @@
                                                 Stock</span>
                                         </td>
                                     </tr>
-                                @endforeach
+                                @empty
+                                    <tr>
+                                        <td colspan="4" class="px-4 py-3 text-center text-gray-500">No low stock variants found</td>
+                                    </tr>
+                                @endforelse
                             @empty
                                 <tr>
                                     <td colspan="4" class="px-4 py-3 text-center text-gray-500">All products have
