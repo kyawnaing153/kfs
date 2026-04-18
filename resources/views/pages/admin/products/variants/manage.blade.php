@@ -89,7 +89,7 @@
                                 </label>
                                 <input type="text" name="size" value="{{ old('size') }}"
                                     class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
-                                    placeholder="e.g., M, 10, 500ml" />
+                                    placeholder="e.g., 11ft, 13 ft, 2 M" />
                                 @error('size')
                                     <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                                 @enderror
@@ -102,7 +102,7 @@
                                 </label>
                                 <input type="text" name="unit" value="{{ old('unit') }}"
                                     class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
-                                    placeholder="e.g., piece, kg, liter" />
+                                    placeholder="e.g., pcs, kg, set" />
                                 @error('unit')
                                     <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                                 @enderror
@@ -253,7 +253,7 @@
                                             Variant Details
                                         </th>
                                         <th
-                                            class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            class="min-w-[200px] px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Stock & Price
                                         </th>
                                         <th
@@ -336,7 +336,7 @@
                                                             <span class="text-gray-600 dark:text-gray-400">Sale:</span>
                                                             <span
                                                                 class="ml-2 font-medium text-green-600 dark:text-green-400">
-                                                                ${{ number_format($salePrice->price, 1) }}
+                                                                Ks {{ number_format($salePrice->price, 0) }}
                                                             </span>
                                                         </div>
                                                     @endif
@@ -349,7 +349,7 @@
                                                             </span>
                                                             <span
                                                                 class="ml-2 font-medium text-blue-600 dark:text-blue-400">
-                                                                ${{ number_format($rentPrice->price, 0) }}
+                                                                Ks {{ number_format($rentPrice->price, 0) }}
                                                             </span>
                                                         </div>
                                                     @endforeach
