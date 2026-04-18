@@ -438,12 +438,12 @@
                 </x-common.component-card>
 
                 <!-- Product Image Card -->
-                @if ($product->thumb_url)
+                @if ($product->thumb)
                     <x-common.component-card title="Product Image">
                         <div class="relative">
-                            <img src="{{ asset('storage/products/thumbnails/'.$product->thumbnail) }}" alt="{{ $product->product_name }}"
+                            <img src="{{ asset('storage/app/public/'.$product->thumb) }}" alt="{{ $product->product_name }}"
                                 class="w-full rounded-lg border border-gray-200 dark:border-gray-700">
-                            <a href="{{ $product->thumb_url }}" target="_blank"
+                            <a href="{{ asset('storage/app/public/'.$product->thumb) }}" target="_blank"
                                 class="absolute bottom-3 right-3 inline-flex items-center gap-1 rounded-lg bg-black/70 px-2 py-1 text-xs text-white hover:bg-black/90 transition-colors">
                                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
