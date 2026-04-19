@@ -97,7 +97,7 @@
 
                 <div class="border rounded-lg p-4">
                     <p class="text-sm text-gray-500 dark:text-gray-400">Total Amount</p>
-                    <p class="text-xl font-bold text-green-600">Ks {{ number_format($purchase->total_amount, 1) }}</p>
+                    <p class="text-xl font-bold text-green-600">Ks {{ number_format($purchase->total_amount, 0) }}</p>
                 </div>
             </div>
 
@@ -111,15 +111,15 @@
 
         <!-- Purchase Items Card -->
         <x-common.component-card title="Purchase Items">
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto mb-8">
                 <table class="w-full text-sm">
                     <thead class="bg-gray-50 dark:bg-gray-800">
                         <tr>
                             <th class="px-4 py-3 text-left">#</th>
-                            <th class="px-4 py-3 text-left">Product</th>
+                            <th class="min-w-[120px] px-4 py-3 text-left">Product</th>
                             <th class="px-4 py-3 text-right">Quantity</th>
-                            <th class="px-4 py-3 text-right">Unit Price</th>
-                            <th class="px-4 py-3 text-right">Total</th>
+                            <th class="min-w-[100px] px-4 py-3 text-right">Unit Price</th>
+                            <th class="min-w-[100px] px-4 py-3 text-right">Total</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
@@ -135,38 +135,38 @@
                                 </td>
                                 <td class="px-4 py-3 text-right">{{ number_format($item->received_qty) }}
                                     {{ $item->productVariant->unit ?? 'N/A' }}</td>
-                                <td class="px-4 py-3 text-right">Ks {{ number_format($item->unit_price, 1) }}</td>
-                                <td class="px-4 py-3 text-right font-medium">Ks {{ number_format($item->total, 1) }}</td>
+                                <td class="px-4 py-3 text-right">Ks {{ number_format($item->unit_price, 0) }}</td>
+                                <td class="px-4 py-3 text-right font-medium">Ks {{ number_format($item->total, 0) }}</td>
                             </tr>
                         @endforeach
                     </tbody>
                     <tfoot class="bg-gray-50 dark:bg-gray-800 font-semibold">
                         <tr>
                             <td colspan="4" class="px-4 py-3 text-right">Sub Total:</td>
-                            <td class="px-4 py-3 text-right">Ks {{ number_format($purchase->sub_total, 1) }}</td>
+                            <td class="px-4 py-3 text-right">Ks {{ number_format($purchase->sub_total, 0) }}</td>
                         </tr>
                         @if ($purchase->transport > 0)
                             <tr>
                                 <td colspan="4" class="px-4 py-3 text-right">Transport Cost:</td>
-                                <td class="px-4 py-3 text-right">Ks {{ number_format($purchase->transport, 1) }}</td>
+                                <td class="px-4 py-3 text-right">Ks {{ number_format($purchase->transport, 0) }}</td>
                             </tr>
                         @endif
                         @if ($purchase->discount > 0)
                             <tr>
                                 <td colspan="4" class="px-4 py-3 text-right">Discount:</td>
-                                <td class="px-4 py-3 text-right">Ks -{{ number_format($purchase->discount, 1) }}</td>
+                                <td class="px-4 py-3 text-right">Ks -{{ number_format($purchase->discount, 0) }}</td>
                             </tr>
                         @endif
                         @if ($purchase->tax > 0)
                             <tr>
                                 <td colspan="4" class="px-4 py-3 text-right">Tax:</td>
-                                <td class="px-4 py-3 text-right">Ks {{ number_format($purchase->tax, 1) }}</td>
+                                <td class="px-4 py-3 text-right">Ks {{ number_format($purchase->tax, 0) }}</td>
                             </tr>
                         @endif
                         <tr class="border-t-2 border-gray-300 dark:border-gray-600">
                             <td colspan="4" class="px-4 py-3 text-right text-lg">Grand Total:</td>
                             <td class="px-4 py-3 text-right text-lg font-bold text-green-600">
-                                Ks {{ number_format($purchase->total_amount, 1) }}
+                                Ks {{ number_format($purchase->total_amount, 0) }}
                             </td>
                         </tr>
                     </tfoot>

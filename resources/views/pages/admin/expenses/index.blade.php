@@ -77,7 +77,7 @@
         </div>
 
         <!-- Top Expenses Card -->
-        <div class="rounded-2xl border border-gray-200 bg-white pt-4 dark:border-gray-800 dark:bg-white/[0.03]">
+        <div class="rounded-2xl border mb-8 border-gray-200 bg-white pt-4 dark:border-gray-800 dark:bg-white/[0.03]">
             <div class="flex flex-col gap-4 px-5 mb-4 sm:flex-row sm:items-center sm:px-6">
                 <div>
                     <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
@@ -155,7 +155,7 @@
             </div>
 
             <!-- Table -->
-            <div class="overflow-x-auto px-5">
+            <div class="overflow-x-auto px-5 mb-8">
                 <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                     <thead class="bg-gray-50 dark:bg-gray-800/50">
                         <tr>

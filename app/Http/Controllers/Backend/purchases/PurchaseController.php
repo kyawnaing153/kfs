@@ -122,7 +122,7 @@ class PurchaseController extends Controller
         try {
             $this->purchaseService->markAsDelivered($id);
 
-            return redirect()->route('purchases.show', $id)
+            return redirect()->route('purchases.index')
                 ->with('success', 'Purchase marked as delivered and stock updated!');
         } catch (\Exception $e) {
             return redirect()->back()
@@ -132,7 +132,7 @@ class PurchaseController extends Controller
 
     public function updatePaymentStatus(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(''), [
             'payment_status' => 'required|in:0,1',
         ]);
 
@@ -147,7 +147,7 @@ class PurchaseController extends Controller
                 return response()->json(['success' => true, 'payment_status' => $purchase->payment_status]);
             }
 
-            return redirect()->route('purchases.show', $id)
+            return redirect()->route('purchases.index')
                 ->with('success', 'Payment status updated successfully!');
         } catch (\Exception $e) {
             if ($request->ajax()) {

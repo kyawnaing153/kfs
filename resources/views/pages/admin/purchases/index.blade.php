@@ -3,9 +3,12 @@
 @section('content')
     <div class="p-6">
         <div class="mb-6 flex justify-between items-center">
-            <h1 class="text-2xl font-semibold">Purchase Management</h1>
-            <a href="{{ route('purchases.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-                + New Purchase
+            <h4 class="text-xl font-semibold">Purchase Management</h4>
+            <a href="{{ route('purchases.create') }}" class="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-brand-700">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                Create
             </a>
         </div>
 
@@ -13,7 +16,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <div class="bg-white rounded-lg shadow p-4">
                 <h3 class="text-gray-500 text-sm">Total Purchases</h3>
-                <p class="text-2xl font-bold">Ks {{ number_format($statistics['total_purchases'], 1) }}</p>
+                <p class="text-2xl font-bold">Ks {{ number_format($statistics['total_purchases'], 0) }}</p>
             </div>
             <div class="bg-white rounded-lg shadow p-4">
                 <h3 class="text-gray-500 text-sm">Pending Delivery</h3>
@@ -21,7 +24,8 @@
             </div>
             <div class="bg-white rounded-lg shadow p-4">
                 <h3 class="text-gray-500 text-sm">This Month Purchases</h3>
-                <p class="text-2xl font-bold text-green-600">Ks {{ number_format($statistics['this_month_purchases'], 1) }}</p>
+                <p class="text-2xl font-bold text-green-600">Ks {{ number_format($statistics['this_month_purchases'], 0) }}
+                </p>
             </div>
         </div>
 
@@ -52,9 +56,10 @@
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">PO Number</th>
+                        <th class="min-w-[180px] px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">PO Number
+                        </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Supplier</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total</th>
+                        <th class="min-w-[140px] px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Delivery Status</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Payment</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
@@ -64,12 +69,16 @@
                     @forelse($purchases as $purchase)
                         <tr>
                             <td class="px-6 py-4">{{ $purchase->purchase_code }}
-                                <p><span class="text-sm text-gray-500 dark:text-gray-400">{{ $purchase->purchase_date }}</span></p>
+                                <p><span
+                                        class="text-sm text-gray-500 dark:text-gray-400">{{ $purchase->purchase_date }}</span>
+                                </p>
                             </td>
-                            <td class="px-6 py-4">{{ $purchase->supplier->name }} 
-                                <p><span class="text-sm text-gray-500 dark:text-gray-400 hover:underline"> <a href="tel:+{{$purchase->supplier->phone_number}}">{{ $purchase->supplier->phone_number }}</a></span></p>
+                            <td class="px-6 py-4">{{ $purchase->supplier->name }}
+                                <p><span class="text-sm text-gray-500 dark:text-gray-400 hover:underline"> <a class="underline"
+                                            href="tel:+{{ $purchase->supplier->phone_number }}">{{ $purchase->supplier->phone_number }}</a></span>
+                                </p>
                             </td>
-                            <td class="px-6 py-4">${{ number_format($purchase->total_amount, 0) }}</td>
+                            <td class="px-6 py-4">Ks {{ number_format($purchase->total_amount, 0) }}</td>
                             <td class="px-6 py-4">
                                 <span class="px-2 py-1 text-xs rounded-full {{ $purchase->status_badge_class }}">
                                     {{ $purchase->status_text }}
@@ -128,6 +137,7 @@
                                                     class="inline">
                                                     @csrf
                                                     @method('POST')
+                                                    <input type="hidden" name="payment_status" value="{{ $purchase->payment_status == 1 ? 0 : 1 }}">
                                                     <button type="submit"
                                                         class="flex w-full items-center gap-2 px-4 py-2 text-sm text-yellow-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
                                                         role="menuitem">

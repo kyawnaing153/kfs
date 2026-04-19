@@ -127,7 +127,7 @@
             </div>
 
             <!-- Sales Table -->
-            <div class="p-6 pt-4">
+            <div class="p-6 pt-4 mb-8">
                 @if ($sales->isEmpty())
                     <!-- Empty State -->
                     <div class="py-12 text-center">
