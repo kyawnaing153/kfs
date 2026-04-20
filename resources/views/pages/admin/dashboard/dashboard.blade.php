@@ -195,7 +195,7 @@
                                     <td class="px-4 py-3 text-sm text-gray-600">
                                         {{ $sale['customer']['name'] ?? 'Walk-in Customer' }}</td>
                                     <td class="px-4 py-3 text-sm text-gray-600">
-                                        {{ \Carbon\Carbon::parse($sale['sale_date'])->format('d/m/Y') }}</td>
+                                        {{ \Carbon\Carbon::parse($sale['sale_date'])->format('Y-m-d') }}</td>
                                     <td class="px-4 py-3 text-sm font-medium text-gray-900">
                                         {{ number_format($sale['total'], 0) }} Ks</td>
                                     <td class="px-4 py-3">
@@ -242,7 +242,7 @@
                                     <td class="px-4 py-3 text-sm text-gray-600">{{ $rent['customer']['name'] ?? 'N/A' }}
                                     </td>
                                     <td class="px-4 py-3 text-sm text-gray-600">
-                                        {{ \Carbon\Carbon::parse($rent['rent_date'])->format('d/m/Y') }}</td>
+                                        {{ \Carbon\Carbon::parse($rent['rent_date'])->format('Y-m-d') }}</td>
                                     <td class="px-4 py-3 text-sm font-medium text-gray-900">
                                         {{ number_format($rent['total'], 0) }} Ks</td>
                                     <td class="px-4 py-3 text-sm font-medium text-red-600">
@@ -369,7 +369,7 @@
                                     <td class="px-4 py-3 text-sm text-gray-600">
                                         {{ $purchase['supplier']['name'] ?? 'N/A' }}</td>
                                     <td class="px-4 py-3 text-sm text-gray-600">
-                                        {{ \Carbon\Carbon::parse($purchase['purchase_date'])->format('d/m/Y') }}</td>
+                                        {{ \Carbon\Carbon::parse($purchase['purchase_date'])->format('Y-m-d') }}</td>
                                     <td class="px-4 py-3 text-sm font-medium text-gray-900">
                                         {{ number_format($purchase['total_amount'], 0) }} Ks</td>
                                     <td class="px-4 py-3">
@@ -413,7 +413,7 @@
                                 <tr class="hover:bg-gray-50">
                                     <td class="px-4 py-3 text-sm text-gray-900">{{ $expense['expense_title'] }}</td>
                                     <td class="px-4 py-3 text-sm text-gray-600">
-                                        {{ \Carbon\Carbon::parse($expense['expense_date'])->format('d/m/Y') }}</td>
+                                        {{ \Carbon\Carbon::parse($expense['expense_date'])->format('Y-m-d') }}</td>
                                     <td class="px-4 py-3 text-sm font-medium text-red-600">
                                         {{ number_format($expense['amount'], 0) }} Ks</td>
                                     <td class="px-4 py-3 text-sm text-gray-600">

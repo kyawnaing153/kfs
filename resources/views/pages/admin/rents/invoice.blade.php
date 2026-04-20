@@ -92,9 +92,6 @@
         <!-- Header -->
         <div class="flex justify-between items-center mb-4 pb-6 border-b-2 border-blue-900">
             <div class="company-info">
-                {{-- <div class="w-20 h-20 bg-blue-900 rounded-full flex items-center justify-center mb-2 overflow-hidden">
-                    <img src="" alt="Kyaw Family Scaffolding Logo" class="w-full h-full object-cover">
-                </div> --}}
                 <h1 class="text-blue-900 text-2xl font-bold mb-1">{{ $settings['companyName'] ?? '' }}</h1>
                 <p class="text-gray-600 text-sm">{{ $settings['address'] ?? '' }}</p>
                 <p class="text-gray-600 text-sm">Phone: {{ $settings['phone'] ?? '' }} | Email:
@@ -120,11 +117,10 @@
                 <div class="text-blue-900 font-bold text-sm uppercase mb-2">Rented To:</div>
                 <div class="text-gray-600 text-sm">
                     <p class="font-semibold text-gray-800">
-                        {{ $rent->customer->first_name ?? '' }} {{ $rent->customer->last_name ?? '' }}
+                        {{ $rent->customer->name ?? '' }} @if ($rent->customer->company_name ?? false)
+                            from {{ $rent->customer->company_name }}
+                        @endif
                     </p>
-                    @if ($rent->customer->company_name ?? false)
-                        <p>{{ $rent->customer->company_name }}</p>
-                    @endif
                     <p>Phone: {{ $phones[0] ?? '' }}</p>
                     @if ($rent->customer->email ?? false)
                         <p>Email: {{ $rent->customer->email }}</p>
@@ -150,7 +146,6 @@
                     <th class="bg-blue-900 text-white rounded-l-lg text-left p-3 font-semibold text-sm w-[40%]">Item
                         Description</th>
                     <th class="bg-blue-900 text-white text-center p-3 font-semibold text-sm w-[20%]">Quantity</th>
-                    {{-- <th class="bg-blue-900 text-white text-center p-3 font-semibold text-sm w-[5%]">Unit</th> --}}
                     <th class="bg-blue-900 text-white text-center p-3 font-semibold text-sm w-[20%]">Daily Rate (Ks)</th>
                     <th class="bg-blue-900 text-white rounded-r-lg text-right p-3 font-semibold text-sm w-[20%]">Daily Total
                         (Ks)</th>
@@ -166,10 +161,9 @@
                                     - Size: {{ $item->productVariant->size }}
                                 @endif
                             </p>
-                            {{-- <p class="text-gray-600 text-xs">{{ $item->productVariant->product->description ?? '' }}</p> --}}
                         </td>
-                        <td class="p-2 border-b border-gray-200 text-sm text-center">{{ $item->rent_qty }} {{ $item->unit }}</td>
-                        {{-- <td class="p-2 border-b border-gray-200 text-sm text-center">{{ $item->unit }}</td> --}}
+                        <td class="p-2 border-b border-gray-200 text-sm text-center">{{ $item->rent_qty }}
+                            {{ $item->unit }}</td>
                         <td class="p-2 border-b border-gray-200 text-sm text-center">
                             {{ number_format($item->unit_price, 0) }}</td>
                         <td class="p-2 border-b border-gray-200 text-sm text-right">
@@ -264,11 +258,11 @@
                         </tr>
                     @endif
 
-                    <tr>
+                    {{-- <tr>
                         <td class="p-1 border-b border-gray-200 text-sm">Subtotal</td>
                         <td class="p-1 border-b border-gray-200 text-sm text-right">
                             {{ number_format($rent->sub_total, 0) }} Ks</td>
-                    </tr>
+                    </tr> --}}
 
                     <tr>
                         <td class="p-1 border-b border-gray-200 text-sm">Tax ({{ $rent->tax_amount }}%)</td>
@@ -278,7 +272,7 @@
 
                     <tr class="font-bold bg-gray-100">
                         <td class="p-1 border-t-1 border-b-1 border-blue-900">
-                            GRAND TOTAL
+                            TOTAL
                         </td>
                         <td class="p-1 border-t-1 border-b-1 border-blue-900 text-right">
                             {{ number_format($rent->total, 0) }} Ks

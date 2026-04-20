@@ -22,19 +22,19 @@
                     <div>
                         <span class="text-gray-500 dark:text-gray-400">Total Amount:</span>
                         <span class="font-medium text-gray-900 dark:text-white ml-2">
-                            Ks {{ number_format($rent->total, 1) }}
+                            Ks {{ number_format($rent->total, 0) }}
                         </span>
                     </div>
                     <div>
                         <span class="text-gray-500 dark:text-gray-400">Paid Amount:</span>
                         <span class="font-medium text-gray-900 dark:text-white ml-2">
-                            Ks {{ number_format($rent->total_paid, 1) }}
+                            Ks {{ number_format($rent->total_paid, 0) }}
                         </span>
                     </div>
                     <div>
                         <span class="text-gray-500 dark:text-gray-400">Due Amount:</span>
                         <span class="font-medium text-red-600 dark:text-red-400 ml-2">
-                            Ks {{ number_format($dueAmount, 1) }}
+                            Ks {{ number_format($dueAmount, 0) }}
                         </span>
                     </div>
                 </div>
@@ -45,7 +45,7 @@
                     <h3 class="text-sm font-medium text-blue-900 dark:text-blue-200 mb-2">Last Payment Info</h3>
                     <div class="text-sm">
                         <span class="text-blue-700 dark:text-blue-300">Last payment:</span>
-                        <span class="font-medium ml-2">Ks {{ number_format($lastPayment->amount, 1) }}</span>
+                        <span class="font-medium ml-2">Ks {{ number_format($lastPayment->amount, 0) }}</span>
                         <span class="mx-2">•</span>
                         <span class="text-blue-700 dark:text-blue-300">Date:</span>
                         <span class="font-medium ml-2">{{ $lastPayment->payment_date }}</span>

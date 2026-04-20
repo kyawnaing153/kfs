@@ -59,7 +59,7 @@ class RentReturnController extends Controller
         try {
             $return = $this->returnService->createReturn($rent, $request->validated());
 
-            return redirect()->route('rents.show', $rent->id)
+            return redirect()->route('rents.returns.print', [$rent->id, $return->id])
                 ->with('success', 'Return processed successfully.');
         } catch (\Exception $e) {
             return back()->withInput()

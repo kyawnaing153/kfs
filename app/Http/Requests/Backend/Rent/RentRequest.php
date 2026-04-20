@@ -304,7 +304,7 @@ class RentRequest extends FormRequest
         if (!$this->isMethod('PUT') && !$this->isMethod('PATCH')) {
             $validated['rent_code'] = $this->generateRentCode();
             $validated['total_paid'] = $this->input('total_paid', 0);
-            $validated['status'] = 'pending';
+            $validated['status'] = $this->input('status', 'pending');
         }
 
         // Ensure proper decimal precision

@@ -95,16 +95,6 @@ class RentReturnService
     }
 
     /**
-     * Calculate late fee for returned items
-     */
-    private function calculateLateFee($rent, int $rentItemId, int $returnedQty): float
-    {
-        // Implement your late fee calculation logic here
-        // This could be based on overdue days, contract terms, etc.
-        return 0; // Default no late fee
-    }
-
-    /**
      * Check if all items are returned
      */
     private function areAllItemsReturned($rent): bool

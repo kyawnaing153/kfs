@@ -444,7 +444,10 @@
                                             <td class="px-4 py-4">
                                                 <div class="flex flex-col">
                                                     <div class="font-medium text-gray-900 dark:text-white">
-                                                        {{ $return->rent->rent_code ?? 'N/A' }}
+                                                        <a href="{{ route('rents.returns.print', [$return->rent_id, $return->id, 'autoprint' => true]) }}" class="text-blue-500 hover:text-blue-700" title="Print">
+                                                            {{ $return->rent->rent_code ?? 'N/A' }}
+                                                        </a>
+                                                        
                                                     </div>
                                                     <div class="mt-1 text-sm text-gray-500 dark:text-gray-400">
                                                         {{ $return->return_date }}
