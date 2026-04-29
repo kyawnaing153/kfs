@@ -44,7 +44,6 @@
                         <input type="email" name="email" 
                             class="auth-input @error('email') border-red-500 @enderror" 
                             placeholder="your@email.com" 
-                            value="labroom108@gmail.com"
                             {{-- value="{{ old('email') }}" --}}
                             required autofocus autocomplete="email">
                     </div>
@@ -63,7 +62,6 @@
                             <input type="password" name="password" id="loginPassword" 
                                 class="auth-input pr-12 @error('password') border-red-500 @enderror" 
                                 placeholder="••••••••" 
-                                value="12345678"
                                 required autocomplete="current-password">
                             <button type="button" onclick="togglePasswordVis('loginPassword', this)" 
                                 class="absolute right-3 top-1/2 -translate-y-1/2 text-steel-500 hover:text-steel-300 transition-colors">
