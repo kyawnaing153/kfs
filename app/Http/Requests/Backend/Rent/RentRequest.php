@@ -88,7 +88,7 @@ class RentRequest extends FormRequest
                 'required',
                 'numeric',
                 'min:0',
-                'max:9999999.9'
+                'max:99999999.9'
             ],
             'transport' => [
                 'required',
@@ -100,19 +100,19 @@ class RentRequest extends FormRequest
                 'required',
                 'numeric',
                 'min:0',
-                'max:9999999.9'
+                'max:99999999.9'
             ],
             'total_paid' => [
                 'required',
                 'numeric',
                 'min:0',
-                'max:9999999.9'
+                'max:99999999.9'
             ],
             'total_due' => [
                 'required',
                 'numeric',
                 'min:0',
-                'max:9999999.9'
+                'max:99999999.9'
             ],
 
             // Payment type
