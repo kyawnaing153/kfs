@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\Product;
+use App\Models\{Product, ProductVariant};
 use App\Repositories\Interfaces\ProductRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -119,11 +119,11 @@ class ProductRepository implements ProductRepositoryInterface
         return $product;
     }
 
-    public function getProductsWithVariants()
+    public function getAvailableVariants()
     {
-        $query = $this->model->with(['variants.prices'])->where('status', 1);
-
-        return $query->orderBy('product_name')->get();
+        return ProductVariant::with('product', 'prices')
+            ->where('qty', '>', 0)
+            ->get();
     }
 
     public function getFeaturedProducts()

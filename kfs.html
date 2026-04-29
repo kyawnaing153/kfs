@@ -1,740 +1,2187 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KFS | Future Construction Solutions</title>
-    
-    <!-- Tailwind CSS -->
+    <title>KFS — Scaffolding Sale & Rent System</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- Configuration for Tailwind -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        display: ['Orbitron', 'sans-serif'],
-                        body: ['Rajdhani', 'sans-serif'],
-                    },
                     colors: {
-                        kfs: {
-                            black: '#0a0a0f',
-                            dark: '#13131f',
-                            accent: '#f59e0b', // Safety Yellow
-                            glow: '#3b82f6',   // Tech Blue
-                        }
+                        navy: { 50: '#eef2f7', 100: '#d4dbe6', 200: '#a9b7cd', 300: '#7e93b4', 400: '#536f9b', 500: '#334155', 600: '#1e293b', 700: '#172033', 800: '#0f172a', 900: '#0a101e' },
+                        steel: { 50: '#f8fafc', 100: '#f1f5f9', 200: '#e2e8f0', 300: '#cbd5e1', 400: '#94a3b8', 500: '#64748b', 600: '#475569', 700: '#334155', 800: '#1e293b', 900: '#0f172a' },
+                        orange: { 50: '#fff7ed', 100: '#ffedd5', 200: '#fed7aa', 300: '#fdba74', 400: '#fb923c', 500: '#f97316', 600: '#ea580c', 700: '#c2410c', 800: '#9a3412', 900: '#7c2d12' },
+                        yellow: { 50: '#fefce8', 100: '#fef9c3', 200: '#fef08a', 300: '#fde047', 400: '#facc15', 500: '#eab308', 600: '#ca8a04', 700: '#a16207', 800: '#854d0e', 900: '#713f12' },
                     },
-                    backgroundImage: {
-                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                    fontFamily: {
+                        display: ['Playfair Display', 'serif'],
+                        body: ['Inter', 'sans-serif'],
                     }
                 }
             }
         }
     </script>
-
     <style>
-        /* Custom Styles & Animation */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            background-color: #0a0a0f;
-            color: #e2e8f0;
-            overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: #0f172a;
         }
 
-        /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0a0a0f;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #3b82f6;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #f59e0b;
+        .blueprint-grid {
+            background-image:
+                linear-gradient(rgba(15, 23, 42, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
         }
 
-        /* Glassmorphism */
-        .glass-panel {
-            background: rgba(19, 19, 31, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .blueprint-grid-dark {
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+            background-size: 40px 40px;
         }
 
-        /* Neon Glow Utility */
-        .neon-text-blue {
-            text-shadow: 0 0 10px rgba(59, 130, 246, 0.7);
-        }
-        .neon-text-yellow {
-            text-shadow: 0 0 10px rgba(245, 158, 11, 0.7);
-        }
-        .neon-border:hover {
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5), inset 0 0 10px rgba(59, 130, 246, 0.2);
-            border-color: #3b82f6;
+        /* Page system */
+        .page {
+            display: none;
         }
 
-        /* Animation Classes */
-        .fade-in-up {
+        .page.active {
+            display: block;
+        }
+
+        /* Animations */
+        .fade-up {
             opacity: 0;
             transform: translateY(30px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            transition: opacity 0.7s ease-out, transform 0.7s ease-out;
         }
-        .fade-in-up.visible {
+
+        .fade-up.visible {
             opacity: 1;
             transform: translateY(0);
         }
 
-        /* Scanline Effect */
-        .scanline {
-            width: 100%;
-            height: 2px;
-            background: rgba(59, 130, 246, 0.5);
-            position: absolute;
-            z-index: 10;
-            animation: scan 3s linear infinite;
-            opacity: 0.5;
-        }
-        @keyframes scan {
-            0% { top: 0%; opacity: 0; }
-            10% { opacity: 0.8; }
-            90% { opacity: 0.8; }
-            100% { top: 100%; opacity: 0; }
+        .fade-left {
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: opacity 0.7s ease-out, transform 0.7s ease-out;
         }
 
-        /* Card Hover 3D Effect */
-        .product-card {
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        .fade-left.visible {
+            opacity: 1;
+            transform: translateX(0);
         }
-        .product-card:hover {
-            transform: translateY(-10px) scale(1.02);
+
+        .fade-right {
+            opacity: 0;
+            transform: translateX(30px);
+            transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+        }
+
+        .fade-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .card-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card-lift:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+        }
+
+        .hero-overlay {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.85) 0%, rgba(15, 23, 42, 0.6) 50%, rgba(15, 23, 42, 0.75) 100%);
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+
+        /* Nav active */
+        .nav-link {
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #f97316;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .nav-link.active {
+            color: #f97316 !important;
+        }
+
+        /* Mobile menu */
+        .mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .mobile-menu.open {
+            max-height: 600px;
+        }
+
+        /* Toast */
+        .toast {
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s ease;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Pulse */
+        @keyframes calcPulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.3);
+            }
+
+            50% {
+                box-shadow: 0 0 0 12px rgba(249, 115, 22, 0);
+            }
+        }
+
+        .calc-result-pulse {
+            animation: calcPulse 1.5s ease-in-out 1;
+        }
+
+        /* Page transition */
+        .page-transition {
+            animation: pageIn 0.35s ease-out;
+        }
+
+        @keyframes pageIn {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Form styles */
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            color: white;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: rgba(249, 115, 22, 0.5);
+            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+        }
+
+        .form-input:disabled,
+        .form-input[readonly] {
+            opacity: 0.6;
+            cursor: not-allowed;
+            background: #172033;
+        }
+
+        .form-input::placeholder {
+            color: #64748b;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: #94a3b8;
+            margin-bottom: 0.375rem;
+        }
+
+        .form-label .req {
+            color: #f97316;
+        }
+
+        /* Transport toggle */
+        .toggle-btn {
+            transition: all 0.2s;
+        }
+
+        .toggle-btn.active {
+            background: #f97316;
+            color: white;
+            border-color: #f97316;
+        }
+
+        /* Quotation item row */
+        .quote-item-row {
+            animation: slideIn 0.25s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Auth form */
+        .auth-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 0.75rem;
+            color: white;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            outline: none;
+        }
+
+        .auth-input:focus {
+            border-color: rgba(249, 115, 22, 0.6);
+            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+        }
+
+        .auth-input::placeholder {
+            color: #475569;
         }
     </style>
 </head>
-<body class="font-body selection:bg-kfs-accent selection:text-black">
 
-    <!-- Background Canvas for Animation -->
-    <canvas id="networkCanvas" class="fixed top-0 left-0 w-full h-full -z-10 opacity-30"></canvas>
+<body class="blueprint-grid">
 
-    <!-- Navigation -->
-    <nav class="fixed w-full z-50 transition-all duration-300 glass-panel border-b-0 border-b-white/10" id="navbar">
+    <!-- ==================== NAVIGATION ==================== -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
+            <div class="flex items-center justify-between h-16 lg:h-20">
                 <!-- Logo -->
-                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
-                    <div class="w-10 h-10 bg-kfs-accent rounded flex items-center justify-center font-display font-bold text-black text-xl">K</div>
-                    <span class="font-display font-bold text-2xl tracking-widest text-white">KFS</span>
+                <button onclick="navigateTo('home')" class="flex items-center gap-2 group">
+                    <div
+                        class="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center group-hover:bg-orange-600 transition-colors">
+                        <i data-lucide="hard-hat" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-bold font-display text-white">KFS</span>
+                        <span class="hidden sm:inline text-xs text-steel-300 ml-2 font-body">Scaffolding System</span>
+                    </div>
+                </button>
+
+                <!-- Desktop Nav -->
+                <div class="hidden lg:flex items-center gap-8">
+                    <button onclick="navigateTo('home')" id="nav-home"
+                        class="nav-link text-sm font-medium text-steel-200 hover:text-white transition-colors">Home</button>
+                    <button onclick="navigateTo('products')" id="nav-products"
+                        class="nav-link text-sm font-medium text-steel-200 hover:text-white transition-colors">Products</button>
+                    <button onclick="navigateTo('services')" id="nav-services"
+                        class="nav-link text-sm font-medium text-steel-200 hover:text-white transition-colors">Services</button>
+                    <button onclick="navigateTo('quotation')" id="nav-quotation"
+                        class="nav-link text-sm font-medium text-steel-200 hover:text-white transition-colors">Quotation</button>
+                    <button onclick="navigateTo('projects')" id="nav-projects"
+                        class="nav-link text-sm font-medium text-steel-200 hover:text-white transition-colors">Projects</button>
+                    <button onclick="navigateTo('contact')" id="nav-contact"
+                        class="nav-link text-sm font-medium text-steel-200 hover:text-white transition-colors">Contact</button>
                 </div>
-                
-                <!-- Desktop Menu -->
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-8">
-                        <a href="#home" class="text-white hover:text-kfs-accent px-3 py-2 rounded-md text-lg font-medium transition-colors">Home</a>
-                        <a href="#products" class="text-gray-300 hover:text-kfs-accent px-3 py-2 rounded-md text-lg font-medium transition-colors">Products</a>
-                        <a href="#services" class="text-gray-300 hover:text-kfs-accent px-3 py-2 rounded-md text-lg font-medium transition-colors">Services</a>
-                        <a href="#about" class="text-gray-300 hover:text-kfs-accent px-3 py-2 rounded-md text-lg font-medium transition-colors">About</a>
-                        <a href="#contact" class="px-5 py-2 border border-kfs-accent text-kfs-accent hover:bg-kfs-accent hover:text-black transition-all duration-300 rounded font-display font-bold uppercase tracking-wider text-sm">
-                            Contact Us
-                        </a>
+
+                <!-- Desktop Auth Buttons -->
+                <div class="hidden lg:flex items-center gap-3" id="authButtons">
+                    <button onclick="navigateTo('login')" id="nav-login"
+                        class="nav-link px-4 py-2 text-sm font-medium text-steel-200 hover:text-white transition-colors">Login</button>
+                    <button onclick="navigateTo('register')" id="nav-register"
+                        class="px-5 py-2.5 text-sm font-semibold text-white bg-orange-500 rounded-lg hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/25">Register</button>
+                </div>
+                <!-- Logged in user display -->
+                <div class="hidden lg:flex items-center gap-3" id="userMenu" style="display:none!important">
+                    <div class="flex items-center gap-2 px-3 py-1.5 bg-white/10 rounded-lg border border-white/10">
+                        <div class="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center">
+                            <i data-lucide="user" class="w-3.5 h-3.5 text-white"></i>
+                        </div>
+                        <span id="loggedUserName" class="text-sm font-medium text-white"></span>
+                        <span id="loggedUserBadge"
+                            class="text-[10px] px-1.5 py-0.5 bg-orange-500/20 text-orange-300 rounded-full"></span>
+                    </div>
+                    <button onclick="logoutUser()"
+                        class="px-4 py-2 text-sm font-medium text-steel-300 hover:text-white transition-colors">Logout</button>
+                </div>
+
+                <!-- Mobile Toggle -->
+                <button id="mobileToggle" class="lg:hidden p-2 text-white" aria-label="Toggle menu">
+                    <i data-lucide="menu" class="w-6 h-6" id="menuIcon"></i>
+                </button>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="mobile-menu lg:hidden">
+                <div class="py-4 space-y-1 border-t border-white/10">
+                    <button onclick="navigateTo('home');closeMobileMenu()"
+                        class="block w-full text-left px-4 py-2.5 text-sm text-steel-200 hover:text-white hover:bg-white/5 rounded-lg transition-colors">Home</button>
+                    <button onclick="navigateTo('products');closeMobileMenu()"
+                        class="block w-full text-left px-4 py-2.5 text-sm text-steel-200 hover:text-white hover:bg-white/5 rounded-lg transition-colors">Products</button>
+                    <button onclick="navigateTo('services');closeMobileMenu()"
+                        class="block w-full text-left px-4 py-2.5 text-sm text-steel-200 hover:text-white hover:bg-white/5 rounded-lg transition-colors">Services</button>
+                    <button onclick="navigateTo('quotation');closeMobileMenu()"
+                        class="block w-full text-left px-4 py-2.5 text-sm text-steel-200 hover:text-white hover:bg-white/5 rounded-lg transition-colors">Quotation</button>
+                    <button onclick="navigateTo('projects');closeMobileMenu()"
+                        class="block w-full text-left px-4 py-2.5 text-sm text-steel-200 hover:text-white hover:bg-white/5 rounded-lg transition-colors">Projects</button>
+                    <button onclick="navigateTo('contact');closeMobileMenu()"
+                        class="block w-full text-left px-4 py-2.5 text-sm text-steel-200 hover:text-white hover:bg-white/5 rounded-lg transition-colors">Contact</button>
+                    <div class="pt-3 px-4 flex gap-3 border-t border-white/5 mt-2">
+                        <button onclick="navigateTo('login');closeMobileMenu()"
+                            class="flex-1 text-center px-4 py-2.5 text-sm font-medium text-steel-200 border border-white/20 rounded-lg hover:bg-white/5 transition-all">Login</button>
+                        <button onclick="navigateTo('register');closeMobileMenu()"
+                            class="flex-1 text-center px-4 py-2.5 text-sm font-semibold text-white bg-orange-500 rounded-lg hover:bg-orange-600 transition-all">Register</button>
                     </div>
                 </div>
-
-                <!-- Mobile menu button -->
-                <div class="-mr-2 flex md:hidden">
-                    <button type="button" onclick="toggleMobileMenu()" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none">
-                        <i class="fas fa-bars text-2xl"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Mobile Menu Panel -->
-        <div class="md:hidden hidden bg-kfs-black/95 backdrop-blur-xl absolute w-full border-b border-gray-800" id="mobile-menu">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="#home" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Home</a>
-                <a href="#products" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Products</a>
-                <a href="#services" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Services</a>
-                <a href="#about" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">About</a>
-                <a href="#contact" class="text-kfs-accent block px-3 py-2 rounded-md text-base font-bold">Contact Us</a>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
-        <!-- Overlay Image with Filter -->
-        <div class="absolute inset-0 z-0">
-            <img src="https://picsum.photos/seed/scaffolding/1920/1080" alt="Construction Background" class="w-full h-full object-cover opacity-30 grayscale contrast-125">
-            <div class="absolute inset-0 bg-gradient-to-t from-kfs-black via-kfs-black/80 to-transparent"></div>
-        </div>
-
-        <!-- Scanline Animation -->
-        <div class="scanline"></div>
-
-        <!-- Content -->
-        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto mt-16">
-            <div class="inline-block mb-4 px-4 py-1 rounded-full border border-kfs-glow/50 bg-kfs-glow/10 text-kfs-glow text-sm font-bold tracking-widest uppercase fade-in-up delay-100">
-                System Status: Operational
+    <!-- ==================== PAGE: HOME ==================== -->
+    <div id="page-home" class="page active">
+        <!-- HERO SECTION -->
+        <section id="hero" class="relative min-h-screen flex items-center overflow-hidden">
+            <div class="absolute inset-0">
+                <img src="https://picsum.photos/seed/scaffolding-sunrise/1920/1080.jpg"
+                    alt="Construction site at sunrise" class="w-full h-full object-cover">
             </div>
-            <h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-black text-white mb-6 leading-tight fade-in-up delay-200">
-                BUILDING THE <br>
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-kfs-accent to-red-500 neon-text-yellow">FUTURE</span>
-            </h1>
-            <p class="mt-4 max-w-2xl mx-auto text-xl text-gray-300 font-light mb-10 fade-in-up delay-300">
-                Premium scaffolding solutions for rent and sale. Engineered for safety, designed for efficiency. Hwai Family Scaffolding authorized.
-            </p>
-            
-            <div class="flex flex-col sm:flex-row gap-4 justify-center fade-in-up delay-400">
-                <a href="#services" class="group relative px-8 py-4 bg-kfs-accent text-black font-display font-bold text-lg rounded overflow-hidden transition-all hover:scale-105">
-                    <span class="relative z-10">FOR RENT</span>
-                    <div class="absolute inset-0 h-full w-full bg-white/30 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
-                </a>
-                <a href="#products" class="group relative px-8 py-4 border border-kfs-glow text-white font-display font-bold text-lg rounded overflow-hidden transition-all hover:bg-kfs-glow/20 hover:shadow-[0_0_20px_rgba(59,130,246,0.4)]">
-                    <span class="relative z-10">FOR SALE</span>
-                </a>
-            </div>
-        </div>
-        
-        <!-- Scroll Indicator -->
-        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-kfs-glow/50">
-            <i class="fas fa-chevron-down text-3xl"></i>
-        </div>
-    </section>
-
-    <!-- Stats Section -->
-    <section class="py-10 border-y border-white/5 bg-kfs-dark/50 backdrop-blur-sm">
-        <div class="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div class="fade-in-up">
-                <div class="text-4xl font-display font-bold text-kfs-accent mb-2">10+</div>
-                <div class="text-gray-400 uppercase text-sm tracking-wider">Years Experience</div>
-            </div>
-            <div class="fade-in-up delay-100">
-                <div class="text-4xl font-display font-bold text-kfs-glow mb-2">500+</div>
-                <div class="text-gray-400 uppercase text-sm tracking-wider">Projects Completed</div>
-            </div>
-            <div class="fade-in-up delay-200">
-                <div class="text-4xl font-display font-bold text-white mb-2">24/7</div>
-                <div class="text-gray-400 uppercase text-sm tracking-wider">Support</div>
-            </div>
-            <div class="fade-in-up delay-300">
-                <div class="text-4xl font-display font-bold text-green-400 mb-2">100%</div>
-                <div class="text-gray-400 uppercase text-sm tracking-wider">Safety Record</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Products Showcase -->
-    <section id="products" class="py-24 relative">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="text-center mb-16 fade-in-up">
-                <h2 class="font-display text-4xl md:text-5xl font-bold text-white mb-4">EQUIPMENT <span class="text-kfs-accent">CATALOG</span></h2>
-                <div class="h-1 w-24 bg-gradient-to-r from-kfs-accent to-transparent mx-auto rounded-full"></div>
-                <p class="mt-4 text-gray-400">High-grade materials for every structural requirement.</p>
+            <div class="absolute inset-0 hero-overlay"></div>
+            <div class="absolute inset-0 blueprint-grid-dark"></div>
+            <div
+                class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 via-yellow-400 to-orange-500">
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Product 1 -->
-                <div class="product-card glass-panel rounded-xl overflow-hidden group fade-in-up neon-border cursor-pointer">
-                    <div class="relative h-48 overflow-hidden">
-                        <img src="https://picsum.photos/seed/prop/400/300" alt="Adjustable Prop" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                        <div class="absolute top-2 right-2 bg-kfs-accent text-black text-xs font-bold px-2 py-1 rounded">SALE</div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-display text-xl font-bold text-white group-hover:text-kfs-glow transition-colors">Adjustable Props</h3>
-                        <p class="text-gray-400 text-sm mt-2 mb-4">Heavy-duty steel props with precise height adjustment mechanisms.</p>
-                        <div class="flex justify-between items-center text-kfs-accent font-bold">
-                            <span>View Specs</span>
-                            <i class="fas fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
+            <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 lg:py-0 w-full">
+                <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                    <div class="fade-up">
+                        <div
+                            class="inline-flex items-center gap-2 px-4 py-1.5 bg-orange-500/15 border border-orange-500/25 rounded-full mb-6">
+                            <span class="w-2 h-2 bg-orange-400 rounded-full animate-pulse"></span>
+                            <span class="text-xs font-semibold text-orange-300 uppercase tracking-wider">Trusted by 500+
+                                Companies</span>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Product 2 -->
-                <div class="product-card glass-panel rounded-xl overflow-hidden group fade-in-up delay-100 neon-border cursor-pointer">
-                    <div class="relative h-48 overflow-hidden">
-                        <img src="https://picsum.photos/seed/pipe/400/300" alt="Steel Pipes" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                        <div class="absolute top-2 right-2 bg-kfs-glow text-white text-xs font-bold px-2 py-1 rounded">RENT</div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-display text-xl font-bold text-white group-hover:text-kfs-glow transition-colors">Steel Pipes</h3>
-                        <p class="text-gray-400 text-sm mt-2 mb-4">Galvanized steel pipes available in various diameters and thickness.</p>
-                        <div class="flex justify-between items-center text-kfs-accent font-bold">
-                            <span>View Specs</span>
-                            <i class="fas fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 3 -->
-                <div class="product-card glass-panel rounded-xl overflow-hidden group fade-in-up delay-200 neon-border cursor-pointer">
-                    <div class="relative h-48 overflow-hidden">
-                        <img src="https://picsum.photos/seed/frame/400/300" alt="Scaffolding Frame" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                        <div class="absolute top-2 right-2 bg-kfs-accent text-black text-xs font-bold px-2 py-1 rounded">SALE</div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-display text-xl font-bold text-white group-hover:text-kfs-glow transition-colors">Frame System</h3>
-                        <p class="text-gray-400 text-sm mt-2 mb-4">Modular frame scaffolding for rapid assembly and stability.</p>
-                        <div class="flex justify-between items-center text-kfs-accent font-bold">
-                            <span>View Specs</span>
-                            <i class="fas fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 4 -->
-                <div class="product-card glass-panel rounded-xl overflow-hidden group fade-in-up delay-300 neon-border cursor-pointer">
-                    <div class="relative h-48 overflow-hidden">
-                        <img src="https://picsum.photos/seed/wheel/400/300" alt="Scaffolding Wheels" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                        <div class="absolute top-2 right-2 bg-kfs-glow text-white text-xs font-bold px-2 py-1 rounded">RENT</div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-display text-xl font-bold text-white group-hover:text-kfs-glow transition-colors">Brake Wheels</h3>
-                        <p class="text-gray-400 text-sm mt-2 mb-4">High-load caster wheels with double locking brakes for mobility.</p>
-                        <div class="flex justify-between items-center text-kfs-accent font-bold">
-                            <span>View Specs</span>
-                            <i class="fas fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- More Items Row -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-                 <!-- Product 5 -->
-                 <div class="product-card glass-panel rounded-xl overflow-hidden group fade-in-up flex flex-row items-center p-4 neon-border cursor-pointer">
-                    <div class="w-32 h-32 flex-shrink-0 overflow-hidden rounded-lg">
-                        <img src="https://picsum.photos/seed/coupler/200/200" alt="Couplers" class="w-full h-full object-cover">
-                    </div>
-                    <div class="ml-6">
-                        <h3 class="font-display text-lg font-bold text-white">Pressed Steel Couplers</h3>
-                        <p class="text-gray-400 text-sm mt-1">Essential connectors for secure tube joints. Forged & pressed options.</p>
-                        <span class="text-kfs-glow text-sm font-bold mt-2 inline-block">View Inventory <i class="fas fa-chevron-right text-xs ml-1"></i></span>
-                    </div>
-                </div>
-
-                <!-- Product 6 -->
-                <div class="product-card glass-panel rounded-xl overflow-hidden group fade-in-up flex flex-row items-center p-4 neon-border cursor-pointer">
-                    <div class="w-32 h-32 flex-shrink-0 overflow-hidden rounded-lg">
-                        <img src="https://picsum.photos/seed/board/200/200" alt="Steel Planks" class="w-full h-full object-cover">
-                    </div>
-                    <div class="ml-6">
-                        <h3 class="font-display text-lg font-bold text-white">Galvanized Steel Planks</h3>
-                        <p class="text-gray-400 text-sm mt-1">Anti-slip, high-strength walkways designed for heavy traffic.</p>
-                        <span class="text-kfs-glow text-sm font-bold mt-2 inline-block">View Inventory <i class="fas fa-chevron-right text-xs ml-1"></i></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Services Section (Rent vs Sale) -->
-    <section id="services" class="py-24 bg-kfs-dark/80 relative overflow-hidden">
-        <!-- Background decorative elements -->
-        <div class="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-kfs-glow/5 to-transparent pointer-events-none"></div>
-
-        <div class="max-w-7xl mx-auto px-4 relative z-10">
-            <div class="text-center mb-16 fade-in-up">
-                <h2 class="font-display text-4xl md:text-5xl font-bold text-white mb-4">CHOOSE YOUR <span class="text-kfs-glow">SERVICE</span></h2>
-                <p class="text-gray-400">Flexible options tailored to your project timeline.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                <!-- Rent -->
-                <div class="glass-panel p-8 md:p-12 rounded-2xl border-l-4 border-l-kfs-accent relative fade-in-up group hover:bg-white/5 transition-colors">
-                    <div class="absolute top-4 right-4 text-6xl text-white/5 font-display font-black group-hover:text-kfs-accent/10 transition-colors">01</div>
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="w-16 h-16 rounded-full bg-kfs-accent/10 flex items-center justify-center text-kfs-accent text-2xl border border-kfs-accent/30">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <h3 class="font-display text-3xl font-bold text-white">RENTAL</h3>
-                    </div>
-                    <ul class="space-y-4 text-gray-300 mb-8">
-                        <li class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-kfs-accent"></i> Cost-effective for short-term projects
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-kfs-accent"></i> Free transportation (Conditions apply)
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-kfs-accent"></i> 24/7 Maintenance support
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-kfs-accent"></i> Flexible daily, weekly, monthly rates
-                        </li>
-                    </ul>
-                    <button onclick="showQuoteModal('Rental')" class="w-full py-3 border border-kfs-accent text-kfs-accent font-bold rounded hover:bg-kfs-accent hover:text-black transition-all uppercase tracking-widest">
-                        Get Rental Quote
-                    </button>
-                </div>
-
-                <!-- Sale -->
-                <div class="glass-panel p-8 md:p-12 rounded-2xl border-l-4 border-l-kfs-glow relative fade-in-up delay-100 group hover:bg-white/5 transition-colors">
-                    <div class="absolute top-4 right-4 text-6xl text-white/5 font-display font-black group-hover:text-kfs-glow/10 transition-colors">02</div>
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="w-16 h-16 rounded-full bg-kfs-glow/10 flex items-center justify-center text-kfs-glow text-2xl border border-kfs-glow/30">
-                            <i class="fas fa-shopping-cart"></i>
-                        </div>
-                        <h3 class="font-display text-3xl font-bold text-white">PURCHASE</h3>
-                    </div>
-                    <ul class="space-y-4 text-gray-300 mb-8">
-                        <li class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-kfs-glow"></i> Brand new & certified used stock
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-kfs-glow"></i> Lifetime warranty on frames
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-kfs-glow"></i> Bulk order discounts
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-kfs-glow"></i> Buy-back guarantee available
-                        </li>
-                    </ul>
-                    <button onclick="showQuoteModal('Purchase')" class="w-full py-3 bg-kfs-glow text-white font-bold rounded hover:bg-blue-600 hover:shadow-[0_0_20px_rgba(59,130,246,0.5)] transition-all uppercase tracking-widest">
-                        Request Price List
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="py-24 relative">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                <div class="fade-in-up relative">
-                    <div class="absolute -inset-4 bg-gradient-to-r from-kfs-accent to-kfs-glow rounded-2xl opacity-20 blur-lg"></div>
-                    <img src="https://picsum.photos/seed/construction/800/600" alt="Team Working" class="relative rounded-xl shadow-2xl border border-white/10 grayscale hover:grayscale-0 transition-all duration-700 w-full">
-                    
-                    <!-- Floating Badge -->
-                    <div class="absolute bottom-8 left-8 bg-black/80 backdrop-blur border border-kfs-accent p-4 rounded-lg shadow-xl animate-pulse">
-                        <div class="flex items-center gap-3">
-                            <i class="fas fa-hard-hat text-kfs-accent text-2xl"></i>
-                            <div>
-                                <div class="text-xs text-gray-400 uppercase">Safety First</div>
-                                <div class="font-bold text-white">ISO 9001 Certified</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="fade-in-up">
-                    <h4 class="text-kfs-glow font-bold tracking-widest uppercase mb-2">Who We Are</h4>
-                    <h2 class="font-display text-4xl md:text-5xl font-bold text-white mb-6">Hwai Family <br>Scaffolding</h2>
-                    <p class="text-gray-400 mb-6 text-lg leading-relaxed">
-                        We are a leading provider of construction and scaffolding solutions dedicated to safety, innovation, and reliability. Whether you are building a skyscraper or renovating a home, KFS provides the structural backbone for your success.
-                    </p>
-                    <p class="text-gray-400 mb-8 text-lg leading-relaxed">
-                        Our extensive inventory includes adjustable supports, steel pipes, frame systems, and all necessary accessories. We combine traditional engineering strength with modern logistics to keep your project on time.
-                    </p>
-
-                    <div class="grid grid-cols-2 gap-6 mb-8">
-                        <div class="flex items-center gap-3">
-                            <i class="fas fa-cogs text-kfs-accent text-xl"></i>
-                            <span class="text-white font-semibold">Expert Engineering</span>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <i class="fas fa-truck-loading text-kfs-accent text-xl"></i>
-                            <span class="text-white font-semibold">Fast Logistics</span>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <i class="fas fa-user-shield text-kfs-accent text-xl"></i>
-                            <span class="text-white font-semibold">Certified Safety</span>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <i class="fas fa-hand-holding-usd text-kfs-accent text-xl"></i>
-                            <span class="text-white font-semibold">Best Rates</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="py-24 bg-gradient-to-b from-kfs-dark to-black relative">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="glass-panel rounded-2xl overflow-hidden border border-white/10">
-                <div class="grid grid-cols-1 md:grid-cols-2">
-                    <!-- Form -->
-                    <div class="p-8 md:p-12">
-                        <h2 class="font-display text-3xl font-bold text-white mb-6">GET IN <span class="text-kfs-accent">TOUCH</span></h2>
-                        <form id="contactForm" class="space-y-6">
-                            <div>
-                                <label class="block text-gray-400 text-sm font-bold mb-2">Name</label>
-                                <input type="text" required class="w-full bg-black/50 border border-gray-700 rounded p-3 text-white focus:border-kfs-accent focus:outline-none transition-colors" placeholder="Your Name">
-                            </div>
-                            <div>
-                                <label class="block text-gray-400 text-sm font-bold mb-2">Email</label>
-                                <input type="email" required class="w-full bg-black/50 border border-gray-700 rounded p-3 text-white focus:border-kfs-accent focus:outline-none transition-colors" placeholder="email@example.com">
-                            </div>
-                            <div>
-                                <label class="block text-gray-400 text-sm font-bold mb-2">Message</label>
-                                <textarea rows="4" required class="w-full bg-black/50 border border-gray-700 rounded p-3 text-white focus:border-kfs-accent focus:outline-none transition-colors" placeholder="How can we help you?"></textarea>
-                            </div>
-                            <button type="submit" class="w-full bg-kfs-accent text-black font-bold py-3 rounded hover:bg-yellow-400 transition-colors uppercase font-display tracking-wider">
-                                Send Message
+                        <h1
+                            class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.05] mb-6">
+                            Reliable <br>
+                            <span class="text-orange-400">Scaffolding</span><br>
+                            Solutions
+                        </h1>
+                        <p class="text-lg sm:text-xl text-steel-300 font-light leading-relaxed mb-8 max-w-xl">
+                            Built for Safety. Designed for Strength.<br>
+                            Rent or purchase professional scaffolding equipment for your next project.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <button onclick="navigateTo('products')"
+                                class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-orange-500 text-white font-semibold rounded-xl hover:bg-orange-600 transition-all shadow-xl shadow-orange-500/30 group">
+                                Browse Equipment
+                                <i data-lucide="arrow-right"
+                                    class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
                             </button>
-                        </form>
-                    </div>
-                    
-                    <!-- Info -->
-                    <div class="bg-kfs-glow/10 p-8 md:p-12 flex flex-col justify-between relative overflow-hidden">
-                        <div class="absolute top-0 right-0 p-4 opacity-10">
-                            <i class="fas fa-map-marker-alt text-9xl text-kfs-glow"></i>
+                            <button onclick="navigateTo('quotation')"
+                                class="inline-flex items-center justify-center gap-2 px-8 py-4 border-2 border-white/20 text-white font-semibold rounded-xl hover:bg-white/10 hover:border-white/40 transition-all">
+                                Request Rental Quote
+                            </button>
                         </div>
-                        
-                        <div>
-                            <h3 class="font-display text-2xl font-bold text-white mb-8">Contact Information</h3>
-                            
-                            <div class="space-y-6">
-                                <div class="flex items-start gap-4">
-                                    <div class="w-10 h-10 rounded bg-kfs-glow/20 flex items-center justify-center text-kfs-glow flex-shrink-0">
-                                        <i class="fas fa-phone"></i>
+                        <div class="flex items-center gap-8 mt-12 pt-8 border-t border-white/10">
+                            <div>
+                                <div class="text-3xl font-bold text-white font-display">10+</div>
+                                <div class="text-xs text-steel-400 uppercase tracking-wider mt-1">Years Experience</div>
+                            </div>
+                            <div class="w-px h-12 bg-white/10"></div>
+                            <div>
+                                <div class="text-3xl font-bold text-white font-display">500+</div>
+                                <div class="text-xs text-steel-400 uppercase tracking-wider mt-1">Projects Done</div>
+                            </div>
+                            <div class="w-px h-12 bg-white/10"></div>
+                            <div>
+                                <div class="text-3xl font-bold text-white font-display">24/7</div>
+                                <div class="text-xs text-steel-400 uppercase tracking-wider mt-1">Support</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dashboard Preview Card -->
+                    <div class="fade-right hidden lg:block">
+                        <div class="relative">
+                            <div class="absolute -inset-4 bg-orange-500/10 rounded-3xl blur-2xl"></div>
+                            <div
+                                class="relative bg-navy-800/80 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-2xl">
+                                <div class="flex items-center justify-between mb-5">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-3 h-3 bg-orange-500 rounded-full"></div>
+                                        <span class="text-sm font-semibold text-white">Dashboard Overview</span>
                                     </div>
-                                    <div>
-                                        <div class="text-gray-400 text-sm">Phone</div>
-                                        <div class="text-white font-semibold text-lg">+95 9 123 456 789</div>
+                                    <div class="flex gap-1.5">
+                                        <div class="w-2.5 h-2.5 rounded-full bg-red-400"></div>
+                                        <div class="w-2.5 h-2.5 rounded-full bg-yellow-400"></div>
+                                        <div class="w-2.5 h-2.5 rounded-full bg-green-400"></div>
                                     </div>
                                 </div>
-                                
-                                <div class="flex items-start gap-4">
-                                    <div class="w-10 h-10 rounded bg-kfs-glow/20 flex items-center justify-center text-kfs-glow flex-shrink-0">
-                                        <i class="fas fa-envelope"></i>
+                                <div class="grid grid-cols-7 gap-2 mb-5">
+                                    <div class="h-16 bg-orange-500/20 rounded-t-md relative overflow-hidden">
+                                        <div
+                                            class="absolute bottom-0 left-0 right-0 h-[65%] bg-orange-500/60 rounded-t-md">
+                                        </div>
                                     </div>
-                                    <div>
-                                        <div class="text-gray-400 text-sm">Email</div>
-                                        <div class="text-white font-semibold text-lg">info@kfs-scaffold.com</div>
+                                    <div class="h-16 bg-orange-500/20 rounded-t-md relative overflow-hidden">
+                                        <div
+                                            class="absolute bottom-0 left-0 right-0 h-[45%] bg-orange-500/60 rounded-t-md">
+                                        </div>
+                                    </div>
+                                    <div class="h-16 bg-orange-500/20 rounded-t-md relative overflow-hidden">
+                                        <div
+                                            class="absolute bottom-0 left-0 right-0 h-[80%] bg-orange-500/60 rounded-t-md">
+                                        </div>
+                                    </div>
+                                    <div class="h-16 bg-orange-500/20 rounded-t-md relative overflow-hidden">
+                                        <div
+                                            class="absolute bottom-0 left-0 right-0 h-[55%] bg-orange-500/60 rounded-t-md">
+                                        </div>
+                                    </div>
+                                    <div class="h-16 bg-orange-500/20 rounded-t-md relative overflow-hidden">
+                                        <div
+                                            class="absolute bottom-0 left-0 right-0 h-[90%] bg-yellow-400/70 rounded-t-md">
+                                        </div>
+                                    </div>
+                                    <div class="h-16 bg-orange-500/20 rounded-t-md relative overflow-hidden">
+                                        <div
+                                            class="absolute bottom-0 left-0 right-0 h-[70%] bg-orange-500/60 rounded-t-md">
+                                        </div>
+                                    </div>
+                                    <div class="h-16 bg-orange-500/20 rounded-t-md relative overflow-hidden">
+                                        <div
+                                            class="absolute bottom-0 left-0 right-0 h-[40%] bg-orange-500/60 rounded-t-md">
+                                        </div>
                                     </div>
                                 </div>
-                                
-                                <div class="flex items-start gap-4">
-                                    <div class="w-10 h-10 rounded bg-kfs-glow/20 flex items-center justify-center text-kfs-glow flex-shrink-0">
-                                        <i class="fas fa-map-pin"></i>
+                                <div class="grid grid-cols-3 gap-3">
+                                    <div class="bg-white/5 rounded-xl p-3 text-center">
+                                        <div class="text-lg font-bold text-white">1,240</div>
+                                        <div class="text-[10px] text-steel-400 uppercase tracking-wider">Available</div>
                                     </div>
-                                    <div>
-                                        <div class="text-gray-400 text-sm">Address</div>
-                                        <div class="text-white font-semibold text-lg">No. 123, Industrial Zone,<br>Yangon, Myanmar</div>
+                                    <div class="bg-white/5 rounded-xl p-3 text-center">
+                                        <div class="text-lg font-bold text-orange-400">387</div>
+                                        <div class="text-[10px] text-steel-400 uppercase tracking-wider">Rented</div>
+                                    </div>
+                                    <div class="bg-white/5 rounded-xl p-3 text-center">
+                                        <div class="text-lg font-bold text-yellow-400">98%</div>
+                                        <div class="text-[10px] text-steel-400 uppercase tracking-wider">On-time</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/40 animate-bounce">
+                <span class="text-[10px] uppercase tracking-widest">Scroll</span>
+                <i data-lucide="chevron-down" class="w-4 h-4"></i>
+            </div>
+        </section>
 
-                        <div class="mt-12 flex gap-4">
-                            <a href="#" class="w-10 h-10 rounded bg-white/10 hover:bg-kfs-glow hover:text-white flex items-center justify-center text-gray-300 transition-all"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#" class="w-10 h-10 rounded bg-white/10 hover:bg-kfs-glow hover:text-white flex items-center justify-center text-gray-300 transition-all"><i class="fab fa-instagram"></i></a>
-                            <a href="#" class="w-10 h-10 rounded bg-white/10 hover:bg-kfs-glow hover:text-white flex items-center justify-center text-gray-300 transition-all"><i class="fab fa-linkedin-in"></i></a>
+        <!-- PRODUCTS SECTION (directly after Home) -->
+        <section class="py-20 lg:py-28 bg-steel-50 blueprint-grid">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 fade-up">
+                    <div
+                        class="inline-flex items-center gap-2 px-3 py-1 bg-orange-50 border border-orange-200 rounded-full mb-4">
+                        <i data-lucide="package" class="w-3.5 h-3.5 text-orange-500"></i>
+                        <span class="text-xs font-semibold text-orange-600 uppercase tracking-wider">Featured
+                            Products</span>
+                    </div>
+                    <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-navy-800 mb-4">
+                        Professional <span class="text-orange-500">Equipment</span>
+                    </h2>
+                    <p class="text-lg text-steel-500 max-w-2xl mx-auto">Browse our comprehensive range of scaffolding
+                        equipment, all certified to international safety standards.</p>
+                </div>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="card-lift fade-up bg-white rounded-2xl border border-steel-200 overflow-hidden group">
+                        <div class="aspect-[4/3] overflow-hidden relative">
+                            <img src="https://picsum.photos/seed/adjustable-props/600/450.jpg" alt="Adjustable Props"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div
+                                class="absolute top-3 right-3 px-2.5 py-1 bg-green-500 text-white text-[10px] font-bold uppercase tracking-wider rounded-full">
+                                In Stock</div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="font-display text-lg font-bold text-navy-800 mb-1">Adjustable Props</h3>
+                            <p class="text-sm text-steel-500 mb-4">Heavy-duty steel props with adjustable height for
+                                versatile formwork support.</p>
+                            <div class="flex items-center justify-between">
+                                <div><span class="text-xs text-steel-400">From</span><span
+                                        class="text-lg font-bold text-orange-500 ml-1">$8/day</span></div>
+                                <button onclick="navigateTo('products')"
+                                    class="px-4 py-2 bg-navy-800 text-white text-sm font-medium rounded-lg hover:bg-navy-700 transition-colors">View
+                                    Details</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-lift fade-up bg-white rounded-2xl border border-steel-200 overflow-hidden group"
+                        style="transition-delay:0.1s">
+                        <div class="aspect-[4/3] overflow-hidden relative">
+                            <img src="https://picsum.photos/seed/steel-pipes-scaff/600/450.jpg" alt="Steel Pipes"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div
+                                class="absolute top-3 right-3 px-2.5 py-1 bg-green-500 text-white text-[10px] font-bold uppercase tracking-wider rounded-full">
+                                In Stock</div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="font-display text-lg font-bold text-navy-800 mb-1">Steel Pipes</h3>
+                            <p class="text-sm text-steel-500 mb-4">Galvanized steel pipes in various lengths, built for
+                                structural integrity.</p>
+                            <div class="flex items-center justify-between">
+                                <div><span class="text-xs text-steel-400">From</span><span
+                                        class="text-lg font-bold text-orange-500 ml-1">$5/day</span></div>
+                                <button onclick="navigateTo('products')"
+                                    class="px-4 py-2 bg-navy-800 text-white text-sm font-medium rounded-lg hover:bg-navy-700 transition-colors">View
+                                    Details</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-lift fade-up bg-white rounded-2xl border border-steel-200 overflow-hidden group"
+                        style="transition-delay:0.2s">
+                        <div class="aspect-[4/3] overflow-hidden relative">
+                            <img src="https://picsum.photos/seed/frame-system-kfs/600/450.jpg" alt="Frame Systems"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div
+                                class="absolute top-3 right-3 px-2.5 py-1 bg-yellow-500 text-navy-800 text-[10px] font-bold uppercase tracking-wider rounded-full">
+                                Low Stock</div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="font-display text-lg font-bold text-navy-800 mb-1">Frame Systems</h3>
+                            <p class="text-sm text-steel-500 mb-4">Complete modular frame systems for rapid assembly and
+                                maximum stability.</p>
+                            <div class="flex items-center justify-between">
+                                <div><span class="text-xs text-steel-400">From</span><span
+                                        class="text-lg font-bold text-orange-500 ml-1">$15/day</span></div>
+                                <button onclick="navigateTo('products')"
+                                    class="px-4 py-2 bg-navy-800 text-white text-sm font-medium rounded-lg hover:bg-navy-700 transition-colors">View
+                                    Details</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-10 fade-up">
+                    <button onclick="navigateTo('products')"
+                        class="inline-flex items-center gap-2 px-8 py-4 border-2 border-navy-800 text-navy-800 font-semibold rounded-xl hover:bg-navy-800 hover:text-white transition-all">
+                        View All Products
+                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- WHY CHOOSE KFS (home teaser) -->
+        <section class="py-20 lg:py-28 bg-white blueprint-grid">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid lg:grid-cols-2 gap-16 items-center">
+                    <div class="fade-left">
+                        <div
+                            class="inline-flex items-center gap-2 px-3 py-1 bg-orange-50 border border-orange-200 rounded-full mb-4">
+                            <i data-lucide="shield-check" class="w-3.5 h-3.5 text-orange-500"></i>
+                            <span class="text-xs font-semibold text-orange-600 uppercase tracking-wider">Why Choose
+                                KFS</span>
+                        </div>
+                        <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-navy-800 mb-6">Built on
+                            <span class="text-orange-500">Trust</span>, Backed by <span
+                                class="text-orange-500">Experience</span></h2>
+                        <p class="text-lg text-steel-500 mb-8 leading-relaxed">For over a decade, KFS has been the
+                            reliable partner for construction companies across the region. Our commitment to safety,
+                            quality, and service sets us apart.</p>
+                        <div class="grid grid-cols-2 gap-4 mb-8">
+                            <div class="p-5 bg-orange-50 border border-orange-100 rounded-xl">
+                                <div class="text-3xl font-bold text-orange-500 font-display">10+</div>
+                                <div class="text-sm text-steel-600 mt-1">Years Experience</div>
+                            </div>
+                            <div class="p-5 bg-navy-800 rounded-xl">
+                                <div class="text-3xl font-bold text-white font-display">500+</div>
+                                <div class="text-sm text-steel-400 mt-1">Projects Completed</div>
+                            </div>
+                            <div class="p-5 bg-navy-800 rounded-xl">
+                                <div class="text-3xl font-bold text-orange-400 font-display">99%</div>
+                                <div class="text-sm text-steel-400 mt-1">Client Satisfaction</div>
+                            </div>
+                            <div class="p-5 bg-orange-50 border border-orange-100 rounded-xl">
+                                <div class="text-3xl font-bold text-orange-500 font-display">24/7</div>
+                                <div class="text-sm text-steel-600 mt-1">Support Available</div>
+                            </div>
+                        </div>
+                        <button onclick="navigateTo('services')"
+                            class="inline-flex items-center gap-2 text-orange-500 font-semibold hover:text-orange-600 transition-colors group">
+                            Explore Our Services
+                            <i data-lucide="arrow-right"
+                                class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+                    </div>
+                    <div class="fade-right">
+                        <div class="relative rounded-2xl overflow-hidden">
+                            <img src="https://picsum.photos/seed/kfs-team-site/800/600.jpg" alt="KFS Team on Site"
+                                class="w-full rounded-2xl">
+                            <div class="absolute inset-0 bg-gradient-to-t from-navy-800/60 to-transparent rounded-2xl">
+                            </div>
+                            <div class="absolute bottom-6 left-6 right-6">
+                                <div
+                                    class="flex items-center gap-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4">
+                                    <div
+                                        class="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i data-lucide="shield" class="w-5 h-5 text-white"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-sm font-semibold text-white">ISO Certified Safety Standards
+                                        </div>
+                                        <div class="text-xs text-steel-300">All equipment inspected & certified</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- HOME FOOTER -->
+        <footer class="bg-navy-900 border-t border-white/5 pt-16 pb-8">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+                    <div>
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center"><i
+                                    data-lucide="hard-hat" class="w-6 h-6 text-white"></i></div>
+                            <span class="text-xl font-bold font-display text-white">KFS</span>
+                        </div>
+                        <p class="text-sm text-steel-400 leading-relaxed mb-4">Professional scaffolding sale & rental
+                            solutions. Built for safety, designed for strength.</p>
+                        <div class="flex items-center gap-2"><span
+                                class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span><span
+                                class="text-xs text-steel-400">Systems Online</span></div>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-white uppercase tracking-wider mb-4">Navigation</h4>
+                        <ul class="space-y-2.5">
+                            <li><button onclick="navigateTo('home')"
+                                    class="text-sm text-steel-400 hover:text-orange-400 transition-colors">Home</button>
+                            </li>
+                            <li><button onclick="navigateTo('products')"
+                                    class="text-sm text-steel-400 hover:text-orange-400 transition-colors">Products</button>
+                            </li>
+                            <li><button onclick="navigateTo('services')"
+                                    class="text-sm text-steel-400 hover:text-orange-400 transition-colors">Services</button>
+                            </li>
+                            <li><button onclick="navigateTo('quotation')"
+                                    class="text-sm text-steel-400 hover:text-orange-400 transition-colors">Quotation</button>
+                            </li>
+                            <li><button onclick="navigateTo('contact')"
+                                    class="text-sm text-steel-400 hover:text-orange-400 transition-colors">Contact</button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-white uppercase tracking-wider mb-4">Equipment</h4>
+                        <ul class="space-y-2.5">
+                            <li><button onclick="navigateTo('products')"
+                                    class="text-sm text-steel-400 hover:text-orange-400 transition-colors">Adjustable
+                                    Props</button></li>
+                            <li><button onclick="navigateTo('products')"
+                                    class="text-sm text-steel-400 hover:text-orange-400 transition-colors">Steel
+                                    Pipes</button></li>
+                            <li><button onclick="navigateTo('products')"
+                                    class="text-sm text-steel-400 hover:text-orange-400 transition-colors">Frame
+                                    Systems</button></li>
+                            <li><button onclick="navigateTo('products')"
+                                    class="text-sm text-steel-400 hover:text-orange-400 transition-colors">Steel
+                                    Planks</button></li>
+                            <li><button onclick="navigateTo('products')"
+                                    class="text-sm text-steel-400 hover:text-orange-400 transition-colors">Couplers &
+                                    Wheels</button></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-white uppercase tracking-wider mb-4">Contact</h4>
+                        <ul class="space-y-2.5">
+                            <li class="text-sm text-steel-400">+1 (555) 234-5678</li>
+                            <li class="text-sm text-steel-400">info@kfs-scaffolding.com</li>
+                            <li class="text-sm text-steel-400">123 Industrial Blvd, Houston TX</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <p class="text-xs text-steel-500">© 2025 KFS Scaffolding System. All rights reserved.</p>
+                    <div class="flex items-center gap-6">
+                        <a href="#" class="text-xs text-steel-500 hover:text-steel-300 transition-colors">Privacy
+                            Policy</a>
+                        <a href="#" class="text-xs text-steel-500 hover:text-steel-300 transition-colors">Terms of
+                            Service</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- ==================== PAGE: PRODUCTS ==================== -->
+    <div id="page-products" class="page">
+        <div class="pt-20 lg:pt-24 min-h-screen">
+            <!-- Page Header -->
+            <div class="bg-navy-800 blueprint-grid-dark py-16">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center">
+                        <div
+                            class="inline-flex items-center gap-2 px-3 py-1 bg-orange-500/15 border border-orange-500/25 rounded-full mb-4">
+                            <i data-lucide="package" class="w-3.5 h-3.5 text-orange-400"></i>
+                            <span class="text-xs font-semibold text-orange-400 uppercase tracking-wider">Equipment
+                                Catalog</span>
+                        </div>
+                        <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">Professional
+                            <span class="text-orange-400">Equipment</span></h1>
+                        <p class="text-lg text-steel-300 max-w-2xl mx-auto">Browse our comprehensive range of
+                            scaffolding equipment, all certified to international safety standards.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Equipment Grid -->
+            <section class="py-16 bg-steel-50 blueprint-grid">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="card-lift bg-white rounded-2xl border border-steel-200 overflow-hidden group">
+                            <div class="aspect-[4/3] overflow-hidden relative">
+                                <img src="https://picsum.photos/seed/adjustable-props/600/450.jpg"
+                                    alt="Adjustable Props"
+                                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <div
+                                    class="absolute top-3 right-3 px-2.5 py-1 bg-green-500 text-white text-[10px] font-bold uppercase tracking-wider rounded-full">
+                                    In Stock</div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="font-display text-lg font-bold text-navy-800 mb-1">Adjustable Props</h3>
+                                <p class="text-sm text-steel-500 mb-4">Heavy-duty steel props with adjustable height for
+                                    versatile formwork support.</p>
+                                <div class="flex items-center justify-between">
+                                    <div><span class="text-xs text-steel-400">From</span><span
+                                            class="text-lg font-bold text-orange-500 ml-1">$8/day</span></div>
+                                    <button onclick="navigateTo('quotation')"
+                                        class="px-4 py-2 bg-navy-800 text-white text-sm font-medium rounded-lg hover:bg-navy-700 transition-colors">Rent
+                                        Now</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-lift bg-white rounded-2xl border border-steel-200 overflow-hidden group">
+                            <div class="aspect-[4/3] overflow-hidden relative">
+                                <img src="https://picsum.photos/seed/steel-pipes-scaff/600/450.jpg" alt="Steel Pipes"
+                                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <div
+                                    class="absolute top-3 right-3 px-2.5 py-1 bg-green-500 text-white text-[10px] font-bold uppercase tracking-wider rounded-full">
+                                    In Stock</div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="font-display text-lg font-bold text-navy-800 mb-1">Steel Pipes</h3>
+                                <p class="text-sm text-steel-500 mb-4">Galvanized steel pipes in various lengths, built
+                                    for structural integrity.</p>
+                                <div class="flex items-center justify-between">
+                                    <div><span class="text-xs text-steel-400">From</span><span
+                                            class="text-lg font-bold text-orange-500 ml-1">$5/day</span></div>
+                                    <button onclick="navigateTo('quotation')"
+                                        class="px-4 py-2 bg-navy-800 text-white text-sm font-medium rounded-lg hover:bg-navy-700 transition-colors">Rent
+                                        Now</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-lift bg-white rounded-2xl border border-steel-200 overflow-hidden group">
+                            <div class="aspect-[4/3] overflow-hidden relative">
+                                <img src="https://picsum.photos/seed/frame-system-kfs/600/450.jpg" alt="Frame Systems"
+                                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <div
+                                    class="absolute top-3 right-3 px-2.5 py-1 bg-yellow-500 text-navy-800 text-[10px] font-bold uppercase tracking-wider rounded-full">
+                                    Low Stock</div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="font-display text-lg font-bold text-navy-800 mb-1">Frame Systems</h3>
+                                <p class="text-sm text-steel-500 mb-4">Complete modular frame systems for rapid assembly
+                                    and maximum stability.</p>
+                                <div class="flex items-center justify-between">
+                                    <div><span class="text-xs text-steel-400">From</span><span
+                                            class="text-lg font-bold text-orange-500 ml-1">$15/day</span></div>
+                                    <button onclick="navigateTo('quotation')"
+                                        class="px-4 py-2 bg-navy-800 text-white text-sm font-medium rounded-lg hover:bg-navy-700 transition-colors">Rent
+                                        Now</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-lift bg-white rounded-2xl border border-steel-200 overflow-hidden group">
+                            <div class="aspect-[4/3] overflow-hidden relative">
+                                <img src="https://picsum.photos/seed/scaffold-planks/600/450.jpg" alt="Planks"
+                                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <div
+                                    class="absolute top-3 right-3 px-2.5 py-1 bg-green-500 text-white text-[10px] font-bold uppercase tracking-wider rounded-full">
+                                    In Stock</div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="font-display text-lg font-bold text-navy-800 mb-1">Steel Planks</h3>
+                                <p class="text-sm text-steel-500 mb-4">Anti-slip steel planks designed for safe working
+                                    platforms at any height.</p>
+                                <div class="flex items-center justify-between">
+                                    <div><span class="text-xs text-steel-400">From</span><span
+                                            class="text-lg font-bold text-orange-500 ml-1">$4/day</span></div>
+                                    <button onclick="navigateTo('quotation')"
+                                        class="px-4 py-2 bg-navy-800 text-white text-sm font-medium rounded-lg hover:bg-navy-700 transition-colors">Rent
+                                        Now</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-lift bg-white rounded-2xl border border-steel-200 overflow-hidden group">
+                            <div class="aspect-[4/3] overflow-hidden relative">
+                                <img src="https://picsum.photos/seed/couplers-scaffold/600/450.jpg" alt="Couplers"
+                                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <div
+                                    class="absolute top-3 right-3 px-2.5 py-1 bg-green-500 text-white text-[10px] font-bold uppercase tracking-wider rounded-full">
+                                    In Stock</div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="font-display text-lg font-bold text-navy-800 mb-1">Couplers</h3>
+                                <p class="text-sm text-steel-500 mb-4">Right-angle, swivel, and sleeve couplers for
+                                    secure pipe connections.</p>
+                                <div class="flex items-center justify-between">
+                                    <div><span class="text-xs text-steel-400">From</span><span
+                                            class="text-lg font-bold text-orange-500 ml-1">$2/day</span></div>
+                                    <button onclick="navigateTo('quotation')"
+                                        class="px-4 py-2 bg-navy-800 text-white text-sm font-medium rounded-lg hover:bg-navy-700 transition-colors">Rent
+                                        Now</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-lift bg-white rounded-2xl border border-steel-200 overflow-hidden group">
+                            <div class="aspect-[4/3] overflow-hidden relative">
+                                <img src="https://picsum.photos/seed/brake-wheels-castor/600/450.jpg" alt="Brake Wheels"
+                                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <div
+                                    class="absolute top-3 right-3 px-2.5 py-1 bg-green-500 text-white text-[10px] font-bold uppercase tracking-wider rounded-full">
+                                    In Stock</div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="font-display text-lg font-bold text-navy-800 mb-1">Brake Wheels</h3>
+                                <p class="text-sm text-steel-500 mb-4">Heavy-duty caster wheels with brake mechanisms
+                                    for mobile scaffolding towers.</p>
+                                <div class="flex items-center justify-between">
+                                    <div><span class="text-xs text-steel-400">From</span><span
+                                            class="text-lg font-bold text-orange-500 ml-1">$6/day</span></div>
+                                    <button onclick="navigateTo('quotation')"
+                                        class="px-4 py-2 bg-navy-800 text-white text-sm font-medium rounded-lg hover:bg-navy-700 transition-colors">Rent
+                                        Now</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-12">
+                        <button onclick="navigateTo('quotation')"
+                            class="inline-flex items-center gap-2 px-8 py-4 bg-orange-500 text-white font-semibold rounded-xl hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/25">
+                            <i data-lucide="file-text" class="w-5 h-5"></i>
+                            Request a Quotation
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- ==================== PAGE: SERVICES ==================== -->
+    <div id="page-services" class="page">
+        <div class="pt-20 lg:pt-24 min-h-screen">
+            <div class="bg-navy-800 blueprint-grid-dark py-16">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <div
+                        class="inline-flex items-center gap-2 px-3 py-1 bg-orange-500/15 border border-orange-500/25 rounded-full mb-4">
+                        <i data-lucide="layers" class="w-3.5 h-3.5 text-orange-400"></i>
+                        <span class="text-xs font-semibold text-orange-400 uppercase tracking-wider">Our Services</span>
+                    </div>
+                    <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">Rent or
+                        Purchase—<span class="text-orange-400">Your Choice</span></h1>
+                    <p class="text-lg text-steel-300 max-w-2xl mx-auto">Flexible options designed to fit your project
+                        timeline and budget.</p>
+                </div>
+            </div>
+
+            <section class="py-16 bg-white blueprint-grid">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-16">
+                        <div
+                            class="card-lift group relative bg-white rounded-2xl border border-steel-200 overflow-hidden">
+                            <div
+                                class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-400 to-orange-600">
+                            </div>
+                            <div class="p-8 lg:p-10">
+                                <div
+                                    class="w-14 h-14 bg-orange-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-orange-100 transition-colors">
+                                    <i data-lucide="calendar-clock" class="w-7 h-7 text-orange-500"></i>
+                                </div>
+                                <h3 class="font-display text-2xl font-bold text-navy-800 mb-3">Rental</h3>
+                                <p class="text-steel-500 mb-6 leading-relaxed">Flexible scaffolding rental for projects
+                                    of any duration. Pay only for what you use, when you need it.</p>
+                                <ul class="space-y-3 mb-8">
+                                    <li class="flex items-start gap-3">
+                                        <div
+                                            class="w-5 h-5 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <i data-lucide="check" class="w-3 h-3 text-orange-600"></i></div><span
+                                            class="text-sm text-steel-600">Flexible pricing by day, week, or
+                                            month</span>
+                                    </li>
+                                    <li class="flex items-start gap-3">
+                                        <div
+                                            class="w-5 h-5 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <i data-lucide="check" class="w-3 h-3 text-orange-600"></i></div><span
+                                            class="text-sm text-steel-600">Ideal for short-term projects</span>
+                                    </li>
+                                    <li class="flex items-start gap-3">
+                                        <div
+                                            class="w-5 h-5 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <i data-lucide="check" class="w-3 h-3 text-orange-600"></i></div><span
+                                            class="text-sm text-steel-600">Maintenance & inspection included</span>
+                                    </li>
+                                    <li class="flex items-start gap-3">
+                                        <div
+                                            class="w-5 h-5 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <i data-lucide="check" class="w-3 h-3 text-orange-600"></i></div><span
+                                            class="text-sm text-steel-600">Free delivery & pickup</span>
+                                    </li>
+                                </ul>
+                                <button onclick="navigateTo('quotation')"
+                                    class="inline-flex items-center gap-2 text-orange-500 font-semibold hover:text-orange-600 transition-colors group/link">
+                                    Get a Rental Quote <i data-lucide="arrow-right"
+                                        class="w-4 h-4 group-hover/link:translate-x-1 transition-transform"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-lift group relative bg-navy-800 rounded-2xl overflow-hidden">
+                            <div
+                                class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-yellow-400 to-orange-500">
+                            </div>
+                            <div class="p-8 lg:p-10">
+                                <div
+                                    class="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-white/15 transition-colors">
+                                    <i data-lucide="badge-check" class="w-7 h-7 text-yellow-400"></i>
+                                </div>
+                                <h3 class="font-display text-2xl font-bold text-white mb-3">Purchase</h3>
+                                <p class="text-steel-300 mb-6 leading-relaxed">Invest in your own scaffolding inventory.
+                                    New and certified used equipment at competitive prices.</p>
+                                <ul class="space-y-3 mb-8">
+                                    <li class="flex items-start gap-3">
+                                        <div
+                                            class="w-5 h-5 rounded-full bg-yellow-400/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <i data-lucide="check" class="w-3 h-3 text-yellow-400"></i></div><span
+                                            class="text-sm text-steel-300">New & quality-certified used equipment</span>
+                                    </li>
+                                    <li class="flex items-start gap-3">
+                                        <div
+                                            class="w-5 h-5 rounded-full bg-yellow-400/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <i data-lucide="check" class="w-3 h-3 text-yellow-400"></i></div><span
+                                            class="text-sm text-steel-300">Bulk order discounts available</span>
+                                    </li>
+                                    <li class="flex items-start gap-3">
+                                        <div
+                                            class="w-5 h-5 rounded-full bg-yellow-400/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <i data-lucide="check" class="w-3 h-3 text-yellow-400"></i></div><span
+                                            class="text-sm text-steel-300">Lifetime value & asset ownership</span>
+                                    </li>
+                                    <li class="flex items-start gap-3">
+                                        <div
+                                            class="w-5 h-5 rounded-full bg-yellow-400/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <i data-lucide="check" class="w-3 h-3 text-yellow-400"></i></div><span
+                                            class="text-sm text-steel-300">Warranty & after-sales support</span>
+                                    </li>
+                                </ul>
+                                <button onclick="navigateTo('contact')"
+                                    class="inline-flex items-center gap-2 text-yellow-400 font-semibold hover:text-yellow-300 transition-colors group/link">
+                                    Browse Catalog <i data-lucide="arrow-right"
+                                        class="w-4 h-4 group-hover/link:translate-x-1 transition-transform"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- How It Works -->
+                    <div class="text-center mb-12">
+                        <h2 class="font-display text-3xl font-bold text-navy-800 mb-4">Simple <span
+                                class="text-orange-500">4-Step</span> Process</h2>
+                        <p class="text-lg text-steel-500 max-w-2xl mx-auto">From quote to delivery, we streamline every
+                            step so you can focus on building.</p>
+                    </div>
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div
+                            class="card-lift bg-white border border-steel-200 rounded-2xl p-8 text-center relative group">
+                            <div
+                                class="w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center mx-auto mb-5 group-hover:bg-orange-100 transition-colors">
+                                <i data-lucide="file-text" class="w-8 h-8 text-orange-500"></i></div>
+                            <div class="text-xs font-bold text-orange-500 uppercase tracking-widest mb-3">Step 01</div>
+                            <h3 class="font-display text-lg font-bold text-navy-800 mb-2">Request Quote</h3>
+                            <p class="text-sm text-steel-500">Tell us what you need using our online quotation form.</p>
+                        </div>
+                        <div
+                            class="card-lift bg-white border border-steel-200 rounded-2xl p-8 text-center relative group">
+                            <div
+                                class="w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center mx-auto mb-5 group-hover:bg-orange-100 transition-colors">
+                                <i data-lucide="check-circle" class="w-8 h-8 text-orange-500"></i></div>
+                            <div class="text-xs font-bold text-orange-500 uppercase tracking-widest mb-3">Step 02</div>
+                            <h3 class="font-display text-lg font-bold text-navy-800 mb-2">Confirm Availability</h3>
+                            <p class="text-sm text-steel-500">We verify stock, confirm pricing, and finalize details.
+                            </p>
+                        </div>
+                        <div
+                            class="card-lift bg-white border border-steel-200 rounded-2xl p-8 text-center relative group">
+                            <div
+                                class="w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center mx-auto mb-5 group-hover:bg-orange-100 transition-colors">
+                                <i data-lucide="truck" class="w-8 h-8 text-orange-500"></i></div>
+                            <div class="text-xs font-bold text-orange-500 uppercase tracking-widest mb-3">Step 03</div>
+                            <h3 class="font-display text-lg font-bold text-navy-800 mb-2">Delivery to Site</h3>
+                            <p class="text-sm text-steel-500">We deliver the equipment directly to your construction
+                                site.</p>
+                        </div>
+                        <div
+                            class="card-lift bg-navy-800 border border-navy-700 rounded-2xl p-8 text-center relative group">
+                            <div
+                                class="w-16 h-16 bg-orange-500/20 rounded-2xl flex items-center justify-center mx-auto mb-5 group-hover:bg-orange-500/30 transition-colors">
+                                <i data-lucide="hard-hat" class="w-8 h-8 text-orange-400"></i></div>
+                            <div class="text-xs font-bold text-orange-400 uppercase tracking-widest mb-3">Step 04</div>
+                            <h3 class="font-display text-lg font-bold text-white mb-2">Start Project</h3>
+                            <p class="text-sm text-steel-400">Begin work with certified, inspected scaffolding ready for
+                                action.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- ==================== PAGE: QUOTATION ==================== -->
+    <div id="page-quotation" class="page">
+        <div class="pt-20 lg:pt-24 min-h-screen bg-navy-800 blueprint-grid-dark">
+            <div class="relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-96 h-96 bg-orange-500/5 rounded-full blur-3xl pointer-events-none">
+                </div>
+                <div
+                    class="absolute bottom-0 left-0 w-96 h-96 bg-yellow-400/5 rounded-full blur-3xl pointer-events-none">
+                </div>
+
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
+                    <!-- Header -->
+                    <div class="text-center mb-10">
+                        <div
+                            class="inline-flex items-center gap-2 px-3 py-1 bg-orange-500/15 border border-orange-500/25 rounded-full mb-4">
+                            <i data-lucide="file-text" class="w-3.5 h-3.5 text-orange-400"></i>
+                            <span class="text-xs font-semibold text-orange-400 uppercase tracking-wider">Rental
+                                Quotation</span>
+                        </div>
+                        <h1 class="font-display text-3xl sm:text-4xl font-bold text-white mb-4">Create a <span
+                                class="text-orange-400">Quotation</span></h1>
+                        <p class="text-steel-300 max-w-2xl mx-auto">Fill in the details below to generate your rental
+                            quotation. Our team will review and confirm within 24 hours.</p>
+                    </div>
+
+                    <!-- Login prompt (shown when not logged in) -->
+                    <div id="quoteLoginPrompt" class="max-w-2xl mx-auto mb-8">
+                        <div
+                            class="flex items-start gap-4 px-5 py-4 bg-orange-500/10 border border-orange-500/25 rounded-xl">
+                            <i data-lucide="info" class="w-5 h-5 text-orange-400 flex-shrink-0 mt-0.5"></i>
+                            <div class="flex-1">
+                                <p class="text-sm text-orange-200 font-medium">Login to auto-detect your Customer ID</p>
+                                <p class="text-xs text-orange-300/70 mt-1">You can still submit a quote as a guest, but
+                                    logging in streamlines the process.</p>
+                            </div>
+                            <button onclick="navigateTo('login')"
+                                class="px-4 py-2 bg-orange-500 text-white text-xs font-semibold rounded-lg hover:bg-orange-600 transition-colors flex-shrink-0">Login</button>
+                        </div>
+                    </div>
+
+                    <!-- Admin Panel (hidden by default, shown for admin users) -->
+                    <div id="adminPanel" class="max-w-5xl mx-auto mb-6" style="display:none">
+                        <div class="bg-yellow-400/10 border border-yellow-400/25 rounded-xl p-4">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-6 h-6 bg-yellow-400 rounded-md flex items-center justify-center">
+                                    <i data-lucide="shield" class="w-3.5 h-3.5 text-navy-800"></i>
+                                </div>
+                                <span class="text-sm font-semibold text-yellow-300">Admin Controls</span>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <label class="text-xs text-yellow-300/80 font-medium">Transport Cost (set by
+                                    admin):</label>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-yellow-400 font-bold">$</span>
+                                    <input type="number" id="adminTransportCost" value="150" min="0" step="10"
+                                        class="w-32 px-3 py-2 bg-navy-800 border border-yellow-400/30 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400/30"
+                                        onchange="updateTotals()">
+                                </div>
+                                <span class="text-xs text-yellow-300/60">Applied when customer enables transport</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="max-w-5xl mx-auto">
+                        <div class="bg-navy-700/50 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden">
+                            <!-- Form Header -->
+                            <div class="px-8 py-5 border-b border-white/10 flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 bg-orange-500/20 rounded-lg flex items-center justify-center">
+                                        <i data-lucide="clipboard-list" class="w-4 h-4 text-orange-400"></i>
+                                    </div>
+                                    <span class="font-semibold text-white">Quotation Form</span>
+                                </div>
+                                <div id="quoteStatusBadge"
+                                    class="px-3 py-1 bg-steel-700 text-steel-300 text-xs font-medium rounded-full border border-white/10">
+                                    Draft</div>
+                            </div>
+
+                            <div class="p-8 lg:p-10">
+                                <div class="grid lg:grid-cols-2 gap-8">
+                                    <!-- LEFT COLUMN -->
+                                    <div class="space-y-5">
+                                        <h3
+                                            class="text-xs font-bold text-orange-400 uppercase tracking-widest pb-2 border-b border-white/10">
+                                            Quotation Details</h3>
+
+                                        <!-- Quotation Code -->
+                                        <div>
+                                            <label class="form-label">Quotation Code <span
+                                                    class="text-steel-500 font-normal">(auto-generated)</span></label>
+                                            <div class="relative">
+                                                <input type="text" id="quotationCode" class="form-input" readonly>
+                                                <div class="absolute right-3 top-1/2 -translate-y-1/2">
+                                                    <i data-lucide="lock" class="w-3.5 h-3.5 text-steel-500"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Customer ID -->
+                                        <div>
+                                            <label class="form-label">Customer ID <span id="customerIdStatus"
+                                                    class="text-steel-500 font-normal">(not logged in)</span></label>
+                                            <div class="relative">
+                                                <input type="text" id="customerId" class="form-input"
+                                                    placeholder="Enter your customer ID" value="">
+                                                <div class="absolute right-3 top-1/2 -translate-y-1/2"
+                                                    id="customerIdLock" style="display:none">
+                                                    <i data-lucide="lock" class="w-3.5 h-3.5 text-green-400"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Rent Date -->
+                                        <div>
+                                            <label class="form-label">Rental Date <span class="req">*</span></label>
+                                            <input type="date" id="rentDate" class="form-input">
+                                        </div>
+
+                                        <!-- Deposit -->
+                                        <div>
+                                            <label class="form-label">Required Deposit <span
+                                                    class="text-steel-500 font-normal">(fixed)</span></label>
+                                            <div class="relative">
+                                                <span
+                                                    class="absolute left-3 top-1/2 -translate-y-1/2 text-steel-400 font-semibold text-sm">$</span>
+                                                <input type="text" id="depositField" class="form-input pl-7"
+                                                    value="500.00" readonly>
+                                                <div class="absolute right-3 top-1/2 -translate-y-1/2">
+                                                    <i data-lucide="lock" class="w-3.5 h-3.5 text-steel-500"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Transport Toggle -->
+                                        <div>
+                                            <label class="form-label">Transport Required</label>
+                                            <div class="flex items-center gap-3">
+                                                <button id="transportToggle" onclick="toggleTransport()"
+                                                    class="toggle-btn flex items-center gap-2 px-4 py-2.5 bg-navy-800 border border-white/10 rounded-xl text-sm font-medium text-steel-300 transition-all">
+                                                    <i data-lucide="truck" class="w-4 h-4"></i>
+                                                    Transport: OFF
+                                                </button>
+                                                <span id="transportCostDisplay"
+                                                    class="text-sm text-steel-500 hidden">Cost set by admin</span>
+                                                <span id="transportCostValue"
+                                                    class="text-sm font-semibold text-orange-400 hidden"></span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Note -->
+                                        <div>
+                                            <label class="form-label">Customer Notes</label>
+                                            <textarea id="quoteNote" rows="3" class="form-input resize-none"
+                                                placeholder="Enter any special requirements, delivery instructions, or remarks..."></textarea>
+                                        </div>
+                                    </div>
+
+                                    <!-- RIGHT COLUMN — Summary -->
+                                    <div class="space-y-5">
+                                        <h3
+                                            class="text-xs font-bold text-orange-400 uppercase tracking-widest pb-2 border-b border-white/10">
+                                            Order Summary</h3>
+
+                                        <div class="bg-navy-900/50 border border-white/10 rounded-xl p-5 space-y-3">
+                                            <div class="flex justify-between text-sm">
+                                                <span class="text-steel-400">Sub Total</span>
+                                                <span id="summarySubTotal" class="text-white font-semibold">$0.00</span>
+                                            </div>
+                                            <div class="flex justify-between text-sm">
+                                                <span class="text-steel-400">Deposit</span>
+                                                <span class="text-white font-semibold">$500.00</span>
+                                            </div>
+                                            <div class="flex justify-between text-sm" id="transportRow"
+                                                style="display:none!important">
+                                                <span class="text-steel-400">Transport</span>
+                                                <span id="summaryTransport"
+                                                    class="text-orange-400 font-semibold">$0.00</span>
+                                            </div>
+                                            <div class="pt-3 border-t border-white/10 flex justify-between">
+                                                <span class="font-semibold text-white">Total</span>
+                                                <span id="summaryTotal"
+                                                    class="text-xl font-bold text-orange-400">$500.00</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Quotation Items -->
+                                        <div>
+                                            <div class="flex items-center justify-between mb-3">
+                                                <h4 class="text-sm font-semibold text-white">Quotation Items</h4>
+                                                <button onclick="addQuoteItem()"
+                                                    class="flex items-center gap-1.5 px-3 py-1.5 bg-orange-500/20 border border-orange-500/30 text-orange-400 text-xs font-semibold rounded-lg hover:bg-orange-500/30 transition-colors">
+                                                    <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                                                    Add Item
+                                                </button>
+                                            </div>
+
+                                            <!-- Items container -->
+                                            <div id="quoteItemsContainer" class="space-y-3">
+                                                <!-- Items added dynamically -->
+                                            </div>
+                                            <div id="quoteItemsEmpty"
+                                                class="text-center py-8 border border-dashed border-white/10 rounded-xl">
+                                                <i data-lucide="package"
+                                                    class="w-8 h-8 text-steel-600 mx-auto mb-2"></i>
+                                                <p class="text-sm text-steel-500">No items added yet</p>
+                                                <p class="text-xs text-steel-600 mt-1">Click "Add Item" to add products
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Submit -->
+                                <div
+                                    class="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+                                    <p class="text-xs text-steel-500">All quotations are reviewed within 24 hours.
+                                        You'll receive confirmation via email.</p>
+                                    <button onclick="submitQuotation()"
+                                        class="inline-flex items-center gap-2 px-8 py-4 bg-orange-500 text-white font-semibold rounded-xl hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/25">
+                                        <i data-lucide="send" class="w-4 h-4"></i>
+                                        Submit Quotation
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Footer -->
-    <footer class="bg-black py-8 border-t border-gray-900 text-center relative z-10">
-        <p class="text-gray-500 text-sm">
-            &copy; 2023 KFS Scaffolding. All rights reserved. <br>
-            <span class="text-xs text-gray-700 mt-2 block">Designed with Future Tech</span>
-        </p>
-    </footer>
-
-    <!-- Modal for Quote (Hidden by default) -->
-    <div id="quoteModal" class="fixed inset-0 z-[60] hidden">
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeModal()"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md p-6">
-            <div class="glass-panel border border-kfs-glow rounded-xl p-6 shadow-[0_0_50px_rgba(59,130,246,0.3)]">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="font-display text-2xl font-bold text-white" id="modalTitle">Quote Request</h3>
-                    <button onclick="closeModal()" class="text-gray-400 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+    <!-- ==================== PAGE: PROJECTS ==================== -->
+    <div id="page-projects" class="page">
+        <div class="pt-20 lg:pt-24 min-h-screen">
+            <div class="bg-navy-800 blueprint-grid-dark py-16">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <div
+                        class="inline-flex items-center gap-2 px-3 py-1 bg-orange-500/15 border border-orange-500/25 rounded-full mb-4">
+                        <i data-lucide="building-2" class="w-3.5 h-3.5 text-orange-400"></i>
+                        <span class="text-xs font-semibold text-orange-400 uppercase tracking-wider">Project
+                            Showcase</span>
+                    </div>
+                    <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">Trusted on <span
+                            class="text-orange-400">500+ Projects</span></h1>
+                    <p class="text-lg text-steel-300 max-w-2xl mx-auto">From residential towers to industrial complexes,
+                        our scaffolding solutions are proven in the field.</p>
                 </div>
-                <p class="text-gray-300 mb-6">Please provide your details and our team will contact you with a custom quote for <span id="modalType" class="text-kfs-accent font-bold"></span>.</p>
-                <form onsubmit="handleModalSubmit(event)" class="space-y-4">
-                    <input type="text" placeholder="Project Name" class="w-full bg-black/50 border border-gray-700 rounded p-3 text-white focus:border-kfs-glow focus:outline-none">
-                    <input type="tel" placeholder="Phone Number" class="w-full bg-black/50 border border-gray-700 rounded p-3 text-white focus:border-kfs-glow focus:outline-none">
-                    <button type="submit" class="w-full bg-kfs-glow text-white font-bold py-3 rounded hover:bg-blue-600 transition-colors">Submit Request</button>
-                </form>
+            </div>
+
+            <section class="py-16 bg-steel-50 blueprint-grid">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex justify-center gap-2 mb-10">
+                        <button
+                            class="project-tab active px-5 py-2.5 text-sm font-medium rounded-xl transition-all bg-navy-800 text-white"
+                            data-category="all">All Projects</button>
+                        <button
+                            class="project-tab px-5 py-2.5 text-sm font-medium rounded-xl transition-all bg-white text-steel-600 border border-steel-200 hover:border-orange-300"
+                            data-category="commercial">Commercial</button>
+                        <button
+                            class="project-tab px-5 py-2.5 text-sm font-medium rounded-xl transition-all bg-white text-steel-600 border border-steel-200 hover:border-orange-300"
+                            data-category="residential">Residential</button>
+                        <button
+                            class="project-tab px-5 py-2.5 text-sm font-medium rounded-xl transition-all bg-white text-steel-600 border border-steel-200 hover:border-orange-300"
+                            data-category="industrial">Industrial</button>
+                    </div>
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="projectGrid">
+                        <div class="project-card card-lift group relative rounded-2xl overflow-hidden aspect-[4/3]"
+                            data-category="commercial">
+                            <img src="https://picsum.photos/seed/commercial-tower-build/600/450.jpg"
+                                alt="Commercial Tower"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-navy-800/90 via-navy-800/20 to-transparent">
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 p-6">
+                                <span
+                                    class="inline-block px-2.5 py-1 bg-orange-500 text-white text-[10px] font-bold uppercase tracking-wider rounded-full mb-2">Commercial</span>
+                                <h3 class="font-display text-lg font-bold text-white">Metro Office Tower</h3>
+                                <p class="text-sm text-steel-300">32-story commercial complex, downtown district</p>
+                            </div>
+                        </div>
+                        <div class="project-card card-lift group relative rounded-2xl overflow-hidden aspect-[4/3]"
+                            data-category="residential">
+                            <img src="https://picsum.photos/seed/residential-complex-scaff/600/450.jpg"
+                                alt="Residential Complex"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-navy-800/90 via-navy-800/20 to-transparent">
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 p-6">
+                                <span
+                                    class="inline-block px-2.5 py-1 bg-yellow-500 text-navy-800 text-[10px] font-bold uppercase tracking-wider rounded-full mb-2">Residential</span>
+                                <h3 class="font-display text-lg font-bold text-white">Sunset Residential</h3>
+                                <p class="text-sm text-steel-300">120-unit apartment complex with parking structure</p>
+                            </div>
+                        </div>
+                        <div class="project-card card-lift group relative rounded-2xl overflow-hidden aspect-[4/3]"
+                            data-category="industrial">
+                            <img src="https://picsum.photos/seed/industrial-plant-scaffold/600/450.jpg"
+                                alt="Industrial Plant"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-navy-800/90 via-navy-800/20 to-transparent">
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 p-6">
+                                <span
+                                    class="inline-block px-2.5 py-1 bg-steel-500 text-white text-[10px] font-bold uppercase tracking-wider rounded-full mb-2">Industrial</span>
+                                <h3 class="font-display text-lg font-bold text-white">Power Plant Maintenance</h3>
+                                <p class="text-sm text-steel-300">Full scaffolding enclosure for annual maintenance</p>
+                            </div>
+                        </div>
+                        <div class="project-card card-lift group relative rounded-2xl overflow-hidden aspect-[4/3]"
+                            data-category="commercial">
+                            <img src="https://picsum.photos/seed/shopping-mall-construct/600/450.jpg"
+                                alt="Shopping Mall"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-navy-800/90 via-navy-800/20 to-transparent">
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 p-6">
+                                <span
+                                    class="inline-block px-2.5 py-1 bg-orange-500 text-white text-[10px] font-bold uppercase tracking-wider rounded-full mb-2">Commercial</span>
+                                <h3 class="font-display text-lg font-bold text-white">Grand Mall Expansion</h3>
+                                <p class="text-sm text-steel-300">50,000 sqm retail space expansion project</p>
+                            </div>
+                        </div>
+                        <div class="project-card card-lift group relative rounded-2xl overflow-hidden aspect-[4/3]"
+                            data-category="residential">
+                            <img src="https://picsum.photos/seed/villa-construction-site/600/450.jpg"
+                                alt="Villa Construction"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-navy-800/90 via-navy-800/20 to-transparent">
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 p-6">
+                                <span
+                                    class="inline-block px-2.5 py-1 bg-yellow-500 text-navy-800 text-[10px] font-bold uppercase tracking-wider rounded-full mb-2">Residential</span>
+                                <h3 class="font-display text-lg font-bold text-white">Coastal Villas</h3>
+                                <p class="text-sm text-steel-300">Luxury seaside villa complex, 18 units</p>
+                            </div>
+                        </div>
+                        <div class="project-card card-lift group relative rounded-2xl overflow-hidden aspect-[4/3]"
+                            data-category="industrial">
+                            <img src="https://picsum.photos/seed/warehouse-scaffolding/600/450.jpg" alt="Warehouse"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-navy-800/90 via-navy-800/20 to-transparent">
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 p-6">
+                                <span
+                                    class="inline-block px-2.5 py-1 bg-steel-500 text-white text-[10px] font-bold uppercase tracking-wider rounded-full mb-2">Industrial</span>
+                                <h3 class="font-display text-lg font-bold text-white">Logistics Warehouse</h3>
+                                <p class="text-sm text-steel-300">15m high bay warehouse scaffolding solution</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- ==================== PAGE: CONTACT ==================== -->
+    <div id="page-contact" class="page">
+        <div class="pt-20 lg:pt-24 min-h-screen">
+            <div class="bg-navy-800 blueprint-grid-dark py-16">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <div
+                        class="inline-flex items-center gap-2 px-3 py-1 bg-orange-500/15 border border-orange-500/25 rounded-full mb-4">
+                        <i data-lucide="mail" class="w-3.5 h-3.5 text-orange-400"></i>
+                        <span class="text-xs font-semibold text-orange-400 uppercase tracking-wider">Get in Touch</span>
+                    </div>
+                    <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">Contact <span
+                            class="text-orange-400">Our Team</span></h1>
+                    <p class="text-lg text-steel-300 max-w-2xl mx-auto">Have a project in mind? Our experts are ready to
+                        help you find the right scaffolding solution.</p>
+                </div>
+            </div>
+
+            <section class="py-16 bg-navy-800 blueprint-grid-dark">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid lg:grid-cols-5 gap-12">
+                        <div class="lg:col-span-3">
+                            <h2 class="font-display text-2xl font-bold text-white mb-6">Send us a Message</h2>
+                            <form id="contactForm" class="space-y-5">
+                                <div class="grid sm:grid-cols-2 gap-5">
+                                    <div>
+                                        <label class="form-label">Full Name *</label>
+                                        <input type="text" required class="form-input" placeholder="John Smith">
+                                    </div>
+                                    <div>
+                                        <label class="form-label">Company</label>
+                                        <input type="text" class="form-input" placeholder="Your company name">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="form-label">Email *</label>
+                                    <input type="email" required class="form-input" placeholder="john@company.com">
+                                </div>
+                                <div>
+                                    <label class="form-label">Phone</label>
+                                    <input type="tel" class="form-input" placeholder="+1 (555) 000-0000">
+                                </div>
+                                <div>
+                                    <label class="form-label">Service Needed</label>
+                                    <select class="form-input appearance-none cursor-pointer">
+                                        <option>Equipment Rental</option>
+                                        <option>Equipment Purchase</option>
+                                        <option>Site Assessment</option>
+                                        <option>Safety Consulting</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="form-label">Message *</label>
+                                    <textarea required rows="4" class="form-input resize-none"
+                                        placeholder="Tell us about your project requirements..."></textarea>
+                                </div>
+                                <button type="submit"
+                                    class="inline-flex items-center gap-2 px-8 py-4 bg-orange-500 text-white font-semibold rounded-xl hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/25">
+                                    <i data-lucide="send" class="w-4 h-4"></i>
+                                    Send Message
+                                </button>
+                            </form>
+                        </div>
+                        <div class="lg:col-span-2 space-y-5">
+                            <h2 class="font-display text-2xl font-bold text-white mb-6">Contact Info</h2>
+                            <div class="flex items-start gap-4 p-5 bg-navy-700/30 border border-white/10 rounded-xl">
+                                <div
+                                    class="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <i data-lucide="phone" class="w-5 h-5 text-orange-400"></i></div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-white mb-1">Phone</h4>
+                                    <p class="text-sm text-steel-400">+1 (555) 234-5678</p>
+                                    <p class="text-xs text-steel-500 mt-1">Mon–Sat, 7AM–9PM</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4 p-5 bg-navy-700/30 border border-white/10 rounded-xl">
+                                <div
+                                    class="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <i data-lucide="mail" class="w-5 h-5 text-orange-400"></i></div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-white mb-1">Email</h4>
+                                    <p class="text-sm text-steel-400">info@kfs-scaffolding.com</p>
+                                    <p class="text-xs text-steel-500 mt-1">Response within 24 hours</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4 p-5 bg-navy-700/30 border border-white/10 rounded-xl">
+                                <div
+                                    class="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <i data-lucide="map-pin" class="w-5 h-5 text-orange-400"></i></div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-white mb-1">Location</h4>
+                                    <p class="text-sm text-steel-400">123 Industrial Blvd, Suite 400</p>
+                                    <p class="text-xs text-steel-500 mt-1">Houston, TX 77001</p>
+                                </div>
+                            </div>
+                            <div
+                                class="rounded-xl overflow-hidden border border-white/10 aspect-video bg-navy-700/30 flex items-center justify-center">
+                                <div class="text-center"><i data-lucide="map"
+                                        class="w-10 h-10 text-steel-600 mx-auto mb-2"></i>
+                                    <p class="text-sm text-steel-500">Interactive Map</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- ==================== PAGE: LOGIN ==================== -->
+    <div id="page-login" class="page">
+        <div class="min-h-screen bg-navy-900 blueprint-grid-dark flex items-center justify-center px-4 py-20">
+            <div class="w-full max-w-md">
+                <!-- Logo -->
+                <div class="text-center mb-8">
+                    <button onclick="navigateTo('home')" class="inline-flex items-center gap-2 group mb-6">
+                        <div
+                            class="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center group-hover:bg-orange-600 transition-colors">
+                            <i data-lucide="hard-hat" class="w-7 h-7 text-white"></i>
+                        </div>
+                        <span class="text-2xl font-bold font-display text-white">KFS</span>
+                    </button>
+                    <h1 class="font-display text-3xl font-bold text-white mb-2">Welcome back</h1>
+                    <p class="text-steel-400">Sign in to your account to continue</p>
+                </div>
+
+                <!-- Card -->
+                <div class="bg-navy-800/80 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl">
+                    <div id="loginError"
+                        class="hidden mb-5 flex items-center gap-3 px-4 py-3 bg-red-500/10 border border-red-500/20 rounded-xl text-sm text-red-400">
+                        <i data-lucide="alert-circle" class="w-4 h-4 flex-shrink-0"></i>
+                        <span id="loginErrorMsg">Invalid email or password.</span>
+                    </div>
+
+                    <div class="space-y-5">
+                        <div>
+                            <label class="form-label">Email Address</label>
+                            <input type="email" id="loginEmail" class="auth-input" placeholder="your@email.com"
+                                autocomplete="email">
+                        </div>
+                        <div>
+                            <div class="flex items-center justify-between mb-1.5">
+                                <label class="form-label" style="margin-bottom:0">Password</label>
+                                <a href="#"
+                                    class="text-xs text-orange-400 hover:text-orange-300 transition-colors">Forgot
+                                    password?</a>
+                            </div>
+                            <div class="relative">
+                                <input type="password" id="loginPassword" class="auth-input pr-12"
+                                    placeholder="••••••••" autocomplete="current-password">
+                                <button type="button" onclick="togglePasswordVis('loginPassword', this)"
+                                    class="absolute right-3 top-1/2 -translate-y-1/2 text-steel-500 hover:text-steel-300 transition-colors">
+                                    <i data-lucide="eye" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <button onclick="handleLogin()"
+                            class="w-full py-3.5 bg-orange-500 text-white font-semibold rounded-xl hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/25 flex items-center justify-center gap-2">
+                            <i data-lucide="log-in" class="w-4 h-4"></i>
+                            Sign In
+                        </button>
+                    </div>
+
+                    <div class="mt-6 pt-5 border-t border-white/10 text-center">
+                        <p class="text-sm text-steel-400">Don't have an account?
+                            <button onclick="navigateTo('register')"
+                                class="text-orange-400 font-semibold hover:text-orange-300 transition-colors ml-1">Create
+                                one</button>
+                        </p>
+                    </div>
+
+                    <!-- Demo hint -->
+                    <div class="mt-4 px-4 py-3 bg-white/5 border border-white/10 rounded-xl">
+                        <p class="text-xs text-steel-500 text-center font-medium mb-2">Demo credentials</p>
+                        <div class="space-y-1 text-xs text-steel-400">
+                            <div class="flex justify-between"><span>Customer:</span><span
+                                    class="font-mono">customer@kfs.com / password123</span></div>
+                            <div class="flex justify-between"><span>Admin:</span><span class="font-mono">admin@kfs.com /
+                                    admin123</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="text-center text-xs text-steel-600 mt-6">
+                    <button onclick="navigateTo('home')" class="hover:text-steel-400 transition-colors">← Back to
+                        Home</button>
+                </p>
             </div>
         </div>
     </div>
 
-    <!-- Notification Toast -->
-    <div id="toast" class="fixed bottom-5 right-5 bg-kfs-glow text-white px-6 py-4 rounded shadow-2xl transform translate-y-24 transition-transform duration-300 z-[70] flex items-center gap-3">
-        <i class="fas fa-check-circle"></i>
-        <div>
-            <h4 class="font-bold text-sm">Success</h4>
-            <p class="text-xs text-blue-100" id="toastMessage">Action completed.</p>
+    <!-- ==================== PAGE: REGISTER ==================== -->
+    <div id="page-register" class="page">
+        <div class="min-h-screen bg-navy-900 blueprint-grid-dark flex items-center justify-center px-4 py-20">
+            <div class="w-full max-w-md">
+                <div class="text-center mb-8">
+                    <button onclick="navigateTo('home')" class="inline-flex items-center gap-2 group mb-6">
+                        <div
+                            class="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center group-hover:bg-orange-600 transition-colors">
+                            <i data-lucide="hard-hat" class="w-7 h-7 text-white"></i>
+                        </div>
+                        <span class="text-2xl font-bold font-display text-white">KFS</span>
+                    </button>
+                    <h1 class="font-display text-3xl font-bold text-white mb-2">Create account</h1>
+                    <p class="text-steel-400">Join KFS to access rental quotes and more</p>
+                </div>
+
+                <div class="bg-navy-800/80 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl">
+                    <div id="registerError"
+                        class="hidden mb-5 flex items-center gap-3 px-4 py-3 bg-red-500/10 border border-red-500/20 rounded-xl text-sm text-red-400">
+                        <i data-lucide="alert-circle" class="w-4 h-4 flex-shrink-0"></i>
+                        <span id="registerErrorMsg">Please fill all required fields.</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="form-label">First Name <span class="req">*</span></label>
+                                <input type="text" id="regFirstName" class="auth-input" placeholder="John">
+                            </div>
+                            <div>
+                                <label class="form-label">Last Name <span class="req">*</span></label>
+                                <input type="text" id="regLastName" class="auth-input" placeholder="Smith">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="form-label">Company Name</label>
+                            <input type="text" id="regCompany" class="auth-input" placeholder="Your company (optional)">
+                        </div>
+                        <div>
+                            <label class="form-label">Email Address <span class="req">*</span></label>
+                            <input type="email" id="regEmail" class="auth-input" placeholder="john@company.com">
+                        </div>
+                        <div>
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" id="regPhone" class="auth-input" placeholder="+1 (555) 000-0000">
+                        </div>
+                        <div>
+                            <label class="form-label">Password <span class="req">*</span></label>
+                            <div class="relative">
+                                <input type="password" id="regPassword" class="auth-input pr-12"
+                                    placeholder="Min 8 characters">
+                                <button type="button" onclick="togglePasswordVis('regPassword', this)"
+                                    class="absolute right-3 top-1/2 -translate-y-1/2 text-steel-500 hover:text-steel-300 transition-colors">
+                                    <i data-lucide="eye" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="form-label">Confirm Password <span class="req">*</span></label>
+                            <input type="password" id="regConfirmPassword" class="auth-input"
+                                placeholder="Re-enter password">
+                        </div>
+                        <div class="flex items-start gap-3 pt-1">
+                            <input type="checkbox" id="agreeTerms"
+                                class="w-4 h-4 mt-0.5 accent-orange-500 cursor-pointer">
+                            <label for="agreeTerms" class="text-xs text-steel-400 cursor-pointer">I agree to the <a
+                                    href="#" class="text-orange-400 hover:text-orange-300">Terms of Service</a> and <a
+                                    href="#" class="text-orange-400 hover:text-orange-300">Privacy Policy</a></label>
+                        </div>
+                        <button onclick="handleRegister()"
+                            class="w-full py-3.5 bg-orange-500 text-white font-semibold rounded-xl hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/25 flex items-center justify-center gap-2">
+                            <i data-lucide="user-plus" class="w-4 h-4"></i>
+                            Create Account
+                        </button>
+                    </div>
+
+                    <div class="mt-6 pt-5 border-t border-white/10 text-center">
+                        <p class="text-sm text-steel-400">Already have an account?
+                            <button onclick="navigateTo('login')"
+                                class="text-orange-400 font-semibold hover:text-orange-300 transition-colors ml-1">Sign
+                                in</button>
+                        </p>
+                    </div>
+                </div>
+
+                <p class="text-center text-xs text-steel-600 mt-6">
+                    <button onclick="navigateTo('home')" class="hover:text-steel-400 transition-colors">← Back to
+                        Home</button>
+                </p>
+            </div>
         </div>
     </div>
 
+    <!-- ==================== FLOATING BUTTONS ==================== -->
+    <a href="https://wa.me/15552345678?text=Hello%20KFS%2C%20I%27d%20like%20to%20inquire%20about%20scaffolding."
+        target="_blank"
+        class="fixed bottom-6 right-6 z-40 w-14 h-14 bg-green-500 rounded-full flex items-center justify-center shadow-2xl hover:bg-green-600 transition-all hover:scale-110"
+        title="Chat on WhatsApp">
+        <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+        </svg>
+    </a>
+
+    <!-- Toast -->
+    <div id="toast"
+        class="toast fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-green-500 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 min-w-72">
+        <i data-lucide="check-circle" class="w-5 h-5 flex-shrink-0"></i>
+        <span id="toastMsg" class="text-sm font-medium">Action completed!</span>
+    </div>
+
+    <!-- ==================== JAVASCRIPT ==================== -->
     <script>
-        // --- 1. Background Animation (Canvas Network) ---
-        const canvas = document.getElementById('networkCanvas');
-        const ctx = canvas.getContext('2d');
-        let width, height;
-        let particles = [];
+        lucide.createIcons();
 
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        }
+        // ===== APP STATE =====
+        let currentUser = null;
+        let transportEnabled = false;
+        let quoteItems = [];
+        let quoteCounter = 1;
+        let itemCounter = 1;
 
-        class Particle {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
-                this.size = Math.random() * 2 + 1;
-            }
-
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-
-                if (this.x < 0 || this.x > width) this.vx *= -1;
-                if (this.y < 0 || this.y > height) this.vy *= -1;
-            }
-
-            draw() {
-                ctx.fillStyle = '#3b82f6';
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        function initParticles() {
-            particles = [];
-            const particleCount = Math.min(window.innerWidth / 10, 100);
-            for (let i = 0; i < particleCount; i++) {
-                particles.push(new Particle());
-            }
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, width, height);
-            
-            // Draw connections first
-            ctx.strokeStyle = 'rgba(59, 130, 246, 0.15)';
-            ctx.lineWidth = 1;
-            
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-                
-                for (let j = i; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    
-                    if (distance < 150) {
-                        ctx.beginPath();
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.stroke();
-                    }
-                }
-            }
-            requestAnimationFrame(animate);
-        }
-
-        window.addEventListener('resize', () => {
-            resize();
-            initParticles();
-        });
-        
-        resize();
-        initParticles();
-        animate();
-
-
-        // --- 2. Scroll Animation Observer ---
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: "0px 0px -50px 0px"
+        const PRODUCTS = {
+            'props': { name: 'Adjustable Props', rate: 8 },
+            'pipes': { name: 'Steel Pipes', rate: 5 },
+            'frames': { name: 'Frame Systems', rate: 15 },
+            'planks': { name: 'Steel Planks', rate: 4 },
+            'couplers': { name: 'Couplers', rate: 2 },
+            'wheels': { name: 'Brake Wheels', rate: 6 },
         };
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target); // Only animate once
-                }
+        const DEMO_USERS = [
+            { email: 'customer@kfs.com', password: 'password123', name: 'Alex Johnson', role: 'customer', customerId: 'CUST-0042' },
+            { email: 'admin@kfs.com', password: 'admin123', name: 'Admin User', role: 'admin', customerId: 'ADM-0001' },
+        ];
+
+        const DEPOSIT_AMOUNT = 500;
+
+        // ===== ROUTING =====
+        function navigateTo(page) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(p => {
+                p.classList.remove('active');
             });
-        }, observerOptions);
 
-        document.querySelectorAll('.fade-in-up').forEach(el => {
-            observer.observe(el);
-        });
+            // Show target page
+            const target = document.getElementById('page-' + page);
+            if (target) {
+                target.classList.add('active');
+                target.classList.add('page-transition');
+                setTimeout(() => target.classList.remove('page-transition'), 400);
+            }
 
+            // Update nav active state
+            document.querySelectorAll('.nav-link[id^="nav-"]').forEach(link => link.classList.remove('active'));
+            const navBtn = document.getElementById('nav-' + page);
+            if (navBtn) navBtn.classList.add('active');
 
-        // --- 3. UI Interactions ---
-        
-        // Mobile Menu Toggle
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Init page-specific logic
+            if (page === 'quotation') initQuotationPage();
+            if (page === 'projects') initProjectTabs();
+
+            // Re-run animations for new page
+            setTimeout(runAnimations, 100);
+            lucide.createIcons();
         }
 
-        // Modal Handling
-        const modal = document.getElementById('quoteModal');
-        const modalTitle = document.getElementById('modalType');
-        
-        function showQuoteModal(type) {
-            modalTitle.textContent = type;
-            modal.classList.remove('hidden');
-        }
-
-        function closeModal() {
-            modal.classList.add('hidden');
-        }
-
-        function handleModalSubmit(e) {
-            e.preventDefault();
-            closeModal();
-            showToast('Request sent successfully! We will contact you soon.');
-        }
-
-        // Contact Form Handling
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            showToast('Message sent! Thank you for contacting KFS.');
-            this.reset();
-        });
-
-        // Toast Notification
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toastMessage').textContent = msg;
-            toast.classList.remove('translate-y-24');
-            setTimeout(() => {
-                toast.classList.add('translate-y-24');
-            }, 3000);
-        }
-
-        // Navbar Scroll Effect
+        // ===== NAVBAR SCROLL =====
+        const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
-            const nav = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                nav.classList.add('shadow-lg');
-                nav.style.background = 'rgba(10, 10, 15, 0.9)';
+            if (window.pageYOffset > 80) {
+                navbar.classList.add('bg-navy-800/95', 'backdrop-blur-md', 'shadow-xl', 'border-b', 'border-white/5');
             } else {
-                nav.classList.remove('shadow-lg');
-                nav.style.background = 'rgba(19, 19, 31, 0.7)';
+                navbar.classList.remove('bg-navy-800/95', 'backdrop-blur-md', 'shadow-xl', 'border-b', 'border-white/5');
             }
         });
 
+        // ===== MOBILE MENU =====
+        let menuOpen = false;
+        document.getElementById('mobileToggle').addEventListener('click', () => {
+            menuOpen = !menuOpen;
+            document.getElementById('mobileMenu').classList.toggle('open', menuOpen);
+        });
+        function closeMobileMenu() {
+            menuOpen = false;
+            document.getElementById('mobileMenu').classList.remove('open');
+        }
+
+        // ===== ANIMATIONS =====
+        function runAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('visible');
+                });
+            }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+
+            document.querySelectorAll('.page.active .fade-up, .page.active .fade-left, .page.active .fade-right').forEach(el => {
+                el.classList.remove('visible');
+                observer.observe(el);
+            });
+        }
+        runAnimations();
+
+        // ===== AUTH =====
+        function handleLogin() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const pass = document.getElementById('loginPassword').value;
+            const errDiv = document.getElementById('loginError');
+
+            const user = DEMO_USERS.find(u => u.email === email && u.password === pass);
+            if (!user) {
+                errDiv.classList.remove('hidden');
+                document.getElementById('loginErrorMsg').textContent = 'Invalid email or password.';
+                return;
+            }
+
+            currentUser = user;
+            updateAuthUI();
+            showToast('Welcome back, ' + user.name + '!');
+            navigateTo('home');
+        }
+
+        function handleRegister() {
+            const firstName = document.getElementById('regFirstName').value.trim();
+            const lastName = document.getElementById('regLastName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const password = document.getElementById('regPassword').value;
+            const confirm = document.getElementById('regConfirmPassword').value;
+            const agreed = document.getElementById('agreeTerms').checked;
+            const errDiv = document.getElementById('registerError');
+
+            if (!firstName || !lastName || !email || !password) {
+                errDiv.classList.remove('hidden');
+                document.getElementById('registerErrorMsg').textContent = 'Please fill all required fields.';
+                return;
+            }
+            if (password.length < 8) {
+                errDiv.classList.remove('hidden');
+                document.getElementById('registerErrorMsg').textContent = 'Password must be at least 8 characters.';
+                return;
+            }
+            if (password !== confirm) {
+                errDiv.classList.remove('hidden');
+                document.getElementById('registerErrorMsg').textContent = 'Passwords do not match.';
+                return;
+            }
+            if (!agreed) {
+                errDiv.classList.remove('hidden');
+                document.getElementById('registerErrorMsg').textContent = 'Please agree to the terms.';
+                return;
+            }
+
+            // Create user
+            const newUser = {
+                email, password, name: firstName + ' ' + lastName,
+                role: 'customer',
+                customerId: 'CUST-' + String(Math.floor(1000 + Math.random() * 9000))
+            };
+            DEMO_USERS.push(newUser);
+            currentUser = newUser;
+            updateAuthUI();
+            showToast('Account created! Welcome, ' + newUser.name + '!');
+            navigateTo('home');
+        }
+
+        function logoutUser() {
+            currentUser = null;
+            updateAuthUI();
+            showToast('You have been logged out.');
+        }
+
+        function updateAuthUI() {
+            const authButtons = document.getElementById('authButtons');
+            const userMenu = document.getElementById('userMenu');
+
+            if (currentUser) {
+                authButtons.style.display = 'none';
+                userMenu.style.removeProperty('display');
+                document.getElementById('loggedUserName').textContent = currentUser.name;
+                document.getElementById('loggedUserBadge').textContent = currentUser.role.toUpperCase();
+            } else {
+                authButtons.style.removeProperty('display');
+                userMenu.style.display = 'none';
+            }
+        }
+
+        function togglePasswordVis(inputId, btn) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.innerHTML = '<i data-lucide="eye-off" class="w-4 h-4"></i>';
+            } else {
+                input.type = 'password';
+                btn.innerHTML = '<i data-lucide="eye" class="w-4 h-4"></i>';
+            }
+            lucide.createIcons();
+        }
+
+        // ===== QUOTATION =====
+        function generateQuoteCode() {
+            const now = new Date();
+            const yy = now.getFullYear().toString().slice(2);
+            const mm = String(now.getMonth() + 1).padStart(2, '0');
+            const dd = String(now.getDate()).padStart(2, '0');
+            const seq = String(quoteCounter++).padStart(4, '0');
+            return `QT-${yy}${mm}${dd}-${seq}`;
+        }
+
+        function initQuotationPage() {
+            // Generate quote code
+            document.getElementById('quotationCode').value = generateQuoteCode();
+
+            // Set today's date as default
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('rentDate').value = today;
+
+            // Auto-fill customer ID if logged in
+            const cidField = document.getElementById('customerId');
+            const cidStatus = document.getElementById('customerIdStatus');
+            const cidLock = document.getElementById('customerIdLock');
+            const loginPrompt = document.getElementById('quoteLoginPrompt');
+            const adminPanel = document.getElementById('adminPanel');
+
+            if (currentUser) {
+                cidField.value = currentUser.customerId;
+                cidField.readOnly = true;
+                cidField.style.opacity = '0.7';
+                cidStatus.textContent = '(auto-detected)';
+                cidStatus.style.color = '#4ade80';
+                cidLock.style.display = 'block';
+                loginPrompt.style.display = 'none';
+
+                if (currentUser.role === 'admin') {
+                    adminPanel.style.display = 'block';
+                }
+            } else {
+                cidField.readOnly = false;
+                cidField.style.opacity = '1';
+                cidStatus.textContent = '(not logged in)';
+                loginPrompt.style.display = 'block';
+                adminPanel.style.display = 'none';
+            }
+
+            updateTotals();
+        }
+
+        function toggleTransport() {
+            transportEnabled = !transportEnabled;
+            const btn = document.getElementById('transportToggle');
+            const costDisplay = document.getElementById('transportCostDisplay');
+            const costValue = document.getElementById('transportCostValue');
+            const transportRow = document.getElementById('transportRow');
+
+            if (transportEnabled) {
+                btn.classList.add('active');
+                btn.innerHTML = '<i data-lucide="truck" class="w-4 h-4"></i> Transport: ON';
+                costDisplay.classList.remove('hidden');
+                costValue.classList.remove('hidden');
+                transportRow.style.removeProperty('display');
+            } else {
+                btn.classList.remove('active');
+                btn.innerHTML = '<i data-lucide="truck" class="w-4 h-4"></i> Transport: OFF';
+                costDisplay.classList.add('hidden');
+                costValue.classList.add('hidden');
+                transportRow.style.display = 'none';
+            }
+            lucide.createIcons();
+            updateTotals();
+        }
+
+        function addQuoteItem() {
+            const id = itemCounter++;
+            quoteItems.push({ id, productKey: 'props', qty: 1 });
+            renderQuoteItems();
+        }
+
+        function removeQuoteItem(id) {
+            quoteItems = quoteItems.filter(i => i.id !== id);
+            renderQuoteItems();
+        }
+
+        function renderQuoteItems() {
+            const container = document.getElementById('quoteItemsContainer');
+            const empty = document.getElementById('quoteItemsEmpty');
+
+            if (quoteItems.length === 0) {
+                container.innerHTML = '';
+                empty.style.display = '';
+                updateTotals();
+                return;
+            }
+            empty.style.display = 'none';
+
+            container.innerHTML = quoteItems.map(item => {
+                const productOptions = Object.entries(PRODUCTS).map(([key, p]) =>
+                    `<option value="${key}" ${item.productKey === key ? 'selected' : ''}>${p.name} — $${p.rate}/day</option>`
+                ).join('');
+
+                const lineTotal = (PRODUCTS[item.productKey]?.rate || 0) * item.qty;
+
+                return `
+                <div class="quote-item-row bg-navy-900/50 border border-white/10 rounded-xl p-4" id="item-${item.id}">
+                    <div class="flex items-start gap-3">
+                        <div class="flex-1 space-y-3">
+                            <div class="grid grid-cols-3 gap-2 text-xs text-steel-500 font-medium">
+                                <span>Product</span><span>Qty</span><span>Line Total</span>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2 items-center">
+                                <select onchange="updateItemProduct(${item.id}, this.value)"
+                                    class="col-span-1 px-2 py-2 bg-navy-800 border border-white/10 rounded-lg text-white text-xs focus:outline-none focus:ring-1 focus:ring-orange-500/50 appearance-none">
+                                    ${productOptions}
+                                </select>
+                                <input type="number" value="${item.qty}" min="1" max="9999"
+                                    onchange="updateItemQty(${item.id}, this.value)"
+                                    class="col-span-1 px-2 py-2 bg-navy-800 border border-white/10 rounded-lg text-white text-sm text-center focus:outline-none focus:ring-1 focus:ring-orange-500/50">
+                                <span class="text-sm font-semibold text-orange-400">$${lineTotal.toFixed(2)}</span>
+                            </div>
+                            <div class="text-xs text-steel-600">
+                                Linked to: <span class="font-mono text-steel-500">${document.getElementById('quotationCode')?.value || '—'}</span>
+                            </div>
+                        </div>
+                        <button onclick="removeQuoteItem(${item.id})" class="w-7 h-7 flex items-center justify-center text-steel-500 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors flex-shrink-0">
+                            <i data-lucide="x" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+                </div>`;
+            }).join('');
+
+            lucide.createIcons();
+            updateTotals();
+        }
+
+        function updateItemProduct(id, key) {
+            const item = quoteItems.find(i => i.id === id);
+            if (item) { item.productKey = key; renderQuoteItems(); }
+        }
+
+        function updateItemQty(id, val) {
+            const item = quoteItems.find(i => i.id === id);
+            if (item) { item.qty = Math.max(1, parseInt(val) || 1); renderQuoteItems(); }
+        }
+
+        function updateTotals() {
+            const subTotal = quoteItems.reduce((sum, item) => {
+                return sum + (PRODUCTS[item.productKey]?.rate || 0) * item.qty;
+            }, 0);
+
+            const transportCost = transportEnabled
+                ? (parseFloat(document.getElementById('adminTransportCost')?.value) || 0)
+                : 0;
+
+            const total = DEPOSIT_AMOUNT + transportCost;
+
+            document.getElementById('summarySubTotal').textContent = '$' + subTotal.toFixed(2);
+            document.getElementById('summaryTotal').textContent = '$' + total.toFixed(2);
+
+            if (transportEnabled) {
+                document.getElementById('summaryTransport').textContent = '$' + transportCost.toFixed(2);
+                document.getElementById('transportCostValue').textContent = '$' + transportCost.toFixed(2);
+            }
+        }
+
+        function submitQuotation() {
+            const rentDate = document.getElementById('rentDate').value;
+            if (!rentDate) { showToast('Please select a rental date.', 'error'); return; }
+            if (quoteItems.length === 0) { showToast('Please add at least one item.', 'error'); return; }
+
+            const code = document.getElementById('quotationCode').value;
+            document.getElementById('quoteStatusBadge').textContent = 'Submitted';
+            document.getElementById('quoteStatusBadge').className = 'px-3 py-1 bg-green-500/20 text-green-400 text-xs font-medium rounded-full border border-green-500/30';
+            showToast('Quotation ' + code + ' submitted successfully!');
+        }
+
+        // ===== PROJECT TABS =====
+        function initProjectTabs() {
+            const tabs = document.querySelectorAll('#page-projects .project-tab');
+            const cards = document.querySelectorAll('#page-projects .project-card');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => {
+                        t.classList.remove('bg-navy-800', 'text-white');
+                        t.classList.add('bg-white', 'text-steel-600', 'border', 'border-steel-200');
+                    });
+                    tab.classList.remove('bg-white', 'text-steel-600', 'border', 'border-steel-200');
+                    tab.classList.add('bg-navy-800', 'text-white');
+
+                    const cat = tab.dataset.category;
+                    cards.forEach(card => {
+                        if (cat === 'all' || card.dataset.category === cat) {
+                            card.style.display = '';
+                            card.style.opacity = '0';
+                            setTimeout(() => { card.style.transition = 'opacity 0.4s'; card.style.opacity = '1'; }, 50);
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        }
+        initProjectTabs();
+
+        // ===== CONTACT FORM =====
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            showToast('Message sent! We\'ll respond within 24 hours.');
+            e.target.reset();
+        });
+
+        // ===== TOAST =====
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const msg = document.getElementById('toastMsg');
+            msg.textContent = message;
+            toast.className = toast.className.replace(/bg-\w+-\d+/, type === 'error' ? 'bg-red-500' : 'bg-green-500');
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 4000);
+        }
+
+        // ===== LOGIN FORM KEYBOARD =====
+        document.getElementById('loginPassword').addEventListener('keydown', e => {
+            if (e.key === 'Enter') handleLogin();
+        });
     </script>
 </body>
+
 </html>

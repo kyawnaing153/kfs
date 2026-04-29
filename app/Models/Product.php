@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Product extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'product_name',
         'product_type',
@@ -33,5 +33,20 @@ class Product extends Model
     public function getThumbUrlAttribute()
     {
         return $this->thumb ? asset('storage/' . $this->thumb) : asset('Backend/img/profile.png');
+    }
+
+    public function getRentPriceAttribute()
+    {
+        $variant = $this->variants->first();
+        if (!$variant) return 0;
+
+        $price = $variant->prices->where('price_type', 'rent')->first();
+        return $price->price ?? 0;
+    }
+
+    public function getLowStockAttribute()
+    {
+        $totalStock = $this->variants->sum('qty');
+        return $totalStock < 5; // Consider low stock if total quantity is less than 5
     }
 }

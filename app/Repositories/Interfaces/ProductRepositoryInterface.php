@@ -13,6 +13,6 @@ interface ProductRepositoryInterface
     public function delete($id);
     public function toggleStatus($id);
     public function toggleFeature($id);
-    public function getProductsWithVariants();
+    public function getAvailableVariants();
     public function getFeaturedProducts();
 }

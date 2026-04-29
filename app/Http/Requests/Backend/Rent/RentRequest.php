@@ -68,7 +68,7 @@ class RentRequest extends FormRequest
                 'required',
                 'numeric',
                 'min:0.1',
-                'max:999999.9'
+                'max:9999999.9'
             ],
 
             // Financial fields
@@ -76,7 +76,7 @@ class RentRequest extends FormRequest
                 'required',
                 'numeric',
                 'min:0.1',
-                'max:9999999.9'
+                'max:99999999.9'
             ],
             'discount' => [
                 'required',
@@ -94,7 +94,7 @@ class RentRequest extends FormRequest
                 'required',
                 'numeric',
                 'min:0',
-                'max:9999999.9'
+                'max:99999999.9'
             ],
             'total' => [
                 'required',

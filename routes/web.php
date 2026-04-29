@@ -17,10 +17,15 @@ use App\Http\Controllers\Backend\customInvoice\CustomInvoiceController;
 use App\Http\Controllers\Backend\expenses\ExpenseController;
 use App\Http\Controllers\Backend\purchases\PurchaseController;
 use App\Http\Controllers\CustomerRentController;
+use App\Http\Controllers\Frontend\{HomeController};
+use App\Http\Controllers\Frontend\auth\CustomerAuthenticationController;
+use App\Http\Controllers\Frontend\products\ProductController as ProductsProductController;
+use App\Http\Controllers\Frontend\QuotationController as FrontendQuotationController;
+use App\Http\Controllers\Frontend\CustomerDashboardController;
 
 // dashboard pages
 Route::get('/', function () {
-    return redirect()->route('admin.dashboard');
+    return redirect()->route('frontend.home');
 });
 
 // calender pages
@@ -226,9 +231,43 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth']], function () {
 
         return back()->with('success', 'System cache cleared!');
     })->name('system.clear');
-
 });
 
+# Frontend Routes
+Route::group(['prefix' => 'home', 'middleware' => ['guest']], function () {
+    Route::get('/', [HomeController::class, 'index'])->name('frontend.home');
+    Route::get('/services', [HomeController::class, 'services'])->name('frontend.services');
+    Route::get('/contact', [HomeController::class, 'contact'])->name('frontend.contact');
+    Route::get('/products', [ProductsProductController::class, 'index'])->name('frontend.products.index');
+    Route::get('/products/{id}', [ProductsProductController::class, 'show'])->name('frontend.products.show');
+
+    Route::prefix('customers')->name('customers.')->group(function () {
+        Route::get('/', [CustomerAuthenticationController::class, 'showLoginFrom'])->name('showLoginFrom');
+        Route::post('/login', [CustomerAuthenticationController::class, 'login'])->name('login');
+        Route::get('/register', [CustomerAuthenticationController::class, 'showRegistrationForm'])->name('register');
+        Route::post('/register', [CustomerAuthenticationController::class, 'register'])->name('register.submit');
+    });
+});
+
+Route::prefix('home')->middleware('auth:customer')->group(function () {
+
+    Route::post('/customers/logout', [CustomerAuthenticationController::class, 'logout'])->name('customers.logout');
+    Route::get('/get-available-variants', [ProductsProductController::class, 'getAvailableVariants'])->name('frontend.products.get-available-variants');
+    
+    //customer quotation route
+    Route::get('/quotations', [FrontendQuotationController::class, 'index'])->name('frontend.quotations.index');
+    Route::get('/quotation/create', [FrontendQuotationController::class, 'create'])->name('frontend.quotations.create');
+    #Route::get('/quotation/show', [FrontendQuotationController::class, 'show'])->name('frontend.quotation.show');
+    Route::post('/quotation', [FrontendQuotationController::class, 'store'])->name('frontend.quotation.store');
+    Route::get('/quotation/track', [FrontendQuotationController::class, 'track'])->name('frontend.quotation.track');
+
+    Route::get('/customer/dashboard', function () {
+        return view('pages.frontend.customers/.dashboard', ['title' => 'Customer Dashboard']);
+     })->name('frontend.customer.dashboard');
+
+     Route::get('/customer/dashboard', [CustomerDashboardController::class, 'index'])->name('frontend.customer.dashboard');
+     Route::get('/customer/rents/{rent}/invoice', [CustomerDashboardController::class, 'invoice'])->name('frontend.customer.invoice');
+});
 // Add this at the very end of web.php, after all other routes
 Route::fallback(function () {
     return response()->view('pages.errors.error-404', ['title' => 'Error 404'], 404);

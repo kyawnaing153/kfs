@@ -242,7 +242,7 @@
                                                             <span class="text-gray-600 dark:text-gray-400">Sale:</span>
                                                             <span
                                                                 class="ml-2 font-medium text-green-600 dark:text-green-400">
-                                                                ${{ number_format($salePrice->price, 1) }}
+                                                                Ks {{ number_format($salePrice->price, 0) }}
                                                             </span>
                                                         </div>
                                                     @endif
@@ -255,7 +255,7 @@
                                                             </span>
                                                             <span
                                                                 class="ml-2 font-medium text-blue-600 dark:text-blue-400">
-                                                                ${{ number_format($rentPrice->price, 1) }}
+                                                                Ks {{ number_format($rentPrice->price, 0) }}
                                                             </span>
                                                         </div>
                                                     @endforeach
@@ -278,7 +278,7 @@
                                             <td class="px-4 py-4">
                                                 <div class="text-sm">
                                                     <span class="font-medium text-gray-900 dark:text-white">
-                                                        ${{ number_format($variant->purchase_price, 1) }}
+                                                        Ks {{ number_format($variant->purchase_price, 0) }}
                                                     </span>
                                                     <div class="text-xs text-gray-500 mt-1">
                                                         Purchase Price

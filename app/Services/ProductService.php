@@ -73,9 +73,9 @@ class ProductService
         return $this->productRepository->toggleFeature($id);
     }
 
-    public function getProductsWithVariants()
+    public function getAvailableVariants()
     {
-        return $this->productRepository->getProductsWithVariants();
+        return $this->productRepository->getAvailableVariants();
     }
 
     public function getFeaturedProducts()
