@@ -186,7 +186,7 @@ class RentService
      */
     public function getAvailableCustomers()
     {
-        return \App\Models\Customer::active()->get();
+        return \App\Models\Customer::active()->orderBy('id', 'asc')->get();
     }
 
     /**

@@ -38,7 +38,7 @@ class CustomerDashboardController extends Controller
             'pending_quotations' => $quotations->where('status', 'submitted')->count(),
             'approved_quotations' => $quotations->where('status', 'approved')->count(),
             'total_rents' => $rents->count(),
-            'active_rents' => $rents->where('status', 'active')->count(),
+            'active_rents' => $rents->where('status', 'ongoing')->count(),
             'completed_rents' => $rents->where('status', 'completed')->count(),
             'total_spent' => $rents->sum('total'),
         ];
@@ -65,9 +65,6 @@ class CustomerDashboardController extends Controller
         // Calculate tax
         $taxRate = 0; // 0%
         $taxAmount = $rent->sub_total * $taxRate;
-
-        // Add calculated values to rent object
-        $rent->current_time = now()->format('Y-m-d H:i');
 
         $rent->daily_subtotal = $dailyRentalSubtotal;
         $rent->tax_amount = $taxAmount;

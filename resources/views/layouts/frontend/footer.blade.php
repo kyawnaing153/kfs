@@ -22,11 +22,11 @@
             <div>
                 <h4 class="text-sm font-semibold text-white uppercase tracking-wider mb-4">Navigation</h4>
                 <ul class="space-y-2.5">
-                    <li><button onclick="navigateTo('home')" class="text-sm text-steel-400 hover:text-orange-400 transition-colors">Home</button></li>
-                    <li><button onclick="navigateTo('products')" class="text-sm text-steel-400 hover:text-orange-400 transition-colors">Products</button></li>
-                    <li><button onclick="navigateTo('services')" class="text-sm text-steel-400 hover:text-orange-400 transition-colors">Services</button></li>
-                    <li><button onclick="navigateTo('quotation')" class="text-sm text-steel-400 hover:text-orange-400 transition-colors">Quotation</button></li>
-                    <li><button onclick="navigateTo('contact')" class="text-sm text-steel-400 hover:text-orange-400 transition-colors">Contact</button></li>
+                    <li><a href="{{ route('frontend.home') }}" class="text-sm text-steel-400 hover:text-orange-400 transition-colors">Home</a></li>
+                    <li><a href="{{ route('frontend.products.index') }}" class="text-sm text-steel-400 hover:text-orange-400 transition-colors">Products</a></li>
+                    <li><a href="{{ route('frontend.services') }}" class="text-sm text-steel-400 hover:text-orange-400 transition-colors">Services</a></li>
+                    <li><a href="{{ route('frontend.quotations.create') }}" class="text-sm text-steel-400 hover:text-orange-400 transition-colors">Quotation</a></li>
+                    <li><a href="{{ route('frontend.contact') }}" class="text-sm text-steel-400 hover:text-orange-400 transition-colors">Contact</a></li>
                 </ul>
             </div>
 
@@ -34,11 +34,11 @@
             <div>
                 <h4 class="text-sm font-semibold text-white uppercase tracking-wider mb-4">Equipment</h4>
                 <ul class="space-y-2.5">
-                    <li><button onclick="navigateTo('products')" class="text-sm text-steel-400 hover:text-orange-400 transition-colors">Adjustable Props</button></li>
-                    <li><button onclick="navigateTo('products')" class="text-sm text-steel-400 hover:text-orange-400 transition-colors">Steel Pipes</button></li>
-                    <li><button onclick="navigateTo('products')" class="text-sm text-steel-400 hover:text-orange-400 transition-colors">Frame Systems</button></li>
-                    <li><button onclick="navigateTo('products')" class="text-sm text-steel-400 hover:text-orange-400 transition-colors">Steel Planks</button></li>
-                    <li><button onclick="navigateTo('products')" class="text-sm text-steel-400 hover:text-orange-400 transition-colors">Couplers & Wheels</button></li>
+                    <li><a href="{{ route('frontend.products.index') }}" class="text-sm text-steel-400 hover:text-orange-400 transition-colors">Adjustable Props</a></li>
+                    <li><a href="{{ route('frontend.products.index') }}" class="text-sm text-steel-400 hover:text-orange-400 transition-colors">Steel Pipes</a></li>
+                    <li><a href="{{ route('frontend.products.index') }}" class="text-sm text-steel-400 hover:text-orange-400 transition-colors">Frame Systems</a></li>
+                    <li><a href="{{ route('frontend.products.index') }}" class="text-sm text-steel-400 hover:text-orange-400 transition-colors">Steel Planks</a></li>
+                    <li><a href="{{ route('frontend.products.index') }}" class="text-sm text-steel-400 hover:text-orange-400 transition-colors">Couplers & Wheels</a></li>
                 </ul>
             </div>
 

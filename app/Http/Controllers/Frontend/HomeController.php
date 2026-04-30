@@ -18,8 +18,8 @@ class HomeController extends Controller
 
     public function index()
     {
-        $products = $this->productService->getAllProducts([], 'created_at', 'desc');
-        $products = $products->take(5);
+        $products = $this->productService->getAllProducts([], 'id', 'asc');
+        $products = $products->take(8);
 
         return view('pages.frontend.home', compact('products'));
     }

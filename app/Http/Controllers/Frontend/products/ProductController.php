@@ -17,7 +17,7 @@ class ProductController extends Controller
 
     public function index()
     {
-        $products = $this->productService->getAllProducts([], 'created_at', 'desc');
+        $products = $this->productService->getAllProducts([], 'id', 'asc');
         return view('pages.frontend.products.index', compact('products'));
     }
 

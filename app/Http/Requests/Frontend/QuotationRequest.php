@@ -31,10 +31,12 @@ class QuotationRequest extends FormRequest
             'rent_duration'      => ['required_if:type,rent', 'nullable', 'integer', 'min:1'],
             'transport_required' => ['nullable', 'boolean'],
             'transport_address'  => ['nullable', 'string'],
+            'deposit'            => ['nullable', 'numeric', 'min:0'],
             'notes'              => ['nullable', 'string'],
             'items'              => ['required', 'array', 'min:1'],
             'items.*.product_variant_id' => ['required', 'exists:product_variants,id'],
             'items.*.qty'        => ['required', 'integer', 'min:1'],
+            
         ];
     }
 }

@@ -16,7 +16,7 @@ class ProductRepository implements ProductRepositoryInterface
         $this->model = $model;
     }
 
-    public function getAll(array $filters = [], string $orderBy = 'id', string $orderDir = 'desc')
+    public function getAll(array $filters = [], string $orderBy = 'id', string $orderDir = 'asc')
     {
         $query = $this->model->with(['variants.prices', 'tags']);
 
@@ -48,7 +48,7 @@ class ProductRepository implements ProductRepositoryInterface
             });
         }
 
-        return $query->orderBy($orderBy, $orderDir)->paginate(10);
+        return $query->orderBy($orderBy, $orderDir)->paginate(15);
     }
 
     public function findById($id)

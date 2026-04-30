@@ -42,6 +42,7 @@ class CustomerRequest extends FormRequest
         // Password rules: required for create, optional for update
         if ($this->isMethod('post')) {
             $rules['password'] = 'required|string|min:6';
+            //$rules['agree_terms'] = 'accepted';
         } else {
             $rules['password'] = 'nullable|string|min:6';
         }

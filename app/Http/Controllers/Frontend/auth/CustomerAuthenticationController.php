@@ -29,8 +29,6 @@ class CustomerAuthenticationController extends Controller
         return view('pages.frontend.auth.register');
     }
 
-    public function register(Request $request) {}
-
     public function logout(Request $request)
     {
         Auth::guard('customer')->logout();

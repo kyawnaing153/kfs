@@ -8,20 +8,12 @@ use App\Http\Requests\Frontend\QuotationRequest;
 use App\Models\Frontend\Quotation;
 use App\Models\Frontend\QuotationItem;
 use App\Models\ProductVariant;
+use App\Models\Backend\GeneralSetting;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class QuotationController extends Controller
 {
-
-    public function index(){
-        $customer_id = Auth::guard('customer')->user()->id;
-
-        $quotation = Quotation::where('customer_id', $customer_id)->with(['customer', 'QuotationItem']);
-
-        return view('pages.frontend.quotations.index', compact('quotation'));
-    }
-
     public function create()
     {
         return view('pages.frontend.quotation');
@@ -30,13 +22,17 @@ class QuotationController extends Controller
     public function store(QuotationRequest $request) 
     {
         $validated = $request->validated();
+
+        $quotationCode = $this->generateQuotationCode();
+        $validated['quotation_code'] = $quotationCode;
         
         $type = $validated['type'];
         $transportRequired = filter_var($validated['transport_required'] ?? false, FILTER_VALIDATE_BOOLEAN);
-        $depositAmount = 500.00;
+        $depositPerProduct = $this->depositPerProduct();
         $duration = $type === 'rent' ? ($validated['rent_duration'] ?? 1) : 1;
         
         $subTotal = 0;
+        $deposit = 0;
         $itemsData = [];
 
         foreach ($validated['items'] as $item) {
@@ -68,6 +64,9 @@ class QuotationController extends Controller
 
             $lineTotal = $unitPrice * $item['qty']; //* ($type === 'rent' ? $duration : 1)
             $subTotal += $lineTotal;
+            if ($type === 'rent') {
+                $deposit += $depositPerProduct * $item['qty'];
+            }
 
             $itemsData[] = [
                 'product_variant_id' => $item['product_variant_id'],
@@ -78,7 +77,7 @@ class QuotationController extends Controller
             ];
         }
 
-        $deposit = $type === 'rent' ? $depositAmount : 0;
+        $deposit = $type === 'rent' ? $deposit : 0;
         $transport = $transportRequired ? 0 : 0; // Admin can update transport cost later
         $discount = 0;
         
@@ -86,7 +85,7 @@ class QuotationController extends Controller
             $total = $subTotal + $transport - $discount;
         } else {
             // Rent total normally requires only deposit + transport upfront in this configuration
-            $total = $deposit + $transport + $subTotal; 
+            $total = $deposit + $transport; 
         }
 
         $notes = $validated['notes'] ?? null;
@@ -122,7 +121,7 @@ class QuotationController extends Controller
 
             DB::commit();
 
-            return redirect()->route('frontend.quotations.index')
+            return redirect()->route('frontend.customer.dashboard')
                 ->with('success', 'Quotation submitted successfully!');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -130,8 +129,32 @@ class QuotationController extends Controller
         }
     }
 
-    public function track()
+    public function show(Quotation $quotation)
     {
-        return view('pages.frontend.quotations.track');
+        $quotation->load(['customer', 'items.productVariant.product']);
+
+        return view('pages.frontend.quotations.quotation-detail', compact('quotation'));
+    }
+
+    private function generateQuotationCode(): string
+    {
+        $prefix = 'QTO-' . date('Ym');
+        $lastQuotation = Quotation::where('quotation_code', 'like', $prefix . '%')
+            ->orderBy('id', 'desc')
+            ->first();
+
+        if ($lastQuotation) {
+            $lastNumber = (int) substr($lastQuotation->quotation_code, -2);
+            $newNumber = str_pad($lastNumber + 1, 2, '0', STR_PAD_LEFT);
+        } else {
+            $newNumber = '01';
+        }
+
+        return $prefix . '-' . $newNumber;
+    }
+
+    private function depositPerProduct(): float
+    {
+        return (float) (GeneralSetting::where('key', 'deposit_amount')->value('value') ?? 5000);
     }
 }

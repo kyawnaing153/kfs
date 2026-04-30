@@ -76,6 +76,7 @@
 
                         <form action="{{ route('frontend.quotation.store') }}" method="POST" id="quotationForm">
                             @csrf
+                            <input type="hidden" name="deposit" id="depositInput" value="0">
 
                             {{-- STEP 1: Products Selection --}}
                             <div id="step1" class="step-content p-6 sm:p-8">
@@ -261,15 +262,15 @@
                                         <div class="space-y-3">
                                             <div class="flex justify-between text-sm">
                                                 <span class="text-steel-400">Sub Total</span>
-                                                <span id="reviewSubTotal" class="text-white font-semibold">$0.00</span>
+                                                <span id="reviewSubTotal" class="text-white font-semibold">Ks 0</span>
                                             </div>
                                             <div id="reviewDepositRow" class="flex justify-between text-sm">
                                                 <span class="text-steel-400">Deposit (Rent)</span>
-                                                <span class="text-white font-semibold">Ks 500.00</span>
+                                                <span id="reviewDeposit" class="text-white font-semibold">Ks 0</span>
                                             </div>
                                             <div id="reviewTransportRow" class="flex justify-between text-sm hidden">
                                                 <span class="text-steel-400">Transport/Delivery</span>
-                                                <span id="reviewTransport" class="text-white font-semibold">Ks 0.00</span>
+                                                <span id="reviewTransport" class="text-xs text-gray-400 mt-1">Ks 0.00</span>
                                             </div>
                                             <div id="reviewTypeRow" class="flex justify-between text-sm">
                                                 <span class="text-steel-400">Quotation Type</span>
@@ -281,9 +282,14 @@
                                                 <span id="reviewDuration" class="text-white font-semibold">-</span>
                                             </div>
                                             <div class="pt-3 border-t border-white/10 flex justify-between">
-                                                <span class="font-semibold text-white">Total Amount</span>
-                                                <span id="reviewTotal" class="text-xl font-bold text-orange-400">Ks
-                                                    500.00</span>
+                                                <div>
+                                                    <span class="font-semibold text-white">Total Amount</span>
+                                                    <p class="text-xs text-gray-400 mt-1">
+                                                        Excludes transportation charges
+                                                    </p>
+                                                </div>
+                                                <span id="reviewTotal" class="text-lg font-bold text-orange-400">Ks
+                                                    {{ number_format($settings['deposit_amount'], 0) }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -312,12 +318,12 @@
                                 {{-- Navigation --}}
                                 <div class="flex justify-between pt-6 border-t border-white/10 mt-6">
                                     <button type="button"
-                                        class="prev-step px-6 py-2 bg-steel-700 text-white font-semibold rounded-lg hover:bg-steel-600 transition-colors">
+                                        class="prev-step px-2 py-2 bg-steel-700 text-white font-semibold rounded-lg hover:bg-steel-600 transition-colors">
                                         <i data-lucide="arrow-left" class="w-4 h-4 inline mr-1"></i> Back
                                     </button>
                                     <button type="submit" id="submitQuotationBtn"
-                                        class="px-6 py-2 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors shadow-lg shadow-orange-500/25">
-                                        <i data-lucide="check" class="w-4 h-4 inline mr-1"></i> Submit Quotation
+                                        class="px-4 py-2 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors shadow-lg shadow-orange-500/25">
+                                        <i data-lucide="check" class="w-4 h-4 inline mr-1"></i> Send Quotation
                                     </button>
                                 </div>
                             </div>
@@ -585,5 +591,10 @@
 @endpush
 
 @push('scripts')
+    <script>
+        window.quotationConfig = {
+            depositPerProduct: @json($settings['deposit_amount']),
+        };
+    </script>
     <script src="{{ asset('js/quotation-multi-step.js') }}"></script>
 @endpush

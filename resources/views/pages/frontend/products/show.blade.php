@@ -156,7 +156,7 @@
                                         <a href="{{ route('frontend.quotations.create') }}?product={{ $product->id }}&type=sale" 
                                             class="flex-1 flex justify-center items-center gap-2 px-6 py-3.5 bg-white text-navy-800 font-bold rounded-xl hover:bg-steel-50 transition-all">
                                             <i data-lucide="shopping-cart" class="w-5 h-5"></i>
-                                            Buy Configuration
+                                            Buy Equipment
                                         </a>
                                     @endif
                                     

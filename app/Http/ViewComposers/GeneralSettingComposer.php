@@ -23,7 +23,7 @@ class GeneralSettingComposer
             'logoPath' => 'public/images/logo/kfs-logo-teal.svg',
             'favicon' =>  asset('images/logo/kfs-logo-teal.svg'),
             'copyright' =>  $query->where('key', 'copyright')->first()->value ?? '',
-
+            'deposit_amount' => $query->where('key', 'deposit_amount')->first()->value ?? 5000,
         ];
         $view->with('settings', $settings);
     }

@@ -5,7 +5,8 @@ $(document).ready(function() {
     let selectedProducts = [];
     let productCounter = 1;
     let transportEnabled = false;
-    const DEPOSIT_AMOUNT = 500;
+    const DEPOSIT_AMOUNT = Number(window.quotationConfig?.depositPerProduct ?? 5000);
+    let totalDeposit = 0;
 
     // Load products from API
     function loadProducts() {
@@ -67,7 +68,7 @@ $(document).ready(function() {
                     </select>
                     <input type="number" class="product-qty col-span-3 px-3 py-2 bg-navy-700 border border-white/10 rounded-lg text-white text-sm text-center focus:outline-none focus:ring-1 focus:ring-orange-500/50" value="1" min="1" data-id="${id}">
                     <div class="col-span-2">
-                        <span class="product-price-display text-sm text-orange-400 font-semibold" data-id="${id}">$0.00</span>
+                        <span class="product-price-display text-sm text-orange-400 font-semibold" data-id="${id}">Ks 0</span>
                     </div>
                     <button type="button" class="remove-product col-span-1 text-steel-500 hover:text-red-400 transition-colors" data-id="${id}">
                         <i data-lucide="trash-2" class="w-4 h-4"></i>
@@ -99,9 +100,10 @@ $(document).ready(function() {
     // Update subtotal
     function updateSubtotal() {
         let subtotal = 0;
+        totalDeposit = 0;
         const duration = parseInt($('#rentDuration').val()) || 1;
         const quotationType = $('input[name="type"]:checked').val();
-
+        
         selectedProducts.forEach(product => {
             if (product.productId) {
                 const price = getProductPrice(product.productId);
@@ -109,14 +111,21 @@ $(document).ready(function() {
                 let total = price * qty;
                 if (quotationType === 'rent') {
                     total *= duration;
+                    totalDeposit += DEPOSIT_AMOUNT * product.qty;
                 }
                 subtotal += total;
             }
         });
 
         $('#summarySubTotal, #reviewSubTotal').text(`Ks ${subtotal.toFixed(0)}`);
+        syncDepositInput();
         updateTotal();
         return subtotal;
+    }
+
+    function syncDepositInput() {
+        const quotationType = $('input[name="type"]:checked').val();
+        $('#depositInput').val(quotationType === 'rent' ? totalDeposit.toFixed(0) : 0);
     }
 
     // Update total
@@ -128,7 +137,7 @@ $(document).ready(function() {
         if (quotationType === 'purchase') {
             total = subtotal;
         } else {
-            total = DEPOSIT_AMOUNT;
+            total = totalDeposit;
         }
 
         $('#summaryTotal, #reviewTotal').text(`Ks ${total.toFixed(0)}`);
@@ -217,6 +226,7 @@ $(document).ready(function() {
         reviewProducts.empty();
         
         let subtotal = 0;
+        totalDeposit = 0;
         const duration = parseInt($('#rentDuration').val()) || 1;
         const quotationType = $('input[name="type"]:checked').val();
         
@@ -230,6 +240,7 @@ $(document).ready(function() {
                     let total = price * product.qty;
                     if (quotationType === 'rent') {
                         total *= duration;
+                        totalDeposit += DEPOSIT_AMOUNT * product.qty;
                     }
                     subtotal += total;
                     
@@ -250,6 +261,8 @@ $(document).ready(function() {
         
         // Update review summary
         $('#reviewSubTotal').text(`Ks ${subtotal.toFixed(0)}`);
+        $('#reviewDeposit').text(`Ks ${totalDeposit.toFixed(0)}`);
+        syncDepositInput();
         $('#reviewType').text(quotationType);
         
         if (quotationType === 'rent') {
@@ -271,7 +284,7 @@ $(document).ready(function() {
         // Transport
         if ($('#transportCheckbox').is(':checked')) {
             $('#reviewTransportRow').removeClass('hidden');
-            $('#reviewTransport').text('Ks 0.00 (to be confirmed)');
+            $('#reviewTransport').text('(Transport charges apply based on distance and will be confirmed by our team)');
         } else {
             $('#reviewTransportRow').addClass('hidden');
         }
@@ -417,6 +430,9 @@ $(document).ready(function() {
             showToast('Please add at least one product.', 'error');
             return false;
         }
+
+        buildHiddenItems();
+        updateSubtotal();
         
         $('#submitQuotationBtn').prop('disabled', true).html('<i data-lucide="loader-2" class="w-4 h-4 inline mr-1 animate-spin"></i> Submitting...');
         if (typeof lucide !== 'undefined') lucide.createIcons();

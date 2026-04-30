@@ -88,9 +88,8 @@
                                             </h3>
                                             {{-- Variant Info --}}
                                             <div class="text-xs text-steel-500 mb-3">
-                                                Size: <span class="font-semibold">{{ $variant->size }}</span>
-                                                |
-                                                Unit: <span class="font-semibold">{{ $variant->unit }}</span>
+                                                Size: <span class="font-semibold">{{ $variant->size }} ({{ $variant->unit }})</span>
+                                                
                                             </div>
 
                                         </div>

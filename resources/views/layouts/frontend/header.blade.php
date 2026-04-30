@@ -61,17 +61,10 @@
                                 </a>
 
                                 {{-- Show Quotations --}}
-                                <a href="{{ route('frontend.quotations.index') }}"
+                                <a href="{{ route('frontend.quotations.create') }}"
                                     class="flex items-center gap-3 px-4 py-2.5 text-sm text-steel-200 hover:text-white hover:bg-white/5 transition-colors">
                                     <i data-lucide="file-text" class="w-4 h-4"></i>
-                                    <span>My Quotations</span>
-                                </a>
-
-                                {{-- Track Quotation --}}
-                                <a href="{{ route('frontend.quotation.track') }}"
-                                    class="flex items-center gap-3 px-4 py-2.5 text-sm text-steel-200 hover:text-white hover:bg-white/5 transition-colors">
-                                    <i data-lucide="map-pin" class="w-4 h-4"></i>
-                                    <span>Track Quotation</span>
+                                    <span>Get New Quotation</span>
                                 </a>
 
                                 {{-- Divider --}}
@@ -134,18 +127,15 @@
                 @auth('customer')
                     {{-- Logged In Mobile Menu Options --}}
                     <div class="mt-4 pt-2 border-t border-white/10">
-                        <a href="#"
+                        <a href="{{ route('frontend.customer.dashboard') }}"
                             class="block w-full text-left px-4 py-2.5 text-sm text-steel-200 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
                             Dashboard
                         </a>
-                        <a href="{{ route('frontend.quotations.index') }}"
+                        <a href="{{ route('frontend.quotations.create') }}"
                             class="block w-full text-left px-4 py-2.5 text-sm text-steel-200 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                            My Quotations
+                            Get New Quotation
                         </a>
-                        <a href="#"
-                            class="block w-full text-left px-4 py-2.5 text-sm text-steel-200 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                            Track Quotation
-                        </a>
+
                         <form method="POST" action="{{ route('customers.logout') }}" class="pt-3 px-4 border-t border-white/5 mt-2">
                             @csrf
                             <button type="submit"
