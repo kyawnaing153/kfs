@@ -169,6 +169,17 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth']], function () {
         Route::post('/preview', [QuotationController::class, 'preview'])->name('quotation.preview');
         Route::post('/download', [QuotationController::class, 'download'])->name('quotation.download');
         Route::post('/email', [QuotationController::class, 'sendEmail'])->name('quotation.email');
+
+        //Customer Quotation Routes
+        Route::get('/customer', [QuotationController::class, 'customerIndex'])->name('customer-quotation.index');
+        Route::get('/customer/{quotation}', [QuotationController::class, 'customerShow'])->name('customer-quotation.show');
+        Route::get('/{quotation}/edit', [QuotationController::class, 'customerQuotationEdit'])->name('customer-quotation.edit');
+        Route::put('/{quotation}', [QuotationController::class, 'customerQuotationUpdate'])->name('customer-quotation.update');
+        Route::get('/{quotation}/pdf', [QuotationController::class, 'downloadCustomerQuotationPdf'])->name('customer-quotation.pdf');
+        Route::post('/{quotation}/send-email', [QuotationController::class, 'sendCustomerQuotationEmail'])->name('customer-quotation.send-email');
+
+        Route::get('/{quotation}/convert-to-rent', [QuotationController::class, 'convertToRent'])->name('customer-quotation.convert-to-rent');
+
     });
 
     Route::resource('/staffs', StaffController::class);

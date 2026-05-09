@@ -93,7 +93,7 @@
                                     <div class="w-8 h-8 bg-orange-500/20 rounded-lg flex items-center justify-center">
                                         <i data-lucide="file-text" class="w-4 h-4 text-orange-600"></i>
                                     </div>
-                                    <span class="font-semibold text-gray-900">Quotations</span>
+                                    <span class="font-semibold text-gray-900">Quotation Lists</span>
                                 </div>
                                 <a href="{{ route('frontend.quotations.create') }}"
                                     class="px-4 py-2 bg-orange-500 text-white text-sm font-semibold rounded-lg hover:bg-orange-600 transition-colors">
@@ -224,7 +224,7 @@
                                     <div class="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center">
                                         <i data-lucide="package" class="w-4 h-4 text-blue-600"></i>
                                     </div>
-                                    <span class="font-semibold text-gray-900">Your Rentals</span>
+                                    <span class="font-semibold text-gray-900">Rent Lists</span>
                                 </div>
                             </div>
 

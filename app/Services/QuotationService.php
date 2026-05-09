@@ -1,9 +1,17 @@
 <?php
 
 namespace App\Services;
+use App\Repositories\QuotationRepository;
 
 class QuotationService
 {
+    protected $quotationRepository;
+
+    public function __construct(QuotationRepository $quotationRepository)
+    {
+        $this->quotationRepository = $quotationRepository;
+    }
+
     /**
      * Generate quotation number
      */
@@ -67,5 +75,13 @@ class QuotationService
             'week' => 'Week',
             'month' => 'Month',
         ];
+    }
+
+    /**
+     * Get customer quotations with search
+     */
+    public function getCustomerQuotations(?string $search = null)
+    {
+        return $this->quotationRepository->getCustomerQuotations($search);  
     }
 }

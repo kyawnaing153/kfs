@@ -28,6 +28,11 @@ class MenuHelper
                 'path' => '/admin/customers',
             ],
             [
+                'icon' => 'customer',
+                'name' => 'Customer Quotation',
+                'path' => '/admin/quotation/customer',
+            ],
+            [
                 'icon' => 'supplier',
                 'name' => 'Supplier',
                 'path' => '/admin/suppliers',

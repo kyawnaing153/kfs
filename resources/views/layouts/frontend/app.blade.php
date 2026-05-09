@@ -50,11 +50,11 @@
     </script>
     
     {{-- Lucide Icons --}}
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="{{ asset('js/lucide.min.js') }}"></script>
     
     {{-- Google Fonts --}}
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="{{ asset('js/css2.css') }}" rel="stylesheet">
+    <link href="{{ asset('js/css22.css') }}" rel="stylesheet">
     
     {{-- Custom Styles --}}
     <style>

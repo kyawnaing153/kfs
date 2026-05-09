@@ -11,8 +11,8 @@ use App\Repositories\Interfaces\ProductRepositoryInterface;
 use App\Repositories\ProductRepository;
 use App\Repositories\Interfaces\ProductVariantRepositoryInterface;
 use App\Repositories\ProductVariantRepository;
-use App\Repositories\Interfaces\{RentRepositoryInterface, RentItemRepositoryInterface, RentReturnRepositoryInterface, SaleRepositoryInterface, SaleItemRepositoryInterface, PurchaseRepositoryInterface, ExpenseRepositoryInterface, DashboardRepositoryInterface, CustomerRentRepositoryInterface};
-use App\Repositories\{RentRepository, RentItemRepository, RentReturnRepository, SaleRepository, SaleItemRepository, PurchaseRepository, ExpenseRepository, DashboardRepository, CustomerRentRepository};
+use App\Repositories\Interfaces\{RentRepositoryInterface, RentItemRepositoryInterface, RentReturnRepositoryInterface, SaleRepositoryInterface, SaleItemRepositoryInterface, PurchaseRepositoryInterface, ExpenseRepositoryInterface, DashboardRepositoryInterface, CustomerRentRepositoryInterface, QuotationRepositoryInterface};
+use App\Repositories\{RentRepository, RentItemRepository, RentReturnRepository, SaleRepository, SaleItemRepository, PurchaseRepository, ExpenseRepository, DashboardRepository, CustomerRentRepository, QuotationRepository};
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -31,6 +31,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(ExpenseRepositoryInterface::class, ExpenseRepository::class);
         $this->app->bind(DashboardRepositoryInterface::class, DashboardRepository::class);
         $this->app->bind(CustomerRentRepositoryInterface::class, CustomerRentRepository::class);
+        $this->app->bind(QuotationRepositoryInterface::class, QuotationRepository::class);
     }
 
     public function boot()
