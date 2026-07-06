@@ -1,6 +1,7 @@
 @extends('layouts.frontend.app')
 
 @section('title', 'Register - KFS Scaffolding')
+@section('robots', 'noindex, nofollow')
 
 @section('content')
     <div id="page-register" class="page active">

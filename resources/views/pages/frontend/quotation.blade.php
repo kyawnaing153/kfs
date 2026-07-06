@@ -1,6 +1,8 @@
 @extends('layouts.frontend.app')
 
-@section('title', 'Quotation - KFS Scaffolding')
+@section('title', 'Scaffolding Quote Yangon | KFS Rental & Sales')
+@section('meta_description', 'Create a scaffolding rental or sales quotation with KFS for construction projects in Yangon, Myanmar.')
+@section('meta_keywords', 'scaffolding quote Yangon, scaffold quotation, KFS rental quote, Kyaw scaffold quote')
 
 @section('content')
     <div id="page-quotation" class="page active">

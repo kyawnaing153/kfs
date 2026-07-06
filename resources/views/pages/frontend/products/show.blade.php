@@ -1,6 +1,8 @@
 @extends('layouts.frontend.app')
 
-@section('title', $product->product_name . ' - KFS Scaffolding')
+@section('title', $product->product_name . ' for Rent or Sale in Yangon | KFS')
+@section('meta_description', \Illuminate\Support\Str::limit(strip_tags($product->description ?? ($product->product_name . ' scaffolding equipment available for rent or sale in Yangon from Kyaw Family Scaffolding.')), 155))
+@section('meta_keywords', $product->product_name . ', scaffolding equipment Yangon, scaffold rental Yangon, scaffolding sales Myanmar, KFS products')
 
 @section('content')
     <div id="page-product-details" class="page active">

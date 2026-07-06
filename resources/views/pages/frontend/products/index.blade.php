@@ -1,6 +1,8 @@
 @extends('layouts.frontend.app')
 
-@section('title', 'Products - KFS Scaffolding')
+@section('title', 'Scaffolding Equipment in Yangon | Rental & Sales Products')
+@section('meta_description', 'Browse scaffolding equipment for rent or sale in Yangon: adjustable props, steel pipes, frame systems, steel planks, couplers, wheels and construction accessories from KFS.')
+@section('meta_keywords', 'scaffolding products Yangon, scaffold equipment Yangon, steel pipe rental Yangon, adjustable props Yangon, frame scaffolding Yangon, scaffolding accessories Myanmar')
 
 @section('content')
     <div id="page-products" class="page active">
@@ -17,7 +19,7 @@
                                 Catalog</span>
                         </div>
                         <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
-                            Professional <span class="text-orange-400">Equipment</span>
+                            Professional <span class="text-orange-400">Scaffolding Equipment</span>
                         </h1>
                         <p class="text-lg text-steel-300 max-w-2xl mx-auto">
                             Browse our comprehensive range of scaffolding equipment, all certified to international safety

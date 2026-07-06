@@ -4,8 +4,45 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Return Receipt #{{ $return->id }}</title>
     <style>
+        @font-face {
+            font-family: 'Myanmar';
+            src: url('{{ public_path("fonts/NotoSansMyanmar-Regular.ttf") }}') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Myanmar';
+            src: url('{{ public_path("fonts/NotoSansMyanmar-Regular.ttf") }}') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Myanmar';
+            src: url('{{ public_path("fonts/NotoSansMyanmar-Regular.ttf") }}') format('truetype');
+            font-weight: 500;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Myanmar';
+            src: url('{{ public_path("fonts/NotoSansMyanmar-Bold.ttf") }}') format('truetype');
+            font-weight: bold;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Myanmar';
+            src: url('{{ public_path("fonts/NotoSansMyanmar-Bold.ttf") }}') format('truetype');
+            font-weight: 600;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Myanmar';
+            src: url('{{ public_path("fonts/NotoSansMyanmar-Bold.ttf") }}') format('truetype');
+            font-weight: 700;
+            font-style: normal;
+        }
+
         body {
-            font-family: 'DejaVu Sans', sans-serif;
+            font-family: 'Myanmar', 'DejaVu Sans', sans-serif;
             font-size: 11px;
             line-height: 1.4;
             margin: 0;

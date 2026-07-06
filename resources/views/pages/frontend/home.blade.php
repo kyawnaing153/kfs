@@ -1,6 +1,8 @@
 @extends('layouts.frontend.app')
 
-@section('title', 'KFS - Home')
+@section('title', 'Scaffolding Rental & Sales in Yangon | Kyaw Family Scaffolding')
+@section('meta_description', 'Kyaw Family Scaffolding provides safe scaffolding rental and sales in Yangon, Myanmar, including steel pipes, adjustable props, frames, planks, couplers and construction support.')
+@section('meta_keywords', 'Yangon scaffolding, scaffolding Yangon, scaffold rental Yangon, scaffolding rental Myanmar, Kyaw Family Scaffolding, KFS scaffolding, Kyaw scaffold, construction scaffolding Yangon')
 @php
     use Illuminate\Support\Str;
 @endphp
@@ -31,23 +33,23 @@
                             class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.05] mb-6">
                             Reliable <br>
                             <span class="text-orange-400">Scaffolding</span><br>
-                            Solutions
+                            Solutions in Yangon
                         </h1>
                         <p class="text-lg sm:text-xl text-steel-300 font-light leading-relaxed mb-8 max-w-xl">
                             Built for Safety. Designed for Strength.<br>
-                            Rent or purchase professional scaffolding equipment for your next project.
+                            Rent or purchase professional scaffolding equipment from Kyaw Family Scaffolding for projects across Yangon.
                         </p>
                         <div class="flex flex-col sm:flex-row gap-4">
-                            <button onclick="navigateTo('products')"
+                            <a href="{{ route('frontend.products.index') }}"
                                 class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-orange-500 text-white font-semibold rounded-xl hover:bg-orange-600 transition-all shadow-xl shadow-orange-500/30 group">
                                 Browse Equipment
                                 <i data-lucide="arrow-right"
                                     class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
-                            </button>
-                            <button onclick="navigateTo('quotation')"
+                            </a>
+                            <a href="{{ route('frontend.quotations.create') }}"
                                 class="inline-flex items-center justify-center gap-2 px-8 py-4 border-2 border-white/20 text-white font-semibold rounded-xl hover:bg-white/10 hover:border-white/40 transition-all">
                                 Request Rental Quote
-                            </button>
+                            </a>
                         </div>
                         <div class="flex items-center gap-8 mt-12 pt-8 border-t border-white/10">
                             <div>

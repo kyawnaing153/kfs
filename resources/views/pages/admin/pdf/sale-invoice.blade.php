@@ -11,8 +11,45 @@
             box-sizing: border-box;
         }
         
+        @font-face {
+            font-family: 'Myanmar';
+            src: url('{{ public_path("fonts/NotoSansMyanmar-Regular.ttf") }}') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Myanmar';
+            src: url('{{ public_path("fonts/NotoSansMyanmar-Regular.ttf") }}') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Myanmar';
+            src: url('{{ public_path("fonts/NotoSansMyanmar-Regular.ttf") }}') format('truetype');
+            font-weight: 500;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Myanmar';
+            src: url('{{ public_path("fonts/NotoSansMyanmar-Bold.ttf") }}') format('truetype');
+            font-weight: bold;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Myanmar';
+            src: url('{{ public_path("fonts/NotoSansMyanmar-Bold.ttf") }}') format('truetype');
+            font-weight: 600;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Myanmar';
+            src: url('{{ public_path("fonts/NotoSansMyanmar-Bold.ttf") }}') format('truetype');
+            font-weight: 700;
+            font-style: normal;
+        }
+
         body {
-            font-family: 'DejaVu Sans', Arial, sans-serif;
+            font-family: 'Myanmar', 'DejaVu Sans', Arial, sans-serif;
             font-size: 12px;
             line-height: 1.4;
             color: #333;
@@ -273,18 +310,7 @@
             color: #888;
         }
         
-        .print-btn {
-            display: inline-block;
-            background-color: #1e3a8a;
-            color: #fff;
-            padding: 8px 20px;
-            border-radius: 4px;
-            text-decoration: none;
-            font-size: 11px;
-            margin-top: 15px;
-        }
-        
-        /* Utility */
+/* Utility */
         .text-right {
             text-align: right;
         }
@@ -430,7 +456,6 @@
             <div class="footer-contact">
                 Phone: +95 1 234 5678 | Email: info@kyawscaffolding.com | Website: www.kyawscaffolding.com
             </div>
-            <a href="#" class="print-btn" onclick="window.print(); return false;">Print Invoice</a>
         </div>
     </div>
 </body>

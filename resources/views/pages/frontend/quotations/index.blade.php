@@ -1,7 +1,9 @@
 {{-- resources/views/frontend/quotations/create.blade.php --}}
 @extends('layouts.frontend.app')
 
-@section('title', 'Request Quotation - KFS')
+@section('title', 'Request Scaffolding Quotation in Yangon | KFS')
+@section('meta_description', 'Request a fast quotation from Kyaw Family Scaffolding for scaffolding rental or purchase in Yangon. Choose equipment, rental duration, delivery and project details online.')
+@section('meta_keywords', 'scaffolding quotation Yangon, scaffold rental quote Yangon, KFS quotation, Kyaw Family Scaffolding quote, construction equipment quotation Myanmar')
 
 @push('styles')
 <style>

@@ -9,8 +9,21 @@
             size: A4;
         }
         
+        @font-face {
+            font-family: 'Myanmar';
+            src: url('{{ public_path("fonts/NotoSansMyanmar-Regular.ttf") }}') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Myanmar';
+            src: url('{{ public_path("fonts/NotoSansMyanmar-Bold.ttf") }}') format('truetype');
+            font-weight: bold;
+            font-style: normal;
+        }
+
         body {
-            font-family: 'DejaVu Sans', 'Arial', sans-serif;
+            font-family: 'Myanmar', 'DejaVu Sans', 'Arial', sans-serif;
             line-height: 1.4;
             color: #333;
             margin: 0;

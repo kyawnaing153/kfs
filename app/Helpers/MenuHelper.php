@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Helpers;
+use App\Models\Frontend\Quotation;
 
 class MenuHelper
 {

@@ -1,2 +1,7 @@
 User-agent: *
-Disallow:
+Allow: /
+Disallow: /admin
+Disallow: /home/customers
+Disallow: /home/customer
+
+Sitemap: https://kyawfamilyscaffolding.com/sitemap.xml

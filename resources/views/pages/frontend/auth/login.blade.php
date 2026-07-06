@@ -1,6 +1,7 @@
 @extends('layouts.frontend.app')
 
 @section('title', 'Login - KFS Scaffolding')
+@section('robots', 'noindex, nofollow')
 
 @section('content')
 <div id="page-login" class="page active">

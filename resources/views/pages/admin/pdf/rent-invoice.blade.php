@@ -4,7 +4,20 @@
     <meta charset="utf-8">
     <title>Invoice #{{ $rent->rent_code }}</title>
     <style>
-        body { font-family: DejaVu Sans, sans-serif; font-size: 12px; }
+        @font-face {
+            font-family: 'Myanmar';
+            src: url('{{ public_path("fonts/NotoSansMyanmar-Regular.ttf") }}') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Myanmar';
+            src: url('{{ public_path("fonts/NotoSansMyanmar-Bold.ttf") }}') format('truetype');
+            font-weight: bold;
+            font-style: normal;
+        }
+
+        body { font-family: 'Myanmar', DejaVu Sans, sans-serif; font-size: 12px; }
         .invoice-box { max-width: 800px; margin: auto; padding: 30px; }
         .header { text-align: center; margin-bottom: 30px; }
         .company-info { margin-bottom: 20px; }
@@ -54,8 +67,8 @@
                     <td>{{ $item->productVariant->product->name }}</td>
                     <td>{{ $item->productVariant->size }}</td>
                     <td>{{ $item->rent_qty }}</td>
-                    <td>${{ number_format($item->unit_price, 0) }}</td>
-                    <td>${{ number_format($item->total, 0) }}</td>
+                    <td>Ks {{ number_format($item->unit_price, 0) }}</td>
+                    <td>Ks {{ number_format($item->total, 0) }}</td>
                 </tr>
                 @endforeach
             </tbody>
@@ -65,31 +78,31 @@
             <table>
                 <tr>
                     <td><strong>Sub Total:</strong></td>
-                    <td>${{ number_format($rent->sub_total, 0) }}</td>
+                    <td>Ks {{ number_format($rent->sub_total, 0) }}</td>
                 </tr>
                 <tr>
                     <td><strong>Transport:</strong></td>
-                    <td>${{ number_format($rent->transport, 0) }}</td>
+                    <td>Ks {{ number_format($rent->transport, 0) }}</td>
                 </tr>
                 <tr>
                     <td><strong>Deposit:</strong></td>
-                    <td>${{ number_format($rent->deposit, 0) }}</td>
+                    <td>Ks {{ number_format($rent->deposit, 0) }}</td>
                 </tr>
                 <tr>
                     <td><strong>Discount:</strong></td>
-                    <td>${{ number_format($rent->discount, 0) }}</td>
+                    <td>Ks {{ number_format($rent->discount, 0) }}</td>
                 </tr>
                 <tr>
                     <td><strong>Total:</strong></td>
-                    <td><strong>${{ number_format($rent->total, 0) }}</strong></td>
+                    <td><strong>Ks {{ number_format($rent->total, 0) }}</strong></td>
                 </tr>
                 <tr>
                     <td><strong>Paid:</strong></td>
-                    <td>${{ number_format($rent->total_paid, 0) }}</td>
+                    <td>Ks {{ number_format($rent->total_paid, 0) }}</td>
                 </tr>
                 <tr>
                     <td><strong>Due:</strong></td>
-                    <td><strong>${{ number_format($rent->total_due, 0) }}</strong></td>
+                    <td><strong>Ks{{ number_format($rent->total_due, 0) }}</strong></td>
                 </tr>
             </table>
         </div>

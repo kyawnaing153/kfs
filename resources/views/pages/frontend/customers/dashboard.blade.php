@@ -1,6 +1,7 @@
 @extends('layouts.frontend.app')
 
 @section('title', 'Customer Dashboard - KFS Scaffolding')
+@section('robots', 'noindex, nofollow')
 
 @section('content')
     <div id="page-dashboard" class="page active">
@@ -338,7 +339,7 @@
                                 <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
                                     <h3 class="text-lg font-semibold text-gray-900 mb-4">Profile Information</h3>
 
-                                    <form action="{{ route('customers.update', $customer) }}" method="POST"
+                                    <form action="{{ route('frontend.customers.update', $customer) }}" method="POST"
                                         class="space-y-4">
                                         @csrf
                                         @method('PUT')

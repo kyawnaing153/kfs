@@ -266,7 +266,7 @@ Route::prefix('home')->middleware('auth:customer')->group(function () {
     Route::put('/customers/password', [FrontendCustomerController::class, 'updatePassword'])
         ->name('customers.password.update');
     Route::put('/customers/{customer}', [FrontendCustomerController::class, 'updateCustomer'])
-        ->name('customers.update');
+        ->name('frontend.customers.update');
     Route::get('/get-available-variants', [ProductsProductController::class, 'getAvailableVariants'])->name('frontend.products.get-available-variants');
 
     //customer quotation route

@@ -93,7 +93,6 @@ class CustomerController extends Controller
     public function update(CustomerRequest $request, string $id)
     {
         $validated = $request->validated();
-
         //Remove password field if empty
         if (empty($validated['password'])) {
             unset($validated['password']);
@@ -117,7 +116,6 @@ class CustomerController extends Controller
         }
 
         $this->customerService->updateCustomer($id, $validated);
-
         return redirect()->route('customers.index')->with('success', 'Customer updated successfully.');
     }
 

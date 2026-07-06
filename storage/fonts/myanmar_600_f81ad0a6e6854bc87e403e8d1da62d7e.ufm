@@ -1,0 +1,270 @@
+StartFontMetrics 4.1
+Notice Converted by PHP-font-lib
+Comment https://github.com/dompdf/php-font-lib
+EncodingScheme FontSpecific
+Copyright Copyright 2015-2002 Google Inc. All Rights Reserved.
+FontName Noto Sans Myanmar
+FontSubfamily Bold
+UniqueID 2.105;GOOG;NotoSansMyanmar-Bold
+FullName Noto Sans Myanmar Bold
+Version Version 2.105; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D mymr -f none -a qsq -X ""
+PostScriptName NotoSansMyanmar-Bold
+Trademark Noto is a trademark of Google Inc.
+Manufacturer Monotype Imaging Inc.
+Designer Monotype Design Team
+Description Designed by Monotype design team.
+FontVendorURL http://www.google.com/get/noto/
+FontDesignerURL http://www.monotype.com/studio
+LicenseDescription This Font Software is licensed under the SIL Open Font License, Version 1.1. This Font Software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the SIL Open Font License for the specific language, permissions and limitations governing your use of this Font Software.
+LicenseURL http://scripts.sil.org/OFL
+Weight Bold
+ItalicAngle 0
+IsFixedPitch false
+UnderlineThickness 50
+UnderlinePosition -100
+FontHeightOffset 0
+Ascender 1324
+Descender -860
+FontBBox -872 -690 2442 1310
+StartCharMetrics 620
+U 0 ; WX 0 ; N NULL ; G 1
+U 13 ; WX 260 ; N CR ; G 2
+U 32 ; WX 260 ; N space ; G 3
+U 63 ; WX 477 ; N question ; G 613
+U 160 ; WX 260 ; N uni00A0 ; G 535
+U 4096 ; WX 1110 ; N ka ; G 4
+U 4097 ; WX 699 ; N kha ; G 5
+U 4098 ; WX 689 ; N ga ; G 6
+U 4099 ; WX 1111 ; N gha ; G 7
+U 4100 ; WX 661 ; N nga ; G 8
+U 4101 ; WX 698 ; N ca ; G 9
+U 4102 ; WX 1112 ; N cha ; G 10
+U 4103 ; WX 698 ; N ja ; G 11
+U 4104 ; WX 915 ; N jha ; G 12
+U 4105 ; WX 660 ; N nya ; G 13
+U 4106 ; WX 1087 ; N nnya ; G 14
+U 4107 ; WX 679 ; N tta ; G 15
+U 4108 ; WX 660 ; N ttha ; G 16
+U 4109 ; WX 679 ; N dda ; G 17
+U 4110 ; WX 712 ; N ddha ; G 18
+U 4111 ; WX 1354 ; N nna ; G 19
+U 4112 ; WX 1109 ; N ta ; G 20
+U 4113 ; WX 1110 ; N tha ; G 21
+U 4114 ; WX 665 ; N da ; G 22
+U 4115 ; WX 698 ; N dha ; G 23
+U 4116 ; WX 561 ; N na ; G 24
+U 4117 ; WX 698 ; N pa ; G 25
+U 4118 ; WX 697 ; N pha ; G 26
+U 4119 ; WX 701 ; N ba ; G 27
+U 4120 ; WX 1111 ; N bha ; G 28
+U 4121 ; WX 697 ; N ma ; G 29
+U 4122 ; WX 1110 ; N ya ; G 30
+U 4123 ; WX 698 ; N ra ; G 31
+U 4124 ; WX 1110 ; N la ; G 32
+U 4125 ; WX 698 ; N wa ; G 33
+U 4126 ; WX 1114 ; N sa ; G 34
+U 4127 ; WX 1109 ; N ha ; G 35
+U 4128 ; WX 679 ; N lla ; G 36
+U 4129 ; WX 1014 ; N a_m ; G 37
+U 4130 ; WX 1104 ; N a_shn ; G 38
+U 4131 ; WX 1088 ; N i_m ; G 39
+U 4132 ; WX 1393 ; N ii ; G 40
+U 4133 ; WX 663 ; N u_m ; G 41
+U 4134 ; WX 663 ; N uu ; G 42
+U 4135 ; WX 630 ; N e_m ; G 43
+U 4136 ; WX 763 ; N e_mon ; G 44
+U 4137 ; WX 1418 ; N o_m ; G 45
+U 4138 ; WX 2491 ; N au ; G 46
+U 4139 ; WX 317 ; N _tall_aa ; G 367
+U 4140 ; WX 408 ; N _aa ; G 368
+U 4141 ; WX 0 ; N _i ; G 369
+U 4142 ; WX 0 ; N _ii ; G 370
+U 4143 ; WX 0 ; N _u ; G 209
+U 4144 ; WX 0 ; N _uu ; G 360
+U 4145 ; WX 632 ; N _e ; G 372
+U 4146 ; WX 0 ; N _ai ; G 373
+U 4147 ; WX 0 ; N _ii_mon ; G 374
+U 4148 ; WX 0 ; N _o_mon ; G 375
+U 4149 ; WX 0 ; N _e_above ; G 376
+U 4150 ; WX 0 ; N anusvara ; G 377
+U 4151 ; WX 0 ; N dot_below ; G 378
+U 4152 ; WX 383 ; N visarga ; G 379
+U 4153 ; WX 0 ; N virama ; G 380
+U 4154 ; WX 0 ; N asat ; G 381
+U 4155 ; WX 310 ; N medial_ya ; G 382
+U 4156 ; WX 331 ; N medial_ra ; G 47
+U 4157 ; WX 0 ; N medial_wa ; G 48
+U 4158 ; WX 0 ; N medial_ha ; G 384
+U 4159 ; WX 1525 ; N great_sa ; G 49
+U 4160 ; WX 665 ; N zero_m ; G 50
+U 4161 ; WX 625 ; N one_m ; G 51
+U 4162 ; WX 728 ; N two_m ; G 52
+U 4163 ; WX 625 ; N three_m ; G 53
+U 4164 ; WX 625 ; N four_m ; G 54
+U 4165 ; WX 763 ; N five_m ; G 55
+U 4166 ; WX 763 ; N six_m ; G 56
+U 4167 ; WX 649 ; N seven_m ; G 57
+U 4168 ; WX 665 ; N eight_m ; G 58
+U 4169 ; WX 763 ; N nine_m ; G 59
+U 4170 ; WX 305 ; N little_section ; G 60
+U 4171 ; WX 526 ; N big_section ; G 61
+U 4172 ; WX 679 ; N locative ; G 62
+U 4173 ; WX 1014 ; N completed ; G 63
+U 4174 ; WX 660 ; N aforementioned ; G 64
+U 4175 ; WX 1291 ; N genitive ; G 65
+U 4176 ; WX 689 ; N sha_skt ; G 66
+U 4177 ; WX 697 ; N ssa_skt ; G 67
+U 4178 ; WX 696 ; N vocR_skt ; G 68
+U 4179 ; WX 681 ; N vocRR_skt ; G 69
+U 4180 ; WX 632 ; N vocL_skt ; G 70
+U 4181 ; WX 664 ; N vocLL_skt ; G 71
+U 4182 ; WX 376 ; N _vocR_skt ; G 72
+U 4183 ; WX 396 ; N _vocRR_skt ; G 73
+U 4184 ; WX 0 ; N _vocL_skt ; G 74
+U 4185 ; WX 0 ; N _vocLL_skt ; G 75
+U 4186 ; WX 625 ; N nga_mon ; G 76
+U 4187 ; WX 915 ; N jha_mon ; G 77
+U 4188 ; WX 685 ; N bba_mon ; G 78
+U 4189 ; WX 665 ; N bbe_mon ; G 79
+U 4190 ; WX 0 ; N _medialNa_mon ; G 80
+U 4191 ; WX 0 ; N _medialMa_mon ; G 81
+U 4192 ; WX 0 ; N _medialLa_mon ; G 82
+U 4193 ; WX 738 ; N sha_skn ; G 83
+U 4194 ; WX 339 ; N eu_skn ; G 84
+U 4195 ; WX 660 ; N hathi_skn ; G 85
+U 4196 ; WX 424 ; N kepho_skn ; G 86
+U 4197 ; WX 698 ; N tha_wpk ; G 87
+U 4198 ; WX 665 ; N pwa_wpk ; G 88
+U 4199 ; WX 445 ; N eu_wpk ; G 89
+U 4200 ; WX 401 ; N ue_wpk ; G 90
+U 4201 ; WX 458 ; N tone1_wpk ; G 91
+U 4202 ; WX 454 ; N tone2_wpk ; G 92
+U 4203 ; WX 454 ; N tone3_wpk ; G 93
+U 4204 ; WX 454 ; N tone4_wpk ; G 94
+U 4205 ; WX 458 ; N tone5_wpk ; G 95
+U 4206 ; WX 1352 ; N nna_epk ; G 96
+U 4207 ; WX 1092 ; N ywa_epk ; G 97
+U 4208 ; WX 1077 ; N ghwa_epk ; G 98
+U 4209 ; WX 0 ; N i_gkn ; G 99
+U 4210 ; WX 0 ; N oe_kyh ; G 100
+U 4211 ; WX 0 ; N u_kyh ; G 101
+U 4212 ; WX 0 ; N ee_kyh ; G 102
+U 4213 ; WX 703 ; N ka_shn ; G 103
+U 4214 ; WX 700 ; N kha_shn ; G 104
+U 4215 ; WX 699 ; N ga_shn ; G 105
+U 4216 ; WX 1111 ; N ca_shn ; G 106
+U 4217 ; WX 1111 ; N za_shn ; G 107
+U 4218 ; WX 1072 ; N nya_shn ; G 108
+U 4219 ; WX 1112 ; N da_shn ; G 109
+U 4220 ; WX 1102 ; N na_shn ; G 110
+U 4221 ; WX 1099 ; N pha_shn ; G 111
+U 4222 ; WX 1040 ; N fa_shn ; G 112
+U 4223 ; WX 698 ; N ba_shn ; G 113
+U 4224 ; WX 1107 ; N tha_shn ; G 114
+U 4225 ; WX 665 ; N ha_shn ; G 115
+U 4226 ; WX 0 ; N medial_wa_shn ; G 116
+U 4227 ; WX 339 ; N aa_shn ; G 117
+U 4228 ; WX 604 ; N e_shn ; G 118
+U 4229 ; WX 0 ; N _e_above_shn ; G 119
+U 4230 ; WX 0 ; N _f_above_shn ; G 120
+U 4231 ; WX 405 ; N tone2_shn ; G 121
+U 4232 ; WX 385 ; N tone3_shn ; G 122
+U 4233 ; WX 385 ; N tone5_shn ; G 123
+U 4234 ; WX 455 ; N tone6_shn ; G 124
+U 4235 ; WX 385 ; N ctone2_shn ; G 125
+U 4236 ; WX 728 ; N ctone3_shn ; G 126
+U 4237 ; WX 0 ; N etone_shn ; G 127
+U 4238 ; WX 698 ; N fa_rpg ; G 128
+U 4239 ; WX 385 ; N tone5_rpg ; G 129
+U 4240 ; WX 763 ; N zero_shn ; G 130
+U 4241 ; WX 646 ; N one_shn ; G 131
+U 4242 ; WX 692 ; N two_shn ; G 132
+U 4243 ; WX 734 ; N three_shn ; G 133
+U 4244 ; WX 749 ; N four_shn ; G 134
+U 4245 ; WX 745 ; N five_shn ; G 135
+U 4246 ; WX 732 ; N six_shn ; G 136
+U 4247 ; WX 555 ; N seven_shn ; G 137
+U 4248 ; WX 665 ; N eight_shn ; G 138
+U 4249 ; WX 665 ; N nine_shn ; G 139
+U 4250 ; WX 385 ; N tone1_khm ; G 140
+U 4251 ; WX 405 ; N tone3_khm ; G 141
+U 4252 ; WX 455 ; N _a_atn ; G 142
+U 4253 ; WX 0 ; N _ai_atn ; G 143
+U 4254 ; WX 401 ; N sone_shn ; G 144
+U 4255 ; WX 1013 ; N exclam_shn ; G 145
+U 8203 ; WX 0 ; N uni200B ; G 409
+U 8204 ; WX 0 ; N uni200C ; G 410
+U 8205 ; WX 0 ; N uni200D ; G 411
+U 8216 ; WX 385 ; N quoteleft ; G 616
+U 8217 ; WX 385 ; N quoteright ; G 617
+U 8220 ; WX 680 ; N quotedblleft ; G 614
+U 8221 ; WX 680 ; N quotedblright ; G 615
+U 8230 ; WX 1155 ; N ellipsis ; G 611
+U 9676 ; WX 594 ; N uni25CC ; G 388
+U 43310 ; WX 966 ; N uA92E ; G 493
+U 43488 ; WX 699 ; N gha_shn ; G 503
+U 43489 ; WX 1112 ; N cha_shn ; G 504
+U 43490 ; WX 1114 ; N jha_shn ; G 505
+U 43491 ; WX 1102 ; N nna_shn ; G 506
+U 43492 ; WX 1107 ; N bha_shn ; G 507
+U 43493 ; WX 0 ; N saw_shn ; G 508
+U 43494 ; WX 435 ; N redup_tlg ; G 509
+U 43495 ; WX 1104 ; N nya_tlg ; G 510
+U 43496 ; WX 1107 ; N fa_tlg ; G 511
+U 43497 ; WX 1110 ; N ga_tlg ; G 512
+U 43498 ; WX 1110 ; N gha_tlg ; G 513
+U 43499 ; WX 1109 ; N ja_tlg ; G 514
+U 43500 ; WX 1355 ; N sa_tlg ; G 515
+U 43501 ; WX 1110 ; N dda_tlg ; G 516
+U 43502 ; WX 1110 ; N ddha_tlg ; G 517
+U 43503 ; WX 690 ; N nna_tlg ; G 518
+U 43504 ; WX 763 ; N zero_tlg ; G 519
+U 43505 ; WX 770 ; N one_tlg ; G 520
+U 43506 ; WX 698 ; N two_tlg ; G 521
+U 43507 ; WX 763 ; N three_tlg ; G 522
+U 43508 ; WX 763 ; N four_tlg ; G 523
+U 43509 ; WX 755 ; N five_tlg ; G 524
+U 43510 ; WX 755 ; N six_tlg ; G 525
+U 43511 ; WX 745 ; N seven_tlg ; G 526
+U 43512 ; WX 764 ; N eight_tlg ; G 527
+U 43513 ; WX 1146 ; N nine_tlg ; G 528
+U 43514 ; WX 1110 ; N lla_tlg ; G 529
+U 43515 ; WX 1109 ; N da_tlg ; G 530
+U 43516 ; WX 1110 ; N dha_tlg ; G 531
+U 43517 ; WX 697 ; N ba_tlg ; G 532
+U 43518 ; WX 1110 ; N bha_tlg ; G 533
+U 43616 ; WX 1111 ; N ga_khm ; G 146
+U 43617 ; WX 1108 ; N ca_khm ; G 147
+U 43618 ; WX 930 ; N cha_khm ; G 148
+U 43619 ; WX 1107 ; N ja_khm ; G 149
+U 43620 ; WX 1111 ; N jha_khm ; G 150
+U 43621 ; WX 1072 ; N nya_khm ; G 151
+U 43622 ; WX 1110 ; N tta_khm ; G 152
+U 43623 ; WX 1110 ; N ttha_khm ; G 153
+U 43624 ; WX 1110 ; N dda_khm ; G 154
+U 43625 ; WX 1110 ; N ddha_khm ; G 155
+U 43626 ; WX 1110 ; N dha_khm ; G 156
+U 43627 ; WX 690 ; N na_khm ; G 157
+U 43628 ; WX 1355 ; N sa_khm ; G 158
+U 43629 ; WX 1138 ; N ha_khm ; G 159
+U 43630 ; WX 1110 ; N hha_khm ; G 160
+U 43631 ; WX 931 ; N fa_khm ; G 161
+U 43632 ; WX 398 ; N redup_khm ; G 162
+U 43633 ; WX 1110 ; N xa_khm ; G 163
+U 43634 ; WX 1350 ; N za_khm ; G 164
+U 43635 ; WX 932 ; N ra_khm ; G 165
+U 43636 ; WX 1012 ; N qay_khm ; G 166
+U 43637 ; WX 1425 ; N qn_khm ; G 167
+U 43638 ; WX 1497 ; N hm_khm ; G 168
+U 43639 ; WX 1049 ; N exclam_atn ; G 169
+U 43640 ; WX 734 ; N one_atn ; G 170
+U 43641 ; WX 698 ; N two_atn ; G 171
+U 43642 ; WX 1378 ; N ra_atn ; G 172
+U 43643 ; WX 405 ; N tone_pak ; G 173
+U 43644 ; WX 0 ; N tone2_tlg ; G 499
+U 43645 ; WX 643 ; N tone5_tlg ; G 500
+U 43646 ; WX 1029 ; N cha_shw ; G 501
+U 43647 ; WX 1443 ; N sha_shw ; G 502
+U 65024 ; WX 0 ; N uniFE00 ; G 593
+EndCharMetrics
+EndFontMetrics

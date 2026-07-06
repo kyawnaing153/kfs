@@ -6,7 +6,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'KFS — Scaffolding Sale & Rent System')</title>
+    @php
+        $siteName = 'Kyaw Family Scaffolding';
+        $defaultTitle = 'Scaffolding Rental & Sales in Yangon | Kyaw Family Scaffolding';
+        $seoTitle = trim($__env->yieldContent('title', $defaultTitle));
+        $seoDescription = trim($__env->yieldContent('meta_description', 'Kyaw Family Scaffolding provides scaffolding rental, scaffolding sales, steel pipes, frames, props, planks, couplers and safe project support for construction sites in Yangon, Myanmar.'));
+        $seoKeywords = trim($__env->yieldContent('meta_keywords', 'Yangon scaffolding, scaffolding Yangon, scaffold rental Yangon, scaffolding rental Myanmar, Kyaw Family Scaffolding, KFS, Kyaw scaffold, steel pipe rental Yangon, construction scaffolding Yangon'));
+        $seoCanonical = trim($__env->yieldContent('canonical', url()->current()));
+        $seoRobots = trim($__env->yieldContent('robots', 'index, follow'));
+        $seoImage = trim($__env->yieldContent('og_image', asset('images/logo/kfs-logo-teal.svg')));
+        $businessSchema = [
+            '@context' => 'https://schema.org',
+            '@type' => 'LocalBusiness',
+            'name' => $siteName,
+            'alternateName' => ['KFS', 'Kyaw Scaffold', 'Kyaw Family'],
+            'description' => 'Scaffolding rental and sales company serving construction projects in Yangon, Myanmar.',
+            'url' => url('/'),
+            'logo' => asset('images/logo/kfs-logo-teal.svg'),
+            'image' => $seoImage,
+            'telephone' => '09-428111750, 09975460778',
+            'email' => 'sale@kyawfamilyscaffolding.com',
+            'address' => [
+                '@type' => 'PostalAddress',
+                'streetAddress' => 'E2,E3 (27) Ward, North Dagon, Pyitaungsu Rd, North Dagon',
+                'addressLocality' => 'Yangon',
+                'addressCountry' => 'MM',
+            ],
+            'areaServed' => ['Yangon', 'Myanmar'],
+            'knowsAbout' => ['Scaffolding rental', 'Scaffolding sales', 'Steel pipes', 'Adjustable props', 'Frame systems', 'Construction equipment'],
+        ];
+    @endphp
+
+    <title>{{ $seoTitle }}</title>
+    <meta name="description" content="{{ $seoDescription }}">
+    <meta name="keywords" content="{{ $seoKeywords }}">
+    <meta name="robots" content="{{ $seoRobots }}">
+    <link rel="canonical" href="{{ $seoCanonical }}">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{{ $siteName }}">
+    <meta property="og:title" content="{{ $seoTitle }}">
+    <meta property="og:description" content="{{ $seoDescription }}">
+    <meta property="og:url" content="{{ $seoCanonical }}">
+    <meta property="og:image" content="{{ $seoImage }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $seoTitle }}">
+    <meta name="twitter:description" content="{{ $seoDescription }}">
+    <meta name="twitter:image" content="{{ $seoImage }}">
+    <script type="application/ld+json">@json($businessSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)</script>
+
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/logo/favicon/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/logo/favicon/favicon-16x16.png') }}">
     
     {{-- Tailwind CDN --}}
     <script src="https://cdn.tailwindcss.com"></script>

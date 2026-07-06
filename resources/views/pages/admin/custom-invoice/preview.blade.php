@@ -2,6 +2,11 @@
 
 <style>
     @media print {
+        * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
         body {
             background: white !important;
             margin: 0 !important;

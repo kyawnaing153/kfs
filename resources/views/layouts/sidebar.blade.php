@@ -237,18 +237,30 @@
                                                     'menu-item-icon-inactive'">
                                                 {!! MenuHelper::getIconSvg($item['icon']) !!}
                                             </span>
-
                                             <!-- Text -->
                                             <span
                                                 x-show="$store.sidebar.isExpanded || $store.sidebar.isHovered || $store.sidebar.isMobileOpen"
-                                                class="menu-item-text flex items-center gap-2">
-                                                {{ $item['name'] }}
-                                                @if (!empty($item['new']))
+                                                class="menu-item-text flex items-center justify-between w-full">
+
+                                                <span class="flex items-center gap-2">
+                                                    {{ $item['name'] }}
+
+                                                    @if (!empty($item['new']))
+                                                        <span
+                                                            class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-brand-500 text-white">
+                                                            new
+                                                        </span>
+                                                    @endif
+                                                </span>
+
+                                                {{-- Menu Count --}}
+                                                @if (isset($menuCounts[$item['path']]) && $menuCounts[$item['path']] > 0)
                                                     <span
-                                                        class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-brand-500 text-white">
-                                                        new
+                                                        class="ml-auto inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 text-xs font-semibold text-white bg-red-500 rounded-full">
+                                                        {{ $menuCounts[$item['path']] }}
                                                     </span>
                                                 @endif
+
                                             </span>
                                         </a>
                                     @endif

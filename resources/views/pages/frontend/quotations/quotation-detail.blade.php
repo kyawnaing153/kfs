@@ -1,6 +1,7 @@
 @extends('layouts.frontend.app')
 
 @section('title', 'Quotation #' . ($quotation->quotation_code ?? 'N/A') . ' - KFS Scaffolding')
+@section('robots', 'noindex, nofollow')
 
 @section('content')
     @php

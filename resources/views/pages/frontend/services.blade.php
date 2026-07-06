@@ -1,6 +1,8 @@
 @extends('layouts.frontend.app')
 
-@section('title', 'KFS - Home')
+@section('title', 'Scaffolding Rental and Sales Services in Yangon | KFS')
+@section('meta_description', 'Rent or buy scaffolding equipment in Yangon with Kyaw Family Scaffolding. Flexible rental, sales, delivery, pickup, inspection and project support for construction sites.')
+@section('meta_keywords', 'scaffolding rental Yangon, scaffolding sales Yangon, scaffold service Yangon, construction equipment rental Yangon, KFS services, Kyaw Family Scaffolding services')
 @section('content')
 <div id="page-services" class="page active">
     <div class="pt-20 lg:pt-24min-h-screen bg-navy-800 blueprint-grid-dark">
@@ -13,7 +15,7 @@
                     <span class="text-xs font-semibold text-orange-400 uppercase tracking-wider">Our Services</span>
                 </div>
                 <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
-                    Rent or Purchase—<span class="text-orange-400">Your Choice</span>
+                    Scaffolding Rental &amp; Sales <span class="text-orange-400">in Yangon</span>
                 </h1>
                 <p class="text-lg text-steel-300 max-w-2xl mx-auto">
                     Flexible options designed to fit your project timeline and budget.

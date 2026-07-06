@@ -1,6 +1,8 @@
 @extends('layouts.frontend.app')
 
-@section('title', 'Contact Us - KFS Scaffolding')
+@section('title', 'Contact Kyaw Family Scaffolding | Yangon Scaffold Rental')
+@section('meta_description', 'Contact Kyaw Family Scaffolding in Yangon for scaffold rental, scaffolding sales, delivery support and construction equipment quotations.')
+@section('meta_keywords', 'contact scaffolding Yangon, Kyaw Family Scaffolding contact, KFS phone, Yangon scaffold company, scaffolding quotation Yangon')
 
 @section('content')
 <div id="page-contact" class="page active">
@@ -14,7 +16,7 @@
                     <span class="text-xs font-semibold text-orange-400 uppercase tracking-wider">Get in Touch</span>
                 </div>
                 <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
-                    Contact <span class="text-orange-400">Our Team</span>
+                    Contact <span class="text-orange-400">KFS Yangon</span>
                 </h1>
                 <p class="text-lg text-steel-300 max-w-2xl mx-auto">
                     Have a project in mind? Our experts are ready to help you find the right scaffolding solution.

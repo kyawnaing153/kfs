@@ -183,6 +183,8 @@
             }
             #printable-content, #printable-content * {
                 visibility: visible;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
             }
             #printable-content {
                 position: absolute;
