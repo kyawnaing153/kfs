@@ -321,15 +321,8 @@
                                                                 onsubmit="return confirm('Mark this sale as completed?')">
                                                                 @csrf
                                                                 <button type="submit"
-                                                                    class="flex w-full items-center gap-2 px-4 py-2 text-sm text-green-600 hover:bg-green-50
-                                                                            dark:text-green-400 dark:hover:bg-green-900/30">
-                                                                    <svg class="h-4 w-4" fill="none"
-                                                                        stroke="currentColor" viewBox="0 0 24 24">
-                                                                        <path stroke-linecap="round"
-                                                                            stroke-linejoin="round" stroke-width="2"
-                                                                            d="M5 13l4 4L19 7" />
-                                                                    </svg>
-                                                                    Mark as Completed
+                                                                    class="flex w-full items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">
+                                                                    Mark Completed
                                                                 </button>
                                                             </form>
                                                         @endif
