@@ -212,4 +212,43 @@ class SaleController extends Controller
             return redirect()->back()->with('error', 'Failed to send invoice email: ' . $e->getMessage());
         }
     }
+
+    public function recordPayment(Request $request, string $id): RedirectResponse
+    {
+        $request->validate([
+            'amount' => 'required|numeric|min:0.01',
+            'payment_type' => 'required|string',
+        ]);
+
+        try {
+            $sale = $this->saleService->getSaleById($id);
+            if (!$sale) {
+                return redirect()->back()->with('error', 'Sale not found.');
+            }
+
+            $amount = floatval($request->input('amount'));
+            if ($amount > $sale->total_due) {
+                return redirect()->back()->with('error', 'Payment amount cannot exceed due amount.');
+            }
+
+            $newPaid = $sale->total_paid + $amount;
+            $newDue = $sale->total_due - $amount;
+
+            $updateData = [
+                'total_paid' => $newPaid,
+                'total_due' => $newDue,
+                'payment_type' => $request->input('payment_type')
+            ];
+
+            if ($newDue <= 0) {
+                $updateData['status'] = 'completed';
+            }
+
+            $this->saleService->updateSalePayment($id, $updateData);
+
+            return redirect()->back()->with('success', 'Payment recorded successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to record payment: ' . $e->getMessage());
+        }
+    }
 }

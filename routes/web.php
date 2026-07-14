@@ -193,6 +193,7 @@ Route::group(['prefix' => 'admin',  'middleware' => ['auth']], function () {
         Route::get('/{sale}/print', [SaleController::class, 'print'])->whereNumber('sale')->name('print');
         Route::post('/{sale}/complete', [SaleController::class, 'markAsCompleted'])->whereNumber('sale')->name('complete');
         Route::post('/{sale}/send-mail', [SaleController::class, 'sendInvoiceEmail'])->name('send-mail');
+        Route::post('/{sale}/record-payment', [SaleController::class, 'recordPayment'])->whereNumber('sale')->name('record-payment');
     });
 
     Route::resource('/sales', SaleController::class);

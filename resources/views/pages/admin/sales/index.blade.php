@@ -315,6 +315,22 @@
                                                             class="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">
                                                             Edit
                                                         </a>
+                                                        
+                                                        <!-- Add this button before the delete button -->
+                                                        @if ($sale->total_due > 0 && $sale->status === 'pending')
+                                                            <button type="button"
+                                                                class="record-payment-btn flex w-full items-center gap-2 px-4 py-2 text-sm text-left hover:bg-gray-100 dark:hover:bg-gray-700"
+                                                                data-id="{{ $sale->id }}"
+                                                                data-code="{{ $sale->sale_code }}"
+                                                                data-customer-name="{{ $sale->customer->name ?? 'Walk-in Customer' }}"
+                                                                data-customer-phone="{{ $sale->customer->phone_number ?? 'N/A' }}"
+                                                                data-customer-email="{{ $sale->customer->email ?? 'N/A' }}"
+                                                                data-due-amount="{{ $sale->total_due }}"
+                                                                data-payment-type="{{ $sale->payment_type }}">
+                                                                Record Payment
+                                                            </button>
+                                                        @endif
+
                                                         @if ($sale->status === 'pending')
                                                             <form method="POST"
                                                                 action="{{ route('sales.complete', $sale->id) }}"
@@ -358,6 +374,106 @@
             </div>
         </div>
     </div>
+
+    <!-- Record Payment Modal Overlay -->
+    <div id="paymentModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/60 backdrop-blur-xs transition-opacity duration-300">
+        <!-- Modal Content Container -->
+        <div class="relative w-full max-w-lg rounded-2xl border border-gray-200 bg-white p-6 shadow-2xl dark:border-gray-800 dark:bg-gray-900 transition-all transform scale-95 opacity-0 duration-300" id="paymentModalContent">
+            <!-- Close Button -->
+            <button type="button" id="closePaymentModalBtn" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none transition-colors">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+
+            <!-- Header -->
+            <div class="mb-5">
+                <h3 class="text-xl font-bold text-gray-950 dark:text-white flex items-center gap-2" id="modalSaleCode">
+                    Record Payment
+                </h3>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1.5">
+                    Process outstanding payments for this invoice transaction.
+                </p>
+            </div>
+
+            <form id="paymentForm" method="POST" action="">
+                @csrf
+                
+                <!-- Customer Details Section -->
+                <div class="mb-5 p-4 rounded-xl border border-gray-150 bg-gray-50/50 dark:border-gray-800 dark:bg-gray-800/40">
+                    <h4 class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2.5">Customer Information</h4>
+                    <div class="grid grid-cols-2 gap-3 text-sm">
+                        <div>
+                            <span class="text-xs text-gray-500 dark:text-gray-400 block">Name</span>
+                            <p class="font-semibold text-gray-800 dark:text-gray-200 mt-0.5" id="modalCustomerName">-</p>
+                        </div>
+                        <div>
+                            <span class="text-xs text-gray-500 dark:text-gray-400 block">Phone</span>
+                            <p class="font-semibold text-gray-800 dark:text-gray-200 mt-0.5" id="modalCustomerPhone">-</p>
+                        </div>
+                        <div class="col-span-2">
+                            <span class="text-xs text-gray-500 dark:text-gray-400 block">Email</span>
+                            <p class="font-semibold text-gray-850 dark:text-gray-205 mt-0.5 break-all" id="modalCustomerEmail">-</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dues Summary Badge -->
+                <div class="mb-5 flex justify-between items-center p-3.5 rounded-xl bg-red-500/10 dark:bg-red-500/5 border border-red-500/20 dark:border-red-500/15">
+                    <span class="text-sm font-medium text-red-700 dark:text-red-400">Total Outstanding Due:</span>
+                    <span class="text-lg font-bold text-red-600 dark:text-red-400" id="modalDueText">Ks 0.00</span>
+                </div>
+
+                <!-- Input Fields -->
+                <div class="space-y-4">
+                    <!-- Amount to pay -->
+                    <div>
+                        <label for="paymentAmount" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+                            Amount to Pay (Ks) <span class="text-red-500">*</span>
+                        </label>
+                        <input type="number" name="amount" id="paymentAmount" required min="0.01" step="0.01"
+                               class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-200 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:border-brand-500 dark:focus:ring-brand-900 focus:outline-none transition-all"
+                               placeholder="Enter payment amount">
+                        <span id="amountError" class="text-xs text-red-500 mt-1.5 hidden flex items-center gap-1">
+                            <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                            Error: Amount cannot exceed outstanding due amount.
+                        </span>
+                    </div>
+
+                    <!-- Payment Type -->
+                    <div>
+                        <label for="modalPaymentType" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+                            Payment Type <span class="text-red-500">*</span>
+                        </label>
+                        <select name="payment_type" id="modalPaymentType" required
+                                class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-200 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:border-brand-500 dark:focus:ring-brand-900 focus:outline-none transition-all">
+                            <option value="">Select Payment Type</option>
+                            <option value="cash">Cash</option>
+                            <option value="card">Card</option>
+                            <option value="bank_transfer">Bank Transfer</option>
+                            <option value="mobile_payment">Mobile Payment</option>
+                            <option value="check">Check</option>
+                            <option value="credit">Credit</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Footer Buttons -->
+                <div class="mt-6 flex items-center justify-end gap-3 border-t border-gray-150 pt-4 dark:border-gray-800">
+                    <button type="button" id="cancelPaymentBtn"
+                            class="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors">
+                        Cancel
+                    </button>
+                    <button type="submit" id="submitPaymentBtn"
+                            class="rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-500/50 transition-colors">
+                        Submit Payment
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')
@@ -393,6 +509,82 @@
                     allowInput: false
                 });
             }
+        });
+    </script>
+    
+    <script>
+        $(document).ready(function() {
+            // When "Record Payment" button is clicked
+            $('.record-payment-btn').on('click', function(e) {
+                e.preventDefault();
+                
+                // Extract data attributes
+                const saleId = $(this).data('id');
+                const saleCode = $(this).data('code');
+                const customerName = $(this).data('customer-name');
+                const customerPhone = $(this).data('customer-phone');
+                const customerEmail = $(this).data('customer-email');
+                const dueAmount = parseFloat($(this).data('due-amount'));
+                const paymentType = $(this).data('payment-type') || '';
+
+                // Populate modal fields
+                $('#modalSaleCode').text('Record Payment: ' + saleCode);
+                $('#modalCustomerName').text(customerName);
+                $('#modalCustomerPhone').text(customerPhone);
+                $('#modalCustomerEmail').text(customerEmail);
+                $('#modalDueText').text('Ks ' + dueAmount.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 }));
+                
+                // Set inputs
+                $('#paymentAmount').val(dueAmount).attr('max', dueAmount);
+                $('#modalPaymentType').val(paymentType);
+                
+                // Set action url
+                let formAction = "{{ route('sales.record-payment', ':id') }}";
+                formAction = formAction.replace(':id', saleId);
+                $('#paymentForm').attr('action', formAction);
+
+                // Hide any previous errors
+                $('#amountError').addClass('hidden');
+                $('#submitPaymentBtn').attr('disabled', false).removeClass('opacity-50 cursor-not-allowed');
+
+                // Show Modal with animation
+                $('#paymentModal').removeClass('hidden').addClass('flex');
+                setTimeout(function() {
+                    $('#paymentModalContent').removeClass('scale-95 opacity-0').addClass('scale-100 opacity-100');
+                }, 50);
+            });
+
+            // Close Modal helper function
+            function closePaymentModal() {
+                $('#paymentModalContent').removeClass('scale-100 opacity-100').addClass('scale-95 opacity-0');
+                setTimeout(function() {
+                    $('#paymentModal').removeClass('flex').addClass('hidden');
+                }, 300);
+            }
+
+            // Close on click of close button, cancel button or backdrop click
+            $('#closePaymentModalBtn, #cancelPaymentBtn').on('click', function() {
+                closePaymentModal();
+            });
+
+            $('#paymentModal').on('click', function(e) {
+                if ($(e.target).is('#paymentModal')) {
+                    closePaymentModal();
+                }
+            });
+
+            // Form client-side validation
+            $('#paymentAmount').on('input keyup', function() {
+                const amount = parseFloat($(this).val());
+                const maxDue = parseFloat($(this).attr('max'));
+                if (amount > maxDue) {
+                    $('#amountError').removeClass('hidden');
+                    $('#submitPaymentBtn').attr('disabled', true).addClass('opacity-50 cursor-not-allowed');
+                } else {
+                    $('#amountError').addClass('hidden');
+                    $('#submitPaymentBtn').attr('disabled', false).removeClass('opacity-50 cursor-not-allowed');
+                }
+            });
         });
     </script>
 @endpush

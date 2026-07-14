@@ -225,4 +225,9 @@ class SaleService
             throw new \Exception('Failed to send invoice email: ' . $e->getMessage());
         }
     }
+
+    public function updateSalePayment(string $saleId, array $paymentData): bool
+    {
+        return $this->saleRepository->updateSale($saleId, $paymentData);
+    }
 }
