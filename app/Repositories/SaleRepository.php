@@ -33,7 +33,7 @@ class SaleRepository implements SaleRepositoryInterface
                     ->orWhereHas('customer', function ($q2) use ($search) {
                         $q2->where('name', 'LIKE', "%{$search}%")
                             ->orWhere('email', 'LIKE', "%{$search}%")
-                            ->orWhere('phone', 'LIKE', "%{$search}%");
+                            ->orWhere('phone_number', 'LIKE', "%{$search}%");
                     });
             });
         }
