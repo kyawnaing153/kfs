@@ -44,6 +44,48 @@ class RentRepository extends BaseRepository implements RentRepositoryInterface
         return $query->orderBy('created_at', 'desc')->paginate($perPage);
     }
 
+    /*
+    * Get sub total of rents by status
+    */
+    public function getSubTotal(array $filters = []): array
+    {
+        $query = $this->model->newQuery();
+
+        $query->where('status', 'ongoing');
+
+        if (!empty($filters['search'])) {
+            $search = $filters['search'];
+            $query->where(function ($q) use ($search) {
+                $q->where('rent_code', 'like', "%{$search}%")
+                    ->orWhere('rent_date', 'like', "%{$search}%")
+                    ->orWhereHas('customer', function ($q2) use ($search) {
+                        $q2->where('name', 'like', "%{$search}%")
+                            ->orWhere('phone_number', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        if (!empty($filters['start_date']) && !empty($filters['end_date'])) {
+            $query->whereBetween('rent_date', [$filters['start_date'], $filters['end_date']]);
+        }
+        $totalSubTotal = (float) (clone $query)->sum('sub_total');
+
+        $todaySubTotal = (float) (clone $query)
+            ->whereDate('rent_date', now()->today())
+            ->sum('sub_total');
+
+        $thisMonthSubTotal = (float) (clone $query)
+            ->whereYear('rent_date', now()->year)
+            ->whereMonth('rent_date', now()->month)
+            ->sum('sub_total');
+
+        return [
+            'total' => $totalSubTotal,
+            'today' => $todaySubTotal,
+            'month' => $thisMonthSubTotal,
+        ];
+    }
+
     /**
      * Create rent with items
      */

@@ -206,6 +206,14 @@ class RentService
     {
         return $this->rentRepository->getByStatus($filters, $status, $perPage);
     }
+    /**
+     * Get sub total of rents by status
+     * 
+     */
+    public function getRentSubTotal(array $filters = []): array
+    {
+        return $this->rentRepository->getSubTotal($filters);
+    }
 
     /**
      * Get rent items 

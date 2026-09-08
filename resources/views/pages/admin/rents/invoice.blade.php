@@ -66,7 +66,7 @@
         }
 
         .custom {
-            margin-top: 1rem !important;
+            margin-top: 0.5rem !important;
         }
 
         .sm\:px-6,
@@ -90,8 +90,9 @@
 @section('content')
     <div class="invoice-container bg-white shadow-lg p-10">
         <!-- Header -->
-        <div class="flex justify-between items-center mb-4 pb-6 border-b-2 border-blue-900">
+        <div class="flex justify-between items-center mb-2 pb-2 border-b-2 border-blue-900">
             <div class="company-info">
+                <img src="{{ asset('images/logo/logo-blue.png') }}"alt="KFS Logo" class="w-28 h-auto ml-[-0.5rem]">
                 <h1 class="text-blue-900 text-2xl font-bold mb-1">{{ $settings['companyName'] ?? '' }}</h1>
                 <p class="text-gray-600 text-sm">{{ $settings['address'] ?? '' }}</p>
                 <p class="text-gray-600 text-sm">Phone: {{ $settings['phone'] ?? '' }} | Email:
@@ -110,6 +111,8 @@
                     {{ \Carbon\Carbon::parse($rent->rent_date)->format('Y-m-d') }}</p>
             </div>
         </div>
+        <!-- Header -->
+
 
         <!-- Client Section -->
         <div class="flex justify-between items-center mb-4">
@@ -140,12 +143,13 @@
         </div>
 
         <!-- Rental Items Table -->
-        <table class="w-full border-collapse mb-4">
+        <table class="w-full border-collapse mb-2">
             <tbody>
                 <tr>
-                    <th class="bg-blue-900 text-white rounded-l-lg text-left p-3 font-semibold text-sm w-[40%]">Item
+                    <th class="bg-blue-900 text-white rounded-l-lg text-left p-3 font-semibold text-sm w-[5%]">Line</th>
+                    <th class="bg-blue-900 text-white text-left p-3 font-semibold text-sm w-[40%]">Item
                         Description</th>
-                    <th class="bg-blue-900 text-white text-center p-3 font-semibold text-sm w-[20%]">Quantity</th>
+                    <th class="bg-blue-900 text-white text-center p-3 font-semibold text-sm w-[15%]">Quantity</th>
                     <th class="bg-blue-900 text-white text-center p-3 font-semibold text-sm w-[20%]">Daily Rate (Ks)</th>
                     <th class="bg-blue-900 text-white rounded-r-lg text-right p-3 font-semibold text-sm w-[20%]">Daily Total
                         (Ks)</th>
@@ -154,6 +158,7 @@
             <tbody>
                 @foreach ($rent->items as $item)
                     <tr>
+                        <td class="p-2 border-b border-gray-200 text-sm text-left">{{ $loop->iteration }}</td>
                         <td class="p-2 border-b border-gray-200 text-sm">
                             <p class="font-semibold text-gray-800">
                                 {{ $item->productVariant->product->product_name ?? 'N/A' }}
@@ -173,7 +178,7 @@
 
                 @if (count($rent->items) > 0)
                     <tr class="bg-gray-50">
-                        <td class="p-2 font-semibold text-sm" colspan="3">Daily Rental Subtotal</td>
+                        <td class="p-2 font-semibold text-sm" colspan="4">Daily Rental Subtotal</td>
                         <td class="p-2 text-sm text-right font-semibold">{{ number_format($rent->daily_subtotal, 0) }} Ks
                         </td>
                     </tr>
@@ -187,22 +192,22 @@
             </tbody>
         </table>
 
-        <div class="grid grid-cols-2 gap-8 mb-4">
+        <div class="grid grid-cols-2 gap-8 mb-2">
             <!-- Signatures -->
             <div>
-                <div class="flex justify-between mt-4 pt-4">
+                <div class="flex justify-between mt-2 pt-2">
                     <div class="text-center w-[45%]">
-                        <p class="text-gray-800 font-semibold text-sm mb-4">Customer's Signature</p>
+                        <p class="text-gray-800 font-semibold text-sm mb-2">Customer's Signature</p>
                         <p class="text-gray-600 text-sm pt-2">_________________</p>
                     </div>
                     <div class="text-center w-[45%]">
-                        <p class="text-gray-800 font-semibold text-sm mb-4">Authorized Signature</p>
+                        <p class="text-gray-800 font-semibold text-sm mb-2">Authorized Signature</p>
                         <p class="text-gray-600 text-sm pt-2">_________________</p>
                     </div>
                 </div>
 
                 <!-- Terms & Conditions -->
-                <div class="bg-gray-100 p-4 rounded custom mt-6">
+                <div class="p-4 rounded custom">
                     <h3 class="text-blue-900 font-bold mb-3">Rental Terms & Conditions</h3>
 
                     <p class="text-gray-600 text-sm mb-1"><span class="font-semibold text-gray-800">Damage/Loss:</span>
@@ -230,26 +235,21 @@
                 </div>
             </div>
 
-
             <!-- Summary Section -->
-            <div class="flex justify-end mb-8">
+            <div class="flex justify-end mb-2">
                 <table class="w-full max-w-sm border-collapse">
-                    @if (($rent->deposit ?? 0) > 0)
-                        <tr>
-                            <td class="p-1 border-b border-gray-200 text-sm">Security Deposit</td>
-                            <td class="p-1 border-b border-gray-200 text-sm text-right">+
-                                {{ number_format($rent->deposit, 0) }} Ks</td>
-                        </tr>
-                    @endif
 
-                    @if (($rent->transport ?? 0) > 0)
-                        <tr>
-                            <td class="p-1 border-b border-gray-200 text-sm">Transport Fee</td>
-                            <td class="p-1 border-b border-gray-200 text-sm text-right">+
-                                {{ number_format($rent->transport, 0) }} Ks</td>
-                        </tr>
-                    @endif
+                    <tr>
+                        <td class="p-1 border-b border-gray-200 text-sm">Security Deposit</td>
+                        <td class="p-1 border-b border-gray-200 text-sm text-right">+
+                            {{ number_format($rent->deposit, 0) }} Ks</td>
+                    </tr>
 
+                    <tr>
+                        <td class="p-1 border-b border-gray-200 text-sm">Transport Fee</td>
+                        <td class="p-1 border-b border-gray-200 text-sm text-right">+
+                            {{ number_format($rent->transport, 0) }} Ks</td>
+                    </tr>
                     @if (($rent->discount ?? 0) > 0)
                         <tr>
                             <td class="p-1 border-b border-gray-200 text-sm">Discount</td>
@@ -257,20 +257,13 @@
                                 {{ number_format($rent->discount, 0) }} Ks</td>
                         </tr>
                     @endif
-
-                    {{-- <tr>
-                        <td class="p-1 border-b border-gray-200 text-sm">Subtotal</td>
-                        <td class="p-1 border-b border-gray-200 text-sm text-right">
-                            {{ number_format($rent->sub_total, 0) }} Ks</td>
-                    </tr> --}}
-
                     <tr>
                         <td class="p-1 border-b border-gray-200 text-sm">Tax ({{ $rent->tax_amount }}%)</td>
                         <td class="p-1 border-b border-gray-200 text-sm text-right">
                             {{ number_format($rent->tax_amount, 0) }} Ks</td>
                     </tr>
 
-                    <tr class="font-bold bg-gray-100">
+                    <tr class="font-bold">
                         <td class="p-1 border-t-1 border-b-1 border-blue-900">
                             TOTAL
                         </td>
@@ -304,9 +297,12 @@
         </div>
 
         <!-- Footer -->
-        <div class="text-center pt-4 mt-4 border-t border-gray-200">
+        <div class="text-center pt-4 mt-0 border-t border-gray-200">
             <h3 class="text-blue-900 font-bold mb-1">Thank you for choosing Kyaw Family Scaffolding!</h3>
-            <p class="text-gray-600 text-sm mb-4">For any inquiries regarding this rental invoice, please contact us.</p>
+            <div class="text-gray-500 text-xs">
+                <p>Phone: {{ $settings['phone'] ?? '' }} | Email: {{ $settings['email'] ?? '' }} | Website:
+                    kyawfamilyscaffolding.com</p>
+            </div>
         </div>
 
         <div class="flex justify-end mb-4 print:hidden">

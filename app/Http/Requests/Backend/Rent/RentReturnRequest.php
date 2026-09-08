@@ -142,7 +142,7 @@ class RentReturnRequest extends FormRequest
                 'nullable',
                 'numeric',
                 'min:0',
-                'max:999999.9',
+                'max:99999999.9',
                 function ($attribute, $value, $fail) {
                     $index = explode('.', $attribute)[1];
                     $rentItemId = $this->input("items.{$index}.rent_item_id");
@@ -161,28 +161,28 @@ class RentReturnRequest extends FormRequest
             'items.*.note' => [
                 'nullable',
                 'string',
-                'max:500'
+                'max:5000'
             ],
 
             'transport' => [
                 'required',
                 'numeric',
                 'min:0',
-                'max:9999999.9'
+                'max:999999999.9'
             ],
 
             'refund_amount' => [
                 'required',
                 'numeric',
                 'min:0',
-                'max:9999999.9'
+                'max:999999999.9'
             ],
 
             'collect_amount' => [
                 'required',
                 'numeric',
                 'min:0',
-                'max:9999999.9'
+                'max:99999999.9'
             ],
 
             'total_days' => [

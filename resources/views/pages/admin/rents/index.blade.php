@@ -27,27 +27,38 @@
             </div>
 
             <!-- Stats Cards -->
-            <div class="mt-6 grid grid-cols-2 gap-4 md:grid-cols-4">
+            <div class="mt-6 grid grid-cols-4 gap-4 md:grid-cols-4">
                 <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-900">
                     <p class="text-sm text-gray-500 dark:text-gray-400">Total Rents</p>
                     <p class="text-2xl font-semibold text-gray-800 dark:text-white">{{ $rents->total() }}</p>
-                </div>
-                <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-900">
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Pending Rents</p>
-                    <p class="text-2xl font-semibold text-yellow-600 dark:text-yellow-400">
-                        {{ $rents->where('status', 'pending')->count() }}
+                    <p class="text-sm font-semibold text-yellow-600 dark:text-yellow-400">
+                        {{ $rents->where('status', 'pending')->count() }} Pending
                     </p>
                 </div>
+
                 <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-900">
                     <p class="text-sm text-gray-500 dark:text-gray-400">Ongoing Rents</p>
                     <p class="text-2xl font-semibold text-blue-600 dark:text-blue-400">
                         {{ $rents->where('status', 'ongoing')->count() }}
                     </p>
+                    <p class="text-sm font-semibold text-green-600 dark:text-green-400">
+                        {{ $rents->where('status', 'completed')->count() }} Completed
+                    </p>
+                </div>
+ 
+                <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-900">
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Daily Rents Income</p>
+                    <p class="text-2xl font-semibold text-green-600 dark:text-green-400">
+                        {{ number_format($rentIncome['total'], 0) }} Ks
+                    </p>
+                    <p class="text-sm font-semibold text-green-700 dark:text-brand-400">
+                        {{ number_format($rentIncome['month'], 0) }} This Month Rents
+                    </p>
                 </div>
                 <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-900">
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Completed Rents</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Today's Rent Income</p>
                     <p class="text-2xl font-semibold text-green-600 dark:text-green-400">
-                        {{ $rents->where('status', 'completed')->count() }}
+                        {{ number_format($rentIncome['today'], 0) }} Ks
                     </p>
                 </div>
             </div>
@@ -263,7 +274,7 @@
                                                             </div>
                                                         @endif
                                                         <div class="text-xs text-gray-500">
-                                                            Total: Ks {{ number_format($rent->total, 0) }}
+                                                            Daily : Ks {{ number_format($rent->sub_total, 0) }}
                                                         </div>
                                                         @if ($rent->total_due > 0)
                                                             <div class="text-xs text-gray-500">

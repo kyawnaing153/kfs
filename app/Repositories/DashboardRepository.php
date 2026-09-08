@@ -103,6 +103,7 @@ class DashboardRepository implements DashboardRepositoryInterface
             DB::raw('MONTH(rent_date) as month'),
             DB::raw('SUM(sub_total) as total')
         )
+            ->where('status', 'ongoing')
             ->whereYear('rent_date', $year)
             ->groupBy('month')
             ->orderBy('month')

@@ -37,9 +37,11 @@ class RentController extends Controller
 
         // Always load both data sets
         $rents = $this->rentService->getRents(['search' => $search], $status, $perPage);
+        $rentIncome = $this->rentService->getRentSubTotal(['search' => $search]);
+
         $returns = $this->rentReturnService->getAllReturns(['search' => $search], $returnStatus);
 
-        return view('pages.admin.rents.index', compact('rents', 'returns', 'status', 'returnStatus', 'activeTab', 'search'));
+        return view('pages.admin.rents.index', compact('rents', 'rentIncome', 'returns', 'status', 'returnStatus', 'activeTab', 'search'));
     }
 
     /**

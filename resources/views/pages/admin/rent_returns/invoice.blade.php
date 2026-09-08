@@ -62,7 +62,7 @@
         }
 
         .custom {
-            margin-top: 1rem !important;
+            margin-top: 0.5rem !important;
         }
 
         .sm\:px-6,
@@ -86,14 +86,16 @@
 @section('content')
     <div class="invoice-container bg-white shadow-lg p-10">
         <!-- Header -->
-        <div class="flex justify-between items-center mb-4 pb-6 border-b-2 border-blue-700">
+        <div class="flex justify-between items-center mb-2 pb-2 border-b-2 border-blue-900">
             <div class="company-info">
-                <h1 class="text-blue-700 text-2xl font-bold mb-1">{{ $settings['companyName'] ?? ''}}</h1>
+                <img src="{{ asset('images/logo/logo-blue.png') }}"alt="KFS Logo" class="w-28 h-auto ml-[-0.5rem]">
+                <h1 class="text-blue-900 text-2xl font-bold mb-1">{{ $settings['companyName'] ?? '' }}</h1>
                 <p class="text-gray-600 text-sm">{{ $settings['address'] ?? '' }}</p>
-                <p class="text-gray-600 text-sm">Phone: {{ $settings['phone'] ?? ''}} | Email: {{ $settings['email'] ?? '' }}</p>
+                <p class="text-gray-600 text-sm">Phone: {{ $settings['phone'] ?? '' }} | Email:
+                    {{ $settings['email'] ?? '' }}</p>
             </div>
             <div class="invoice-details text-right">
-                <h2 class="text-blue-700 text-2xl font-bold mb-1">RETURN INVOICE</h2>
+                <h2 class="text-blue-900 text-2xl font-bold mb-1">RETURN INVOICE</h2>
                 <p class="text-gray-600 text-sm mb-1"><span class="font-semibold text-gray-800">Receipt No:</span>
                     RETURN-{{ $return->id }}</p>
                 <p class="text-gray-600 text-sm mb-1"><span class="font-semibold text-gray-800">Rent No:</span>
@@ -107,7 +109,7 @@
         <!-- Client Section -->
         <div class="flex justify-between items-center mb-4">
             <div class="bill-to w-[48%]">
-                <div class="text-blue-700 font-bold text-sm uppercase mb-2">Customer Information:</div>
+                <div class="text-blue-900 font-bold text-sm uppercase mb-2">Rented To:</div>
                 <div class="text-gray-600 text-sm">
                     <p class="font-semibold text-gray-800">
                         {{ $rent->customer->name ?? '' }}
@@ -122,7 +124,7 @@
                 </div>
             </div>
             <div class="rent-info w-[48%] lg:ml-[60%]">
-                <div class="text-blue-700 font-bold text-sm uppercase mb-2">Rental Period:</div>
+                <div class="text-blue-900 font-bold text-sm uppercase mb-2">Rental Period:</div>
                 <div class="text-gray-600 text-sm">
                     <p>{{ $rent->note ?? '' }}</p>
                     <p><span class="font-semibold text-gray-800">From:</span>
@@ -137,17 +139,20 @@
         <table class="w-full border-collapse mb-4">
             <thead>
                 <tr>
-                    <th class="bg-blue-900 text-white rounded-l-lg text-left p-3 font-semibold text-sm w-[30%]">Item
+                    <th class="bg-blue-900 text-white rounded-l-lg text-left p-3 font-semibold text-sm w-[5%]">Line</th>
+                    <th class="bg-blue-900 text-white text-left p-3 font-semibold text-sm w-[30%]">Item
                         Description</th>
                     <th class="bg-blue-900 text-white text-center p-3 font-semibold text-sm w-[15%]">Rented Qty</th>
-                    <th class="bg-blue-900 text-white text-center p-3 font-semibold text-sm w-[20%]">Returned Qty</th>
+                    <th class="bg-blue-900 text-white text-center p-3 font-semibold text-sm w-[15%]">Returned Qty</th>
                     <th class="bg-blue-900 text-white text-center p-3 font-semibold text-sm w-[15%]">Price (Ks)</th>
-                    <th class="bg-blue-900 text-white rounded-r-lg text-right p-3 font-semibold text-sm w-[20%]">Daily Total (Ks)</th>
+                    <th class="bg-blue-900 text-white rounded-r-lg text-right p-3 font-semibold text-sm w-[20%]">Daily Total
+                        (Ks)</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($return->items as $item)
                     <tr>
+                        <td class="p-2 border-b border-gray-200 text-sm text-left">{{ $loop->iteration }}</td>
                         <td class="p-2 border-b border-gray-200 text-sm">
                             <p class="font-semibold text-gray-800">
                                 {{ $item->rentItem->productVariant->product->product_name ?? 'N/A' }}
@@ -174,7 +179,7 @@
 
                 @if ($return->items->count() > 0)
                     <tr class="bg-gray-50">
-                        <td class="p-2 font-semibold text-sm" colspan="4">Daily Rental Subtotal</td>
+                        <td class="p-2 font-semibold text-sm" colspan="5">Daily Rental Subtotal</td>
                         <td class="p-2 text-sm text-right font-semibold">
                             {{ number_format($rent->sub_total ?? 0, 0) }} Ks
                         </td>
@@ -189,26 +194,26 @@
             </tbody>
         </table>
 
-        <div class="grid grid-cols-2 gap-8 mb-4">
+        <div class="grid grid-cols-2 gap-8 mb-2">
             <!-- Return Details & Conditions -->
             <div>
                 <!-- Signatures -->
-                <div class="flex justify-between mt-4 pt-4">
+                <div class="flex justify-between pt-2">
                     <div class="text-center w-[45%]">
-                        <p class="text-gray-800 font-semibold text-sm mb-4">Customer's Signature</p>
+                        <p class="text-gray-800 font-semibold text-sm mb-2">Customer's Signature</p>
                         <p class="text-gray-600 text-sm pt-2">_________________</p>
                     </div>
                     <div class="text-center w-[45%]">
-                        <p class="text-gray-800 font-semibold text-sm mb-4">Authorized Signature</p>
+                        <p class="text-gray-800 font-semibold text-sm mb-2">Authorized Signature</p>
                         <p class="text-gray-600 text-sm pt-2">_________________</p>
                     </div>
                 </div>
 
                 <!-- Terms & Conditions with Payment History -->
-                <div class="bg-gray-100 p-4 rounded custom mt-6">
+                <div class="p-4 rounded custom">
                     @if ($return->note)
                         <div class="mb-4 pb-3 border-b border-gray-300">
-                            <h3 class="text-blue-700 font-bold mb-3">Return Policy & Payment Conditions</h3>
+                            <h3 class="text-blue-900 font-bold mb-3">Return Policy & Payment Conditions</h3>
 
                             <p class="text-gray-600 text-sm mb-2">
                                 {{ $return->note }}
@@ -219,7 +224,7 @@
                     <!-- Payment History -->
                     @if ($rent->payments->count() > 0)
                         <div>
-                            <h4 class="text-blue-700 font-semibold mb-2">Payment History:</h4>
+                            <h4 class="text-blue-900 font-semibold mb-2">Payment History:</h4>
                             @foreach ($rent->payments as $payment)
                                 <p class="text-gray-600 text-sm mb-1">
                                     {{ \Carbon\Carbon::parse($payment->payment_date)->format('Y-m-d') }}:
@@ -238,7 +243,7 @@
             </div>
 
             <!-- Financial Summary -->
-            <div class="flex justify-end mb-8">
+            <div class="flex justify-end">
                 <table class="w-full max-w-sm border-collapse">
                     <!-- Rental Period Calculation -->
                     <tr>
@@ -250,7 +255,7 @@
 
                     <!-- Total Rental Amount -->
                     <tr>
-                        <td class="p-1 border-b border-gray-200 text-sm font-semibold">Total Rental Amount</td>
+                        <td class="p-1 border-b border-gray-200 text-sm font-semibold">Rental Amount</td>
                         <td class="p-1 border-b border-gray-200 text-sm text-right font-semibold">
                             {{ number_format($return->total_rental_amount, 0) }} Ks
                         </td>
@@ -268,7 +273,7 @@
 
                     @if ($return->total_damage_fee > 0)
                         <tr>
-                            <td class="p-1 border-b border-gray-200 text-sm">Damage/Loss Fees</td>
+                            <td class="p-1 border-b border-gray-200 text-sm">Damage/Lost Fees</td>
                             <td class="p-1 border-b border-gray-200 text-sm text-right text-red-600">
                                 + {{ number_format($return->total_damage_fee, 0) }} Ks
                             </td>
@@ -285,14 +290,12 @@
                     @endif --}}
 
                     <!-- Deductions -->
-                    @if (($rent->deposit ?? 0) > 0)
-                        <tr>
-                            <td class="p-1 border-b border-gray-200 text-sm">Deposit</td>
-                            <td class="p-1 border-b border-gray-200 text-sm text-right text-blue-600">
-                                - {{ number_format($rent->deposit, 0) }} Ks
-                            </td>
-                        </tr>
-                    @endif
+                    <tr>
+                        <td class="p-1 border-b border-gray-200 text-sm">Deposit</td>
+                        <td class="p-1 border-b border-gray-200 text-sm text-right text-blue-900">
+                            - {{ number_format($rent->deposit, 0) }} Ks
+                        </td>
+                    </tr>
 
                     <!-- Payment Total -->
                     <tr>
@@ -303,16 +306,16 @@
                     </tr>
 
                     <!-- Final Balance -->
-                    <tr class="font-bold bg-gray-100">
-                        <td class="p-1 border-t-1 border-b-1 border-blue-700">
-                            FINAL BALANCE
+                    <tr class="font-bold">
+                        <td class="p-1 border-t-1 border-b-1 border-blue-900 text-sm">
+                            Final Balance
                         </td>
                         <td
-                            class="p-1 border-t-1 border-b-1 border-blue-700 text-right {{ $return->refund_amount > 0 ? 'text-red-600' : ($return->collect_amount > 0 ? 'text-blue-600' : 'text-green-600') }}">
+                            class="p-1 border-t-1 border-b-1 border-blue-900 text-sm text-right {{ $return->refund_amount > 0 ? 'text-red-600' : ($return->collect_amount > 0 ? 'text-blue-900' : 'text-green-600') }}">
                             @if ($return->refund_amount > 0)
                                 {{ number_format($return->refund_amount, 0) }} Ks (Refund)
                             @elseif($return->collect_amount > 0)
-                                {{ number_format(abs($return->collect_amount), 0) }} Ks (Settled with Customer)
+                                {{ number_format(abs($return->collect_amount), 0) }}000 Ks (Collect)
                             @else
                                 0 Ks (Settled)
                             @endif
@@ -320,7 +323,7 @@
                     </tr>
 
                     <!-- Status Summary -->
-                    <tr>
+                    {{-- <tr>
                         <td class="text-xs text-gray-500" colspan="2">
                             @if ($return->collect_amount > 0)
                                 <div class="flex items-center text-red-600">
@@ -348,18 +351,17 @@
                                 </div>
                             @endif
                         </td>
-                    </tr>
+                    </tr> --}}
                 </table>
             </div>
         </div>
 
         <!-- Footer -->
         <div class="text-center pt-4 mt-4 border-t border-gray-200">
-            <h3 class="text-blue-700 font-bold mb-1">Thank you for choosing {{ $settings['companyName'] ?? ''}}!</h3>
-            {{-- <p class="text-gray-600 text-sm mb-4">For any inquiries regarding this return receipt, please contact our
-                returns department.</p> --}}
+            <h3 class="text-blue-900 font-bold mb-1">Thank you for choosing {{ $settings['companyName'] ?? '' }}!</h3>
             <div class="text-gray-500 text-xs">
-                <p>Phone: {{ $settings['phone'] ?? ''}} | Email: {{ $settings['email'] ?? '' }} | Website: kyawfamilyscaffolding.com</p>
+                <p>Phone: {{ $settings['phone'] ?? '' }} | Email: {{ $settings['email'] ?? '' }} | Website:
+                    kyawfamilyscaffolding.com</p>
             </div>
         </div>
 
@@ -374,7 +376,7 @@
             </div>
             <div class="flex gap-2">
                 <a href="{{ route('rents.print', $rent->id) }}"
-                    class="inline-flex items-center gap-2 rounded-lg border border-blue-700 bg-white px-4 py-2 text-sm font-semibold text-blue-700
+                    class="inline-flex items-center gap-2 rounded-lg border border-blue-700 bg-white px-4 py-2 text-sm font-semibold text-blue-900
                     hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     📄 View Rental Invoice
                 </a>

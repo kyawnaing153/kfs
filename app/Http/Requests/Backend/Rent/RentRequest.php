@@ -57,7 +57,7 @@ class RentRequest extends FormRequest
                 'required',
                 'numeric',
                 'min:0.1',
-                'max:999999.9'
+                'max:9999999.9'
             ],
             'items.*.unit' => [
                 'nullable',
@@ -68,7 +68,7 @@ class RentRequest extends FormRequest
                 'required',
                 'numeric',
                 'min:0.1',
-                'max:9999999.9'
+                'max:99999999.9'
             ],
 
             // Financial fields
@@ -76,43 +76,43 @@ class RentRequest extends FormRequest
                 'required',
                 'numeric',
                 'min:0.1',
-                'max:99999999.9'
+                'max:999999999.9'
             ],
             'discount' => [
                 'required',
                 'numeric',
                 'min:0',
-                'max:9999999.9'
+                'max:99999999.9'
             ],
             'deposit' => [
                 'required',
                 'numeric',
                 'min:0',
-                'max:99999999.9'
+                'max:999999999.9'
             ],
             'transport' => [
                 'required',
                 'numeric',
                 'min:0',
-                'max:99999999.9'
+                'max:999999999.9'
             ],
             'total' => [
                 'required',
                 'numeric',
                 'min:0',
-                'max:99999999.9'
+                'max:999999999.9'
             ],
             'total_paid' => [
                 'required',
                 'numeric',
                 'min:0',
-                'max:99999999.9'
+                'max:999999999.9'
             ],
             'total_due' => [
                 'required',
                 'numeric',
                 'min:0',
-                'max:99999999.9'
+                'max:999999999.9'
             ],
 
             // Payment type

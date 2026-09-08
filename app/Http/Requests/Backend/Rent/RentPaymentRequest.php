@@ -74,6 +74,6 @@ class RentPaymentRequest extends FormRequest
         if ($this->route('rent')) {
             return $this->route('rent')->total_due;
         }
-        return 999999999.99; // Default max value
+        return 99999999999.99; // Default max value
     }
 }

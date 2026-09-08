@@ -36,7 +36,7 @@
                 </div>
             </x-common.component-card>
 
-            <x-common.component-card title="Total Rent Income">
+            <x-common.component-card title="Daily Rent Income">
                 <div class="flex items-center text-blue-600">
                     <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
