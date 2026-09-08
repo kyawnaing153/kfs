@@ -92,7 +92,7 @@
         <!-- Header -->
         <div class="flex justify-between items-center mb-2 pb-2 border-b-2 border-blue-900">
             <div class="company-info">
-                <img src="{{ asset('images/logo/logo-blue.png') }}"alt="KFS Logo" class="w-28 h-auto ml-[-0.5rem]">
+                <img src="{{ asset('images/logo/logo-blue.png') }}"alt="KFS Logo" class="w-28 h-auto ml-[-0.8rem]">
                 <h1 class="text-blue-900 text-2xl font-bold mb-1">{{ $settings['companyName'] ?? '' }}</h1>
                 <p class="text-gray-600 text-sm">{{ $settings['address'] ?? '' }}</p>
                 <p class="text-gray-600 text-sm">Phone: {{ $settings['phone'] ?? '' }} | Email:

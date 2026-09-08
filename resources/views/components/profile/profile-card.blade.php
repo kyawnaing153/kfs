@@ -78,7 +78,7 @@
     </div>
 
     <!-- Profile Info Modal -->
-    <x-ui.modal x-data="{ open: false }" @open-profile-info-modal.window="open = true" :isOpen="false" class="max-w-[700px]">
+    {{-- <x-ui.modal x-data="{ open: false }" @open-profile-info-modal.window="open = true" :isOpen="false" class="max-w-[700px]">
         <div
             class="no-scrollbar relative w-full max-w-[700px] overflow-y-auto rounded-3xl bg-white p-4 dark:bg-gray-900 lg:p-11">
             <div class="px-2 pr-14">
@@ -190,5 +190,5 @@
                 </div>
             </form>
         </div>
-    </x-ui.modal>
+    </x-ui.modal> --}}
 </div>
